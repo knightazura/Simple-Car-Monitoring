@@ -121,7 +121,7 @@ class CarController extends Controller
             'redirect_url' => "/car"
         );
 
-        // Destroy entity
+        // Destroy entity (and its relationships)
         if ($car->delete()) {
             return response()
                 ->json([

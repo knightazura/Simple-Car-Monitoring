@@ -16,3 +16,16 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('employees', function () {
+  $employees = \App\Models\Employee::all();
+  $model = array();
+  $i = 0;
+
+  foreach ($employees as $employee) {
+    $model[$i]['value'] = $employee->employee_name;
+    $model[$i]['link'] = $employee->nip;
+    $i++;
+  }
+  return response()->json(['model' => $model]);
+});

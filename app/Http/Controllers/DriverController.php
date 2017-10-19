@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Driver;
 
 class DriverController extends Controller
 {
@@ -13,7 +14,8 @@ class DriverController extends Controller
      */
     public function index()
     {
-        //
+        $drivers = Driver::orderBy('updated_at', 'desc')->paginate(10);
+        return view('driver.index', compact('drivers'));
     }
 
     /**
@@ -23,7 +25,8 @@ class DriverController extends Controller
      */
     public function create()
     {
-        //
+        $meta = "Create";
+        return view('driver.form', compact('meta'));
     }
 
     /**
@@ -34,7 +37,16 @@ class DriverController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validate
+        $data = $this->validate(request(), [
+            'driver_name' => 'required|min:3|string',
+            'company' => 'nullable'
+        ]);
+
+        // Store
+        $driver = Driver::create($data);
+
+        if ($driver) return redirect()->route('driver.index')->with('success', "Data driver ({$request->driver_name}) berhasil ditambahkan!");
     }
 
     /**
@@ -56,7 +68,9 @@ class DriverController extends Controller
      */
     public function edit($id)
     {
-        //
+        $meta   = "Edit";
+        $driver = Driver::findOrFail($id);
+        return view('driver.form', compact('meta', 'driver'));
     }
 
     /**
@@ -68,7 +82,16 @@ class DriverController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $driver = Driver::findOrFail($id);
+
+        // Validate
+        $data = $this->validate(request(), [
+            'driver_name' => 'required|min:3|string'
+        ]);
+
+        // Update
+        $driver->fill($data);
+        if ($driver->save()) return redirect()->route('driver.index')->with('success', "Data driver berhasil diupdate!");
     }
 
     /**
@@ -79,6 +102,19 @@ class DriverController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Init
+        $driver = Driver::findOrFail($id);
+        $data = array(
+            'message' => "Driver {$driver->driver_name} telah berhasil dihapus!",
+            'redirect_url' => "/driver"
+        );
+
+        // Destroy
+        if ($driver->delete()) {
+            return response()
+                ->json([
+                    'data' => $data
+                ]);
+        }
     }
 }

@@ -18,9 +18,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
+  // Master data module routes
   Route::resource('employee', 'EmployeeController');
   Route::resource('driver', 'DriverController');
   Route::resource('car', 'CarController');
+
+  // Transaction module routes
+  Route::resource('car-usage', 'CarUsageController');
 });
 Route::get('/home', 'HomeController@index')->name('home');
 

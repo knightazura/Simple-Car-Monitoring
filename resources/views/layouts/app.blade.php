@@ -26,13 +26,16 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('car.index') }}">Car</a>
+                        <a class="nav-link" href="{{ route('car.index') }}">Cars</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Employee</a>
+                        <a class="nav-link" href="{{ route('employee.index') }}">Employees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('driver.index') }}">Drivers</a>
                     </li>
                     <li class="nav-item dropdown float-right">
                         @if (Auth::guest())
@@ -67,7 +70,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    @stack('misc')
+    <script src="{{ asset('js/misc.js') }}"></script>
 
     @include('sweet::alert')
 </body>

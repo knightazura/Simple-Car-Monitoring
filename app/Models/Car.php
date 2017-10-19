@@ -16,4 +16,18 @@ class Car extends Model
     {
       return $this->hasOne('App\Models\CarStatus', 'car_plat_number');
     }
+
+    // Observe this model being deleted and delete the child
+    protected static function boot()
+    {
+      parent::boot();
+
+      static::deleting(function ($car) {
+
+        foreach ($car->hasStatus()->get() as $status) {
+          $status->delete();
+        }
+
+      });
+    }
 }

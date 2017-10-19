@@ -1,10 +1,11 @@
 <?php
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
-use App\Models\Employee;
+use App\Models\Driver;
 
-class EmployeeTableSeeder extends Seeder
+class DriverTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +14,6 @@ class EmployeeTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Employee::class, 25)->create();
+        factory(Driver::class, 35)->create();
     }
 }
