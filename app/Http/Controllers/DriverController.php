@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Driver;
+use App\Models\CarUsage;
 
 class DriverController extends Controller
 {
@@ -17,6 +18,19 @@ class DriverController extends Controller
         $drivers = Driver::orderBy('updated_at', 'desc')->paginate(10);
         return view('driver.index', compact('drivers'));
     }
+
+        public function available()
+        {
+            $active_drivers = CarUsage::select('driver_id')->get();
+            $idle_drivers   = Driver::select('id', 'driver_name')
+                ->whereNotIn('id', $active_drivers)
+                ->get();
+
+            return response()
+                ->json([
+                    'model' => $idle_drivers
+                ]);
+        }
 
     /**
      * Show the form for creating a new resource.

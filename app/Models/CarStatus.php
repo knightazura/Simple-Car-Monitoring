@@ -14,7 +14,7 @@ class CarStatus extends Model
     // Relationships
     public function theCar()
     {
-      return $this->belongsTo('App\Models\Car', 'plat_number');
+      return $this->belongsTo('App\Models\Car', 'car_plat_number');
     }
 
     public function usage()

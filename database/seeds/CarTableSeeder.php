@@ -14,6 +14,12 @@ class CarTableSeeder extends Seeder
      */
     public function run()
     {
-      factory(Car::class, 50)->create();
+      factory(Car::class, 50)->create()
+        ->each(function ($car) {
+          DB::table('car_statuses')->insert([
+            'car_plat_number' => $car->plat_number,
+            'status' => mt_rand(0, 3)
+          ]);
+        });
     }
 }

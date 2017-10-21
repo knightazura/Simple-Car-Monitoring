@@ -17,15 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('employees', function () {
-  $employees = \App\Models\Employee::all();
-  $model = array();
-  $i = 0;
+// App
+Route::get('employees/available', 'EmployeeController@available');
+Route::get('driver/available', 'DriverController@available');
+Route::get('car/available', 'CarController@available');
+Route::get('usage/{entity_id}', 'CarUsageController@apiShow');
 
-  foreach ($employees as $employee) {
-    $model[$i]['value'] = $employee->employee_name;
-    $model[$i]['link'] = $employee->nip;
-    $i++;
-  }
-  return response()->json(['model' => $model]);
+Route::post('a', function (Request $request) {
+  return response()->json(['data' => $request->all()]);
 });
+
+Route::post('b', 'CarUsageController@history_store');
+

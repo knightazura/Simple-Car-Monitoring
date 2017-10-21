@@ -18,6 +18,15 @@ class EmployeeController extends Controller
         return view('employee.index', compact('employees'));
     }
 
+        public function available()
+        {
+            $employees = Employee::select('nip', 'employee_name')->get();
+            return response()
+                ->json([
+                    'model' => $employees
+                ]);
+        }
+
     /**
      * Show the form for creating a new resource.
      *

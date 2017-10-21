@@ -25,18 +25,20 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('car.index') }}">Cars</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('employee.index') }}">Employees</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('driver.index') }}">Drivers</a>
-                    </li>
+                    @if (!Auth::guest())
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('car.index') }}">Cars</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.index') }}">Employees</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('driver.index') }}">Drivers</a>
+                        </li>
+                    @endif
                     <li class="nav-item dropdown float-right">
                         @if (Auth::guest())
                             <li class="nav-item">
