@@ -45,3 +45,9 @@
 <p class="card-text text-secondary">
   <small>Perkiraan waktu pemakaian kendaraan</small>
 </p>
+
+<!-- Keterangan tambahan -->
+<h6 class="card-title" style="margin-bottom: 0">{{ $usage->additional_description }}</h6>
+<p class="card-text text-secondary">
+  <small>Keterangan tambahan</small>
+</p>

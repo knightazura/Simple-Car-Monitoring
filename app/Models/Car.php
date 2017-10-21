@@ -23,11 +23,10 @@ class Car extends Model
       parent::boot();
 
       static::deleting(function ($car) {
-
+        // Status
         foreach ($car->hasStatus()->get() as $status) {
           $status->delete();
         }
-
       });
     }
 }

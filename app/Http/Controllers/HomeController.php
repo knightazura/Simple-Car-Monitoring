@@ -27,6 +27,8 @@ class HomeController extends Controller
     public function index()
     {
         $i = 0;
+        $meta = 'Create';
+        $id = null;
 
         // Highlights data
         $init_highlights_data = CarUsage::select('car_plat_number', 'driver_id')->get();
@@ -49,6 +51,6 @@ class HomeController extends Controller
         // Car Usages
         $car_usages = CarUsage::paginate(3);
 
-        return view('home', compact('car_usages', 'highlights_data'));
+        return view('home', compact('car_usages', 'highlights_data', 'meta', 'id'));
     }
 }

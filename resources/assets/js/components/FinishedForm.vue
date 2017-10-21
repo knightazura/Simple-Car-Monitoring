@@ -75,11 +75,15 @@
     },
     computed: {
       usageTime () {
-        var time1 = null
-        var time2 = null
+        var ttime = (this.form.start_use && this.form.end_use) ? this.timeDifference(this.form.start_use, this.form.end_use) : null
 
-        time1 = (this.form.start_use) ? this.form.start_use.getTime() : null
-        time2 = (this.form.end_use) ? this.form.end_use.getTime() : null
+        return (ttime) ? `${ttime.days} hari, ${ttime.hours} jam` : null
+      }
+    },
+    methods: {
+      timeDifference (start_time, end_time) {
+        var time1 = start_time.getTime()
+        var time2 = end_time.getTime()
 
         var difference = time2 - time1
 
@@ -88,11 +92,16 @@
         
         var hoursDifference = Math.floor(difference/1000/60/60)
         difference -= daysDifference*1000*60*60
-        
-        return (daysDifference >= 1) ? daysDifference + ' hari' : hoursDifference + ' jam'
-      }
-    },
-    methods: {
+
+        var minutesDifference = Math.floor(difference/1000/60);
+        difference -= minutesDifference*1000*60
+
+        return {
+          days: daysDifference,
+          hours: hoursDifference,
+          minutes: minutesDifference
+        }
+      },
       original () {
         get(`/api/usage/${this.entity}`)
           .then((response) => {
@@ -104,10 +113,15 @@
           if (valid) {
             // Set computed usageTime to form
             this.form.usage_time = this.usageTime
-
-            post(`/api/a`, this.form)
+            post(`/api/car-usage/finished`, this.form)
               .then((response) => {
-                console.log(response)
+                swal({
+                    icon: "success",
+                    text: response.data.message
+                })
+                .then(function () {
+                    location.href = response.data.redirect_url
+                })
               })
 
           } else { return false }

@@ -19,7 +19,7 @@
     <!-- Request Form -->
     <div class="row justify-content-md-center my-4">
         <div class="col-md-8">
-            @include('main.request-form')
+            @include('main.request-form', ['meta' => $meta])
         </div>
     </div>
 </div>

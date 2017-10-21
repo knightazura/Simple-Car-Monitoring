@@ -1,3 +1,4 @@
+<?php $no = 1; ?>
 <div class="card">
     <h5 class="card-header">
         <b>Dashboard</b>
@@ -16,7 +17,7 @@
     </div>
     <table class="table table-hover table-responsive">
         <thead>
-            <th>&nbsp;</th>
+            <th>#</th>
             <th>Pegawai</th>
             <th>Sopir</th>
             <th>Mobil</th>
@@ -25,7 +26,9 @@
         <tbody>
             @foreach($car_usages as $usage)
             <tr>
-                <td scope="head">&nbsp;</td>
+                <td scope="head">
+                    <a href="{{ route('car-usage.show', $usage->id) }}">{{ $no++ }}</a>
+                </td>
                 <td class="align-middle">{{ $usage->requestedBy->employee_name }}</td>
                 <td class="align-middle">{{ $usage->drivenBy->driver_name }}</td>
                 <td class="align-middle">{{ $usage->carStatus->theCar->car_name }} ({{ $usage->car_plat_number }})</td>

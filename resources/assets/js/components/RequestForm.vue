@@ -71,7 +71,7 @@
 
                 <!-- Estimated time -->
                 <el-form-item label="Estimasi waktu penggunaan">
-                    <el-input class="w-25" v-model="formRule.estimates_time" placeholder="Satuan hari"></el-input>
+                    <el-input class="w-10" v-model="formRule.estimates_time" placeholder=". . ."></el-input> hari
                 </el-form-item>
 
                 <!-- Additional Description -->
@@ -82,7 +82,8 @@
                 <!-- Buttons -->
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit('formRule')">Request</el-button>
-                    <el-button @click="resetForm('formRule')">Cancel</el-button>
+                    <el-button v-if="cancelOrBack" @click="resetForm('formRule')">Reset</el-button>
+                    <a href="/car-usage" class="btn" v-if="!cancelOrBack">Kembali</a>
                 </el-form-item>
             </el-form>
         </div>
@@ -93,12 +94,11 @@
     import { get, post } from '../helpers/api'
 
     export default {
+        props: ['meta', 'entity_id'],
         data () {
             return {
                 storeURL: `/car-usage`,
-                formRule: {
-                    nip: ''
-                },
+                formRule: {},
                 idle_employees: [],
                 idle_drivers: [],
                 available_cars: [],
@@ -111,11 +111,25 @@
                 }
             }
         },
+        computed: {
+            cancelOrBack () {
+                return (this.meta == 'Create') ? true : false
+            }
+        },
         methods: {
             init () {
                 this.idleDriver()
                 this.idleEmployees()
                 this.availableCars()
+
+                if (this.meta == 'Edit') {
+                    this.storeURL = `/car-usage/${this.entity_id}?_method=PUT`
+                    get(`/api/usage/${this.entity_id}`)
+                        .then((response) => {
+                            this.formRule = response.data.model
+                        })
+                        .catch((error) => { console.log(error) })
+                }
             },
             idleEmployees () {
                 get(`/api/employees/available`)
@@ -142,10 +156,10 @@
                             .then((response) => {
                                 swal({
                                     icon: "success",
-                                    text: "Permohonan berhasil tercatat"
+                                    text: response.data.message
                                 })
                                 .then(function () {
-                                    location.href = `/home`
+                                    location.href = response.data.redirect_url
                                 })
                             })
                             .catch((error) => {
