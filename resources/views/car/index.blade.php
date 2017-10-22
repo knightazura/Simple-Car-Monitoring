@@ -36,14 +36,21 @@
                       <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         *
                       </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ route('car.edit', $car->plat_number) }}">Edit</a>
-                        <a class="dropdown-item text-danger delete-button"
-                          data-id="/car/{{ $car->plat_number }}"
-                          data-token="{{ csrf_token() }}">
-                            Hapus
-                        </a>
-                      </div>
+                      @if ($car->hasStatus->status == 1)
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item disabled" href="#">Edit</a>
+                          <a class="dropdown-item disabled" href="#">Hapus</a>
+                        </div>
+                      @else
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="{{ route('car.edit', $car->plat_number) }}">Edit</a>
+                          <a class="dropdown-item text-danger delete-button"
+                            data-id="/car/{{ $car->plat_number }}"
+                            data-token="{{ csrf_token() }}">
+                              Hapus
+                          </a>
+                        </div>
+                      @endif
                     </div>
                   </td>
                 </tr>

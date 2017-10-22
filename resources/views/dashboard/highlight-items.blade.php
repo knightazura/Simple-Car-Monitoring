@@ -22,11 +22,7 @@
                     </div>
                 </div>
                 <!-- 3 -->
-                <div class="card text-white bg-warning">
-                    <div class="card-body">
-                        <p class="card-text">Status kendaraan lainnya.</p>
-                    </div>
-                </div>
+                <home-chart></home-chart>
             </div>
         </div>
     </div>

@@ -8,6 +8,16 @@ use App\Models\CarStatus;
 
 class CarController extends Controller
 {
+    public function __construct()
+    {
+        $this->car_status = array(
+            '0' => 'Tersedia',
+            '1' => 'Sedang dipakai',
+            '2' => 'Sedang diperbaiki',
+            '3' => 'Rusak'
+        );
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,13 +25,10 @@ class CarController extends Controller
      */
     public function index()
     {
-        $car_status = array(
-            '0' => 'Tersedia',
-            '1' => 'Sedang dipakai',
-            '2' => 'Sedang diperbaiki',
-            '3' => 'Rusak'
-        );
-        $cars = Car::with('hasStatus')->paginate(10);
+        $car_status = $this->car_status;
+        $cars = Car::with('hasStatus')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);
         return view('car.index', compact('cars', 'car_status'));
     }
 
@@ -71,8 +78,10 @@ class CarController extends Controller
      */
     public function create()
     {
-        $meta = "Create";
-        return view('car.form', compact('meta'));
+        $car_status = $this->car_status;
+        $meta       = "Create";
+
+        return view('car.form', compact('meta', 'car_status'));
     }
 
     /**
@@ -93,7 +102,7 @@ class CarController extends Controller
         $car = Car::create($data);
 
         // Additional action, store to CarStatus table
-        $status  = new CarStatus(['status' => 0]);
+        $status  = new CarStatus(['status' => $request->car_status]);
         $new_car = Car::findOrFail($request->plat_number);
         $new_car->hasStatus()->save($status);
 
@@ -119,10 +128,11 @@ class CarController extends Controller
      */
     public function edit($id)
     {
-        $meta   = 'Edit';
-        $car    = Car::where('plat_number', $id)->get();
+        $car_status = $this->car_status;
+        $meta       = 'Edit';
+        $car        = Car::findOrFail($id);
 
-        return view('car.form', compact('car', 'meta'));
+        return view('car.form', compact('meta', 'car', 'car_status'));
     }
 
     /**
@@ -135,11 +145,14 @@ class CarController extends Controller
     public function update(Request $request, $id)
     {
         $car = Car::findOrFail($id);
+        $car->fill($request->except(['car_status']));
 
-        $car->car_name = $request->car_name;
-        $car->plat_number = $request->plat_number;
-
-        // Update
+        // Update (child first)
+        $car_status = CarStatus::findOrFail($id);
+        $car_status->update([
+            'car_plat_number' => $request->plat_number,
+            'status' => $request->car_status
+        ]);
         $car->save();
 
         return redirect()->route('car.index')->with('success', 'Data mobil berhasil diupdate!');
