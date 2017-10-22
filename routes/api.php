@@ -25,8 +25,7 @@ Route::get('usage/{entity_id}', 'CarUsageController@apiShow');
 Route::get('chart/current-car-status', 'CarController@current_status');
 Route::post('car-usage/finished', 'CarUsageController@historyStore');
 
+// Experiment
 Route::post('a', function (Request $request) {
   return response()->json(['data' => $request->all()]);
 });
-
-

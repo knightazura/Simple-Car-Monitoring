@@ -28,10 +28,10 @@
                   <th scope="row" class="align-middle">{{ $no++ }}</td>
                   <td class="align-middle">{{ $driv->driver_name }}</td>
                   <td class="align-middle">{{ $driv->company }}</td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <div class="dropdown">
-                      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        *
+                      <button class="btn btn-sm btn-outline-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="el-icon-more" aria-hidden="true"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="{{ route('driver.edit', $driv->id) }}">Edit</a>

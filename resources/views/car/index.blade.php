@@ -33,8 +33,8 @@
                   <td class="align-middle">{{ $car_status[$car->hasStatus->status] }}</td>
                   <td class="text-center align-middle">
                     <div class="dropdown">
-                      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        *
+                      <button class="btn btn-sm btn-outline-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="el-icon-more" aria-hidden="true"></i>
                       </button>
                       @if ($car->hasStatus->status == 1)
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

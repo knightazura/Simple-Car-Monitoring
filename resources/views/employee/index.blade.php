@@ -32,10 +32,10 @@
                   <td class="align-middle">{{ $emp->employee_name }}</td>
                   <td class="align-middle">{{ $emp->employee_position }}</td>
                   <td class="align-middle">{{ $emp->division }}</td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <div class="dropdown">
-                      <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        *
+                      <button class="btn btn-sm btn-outline-primary" type="button" href="#" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="el-icon-more" aria-hidden="true"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="{{ route('employee.edit', $emp->nip) }}">Edit</a>

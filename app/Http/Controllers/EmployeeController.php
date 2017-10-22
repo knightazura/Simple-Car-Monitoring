@@ -98,7 +98,7 @@ class EmployeeController extends Controller
 
         // Validation
         $data = $this->validate(request(), [
-            'nip' => 'required|min:6',
+            'nip' => 'required|min:3',
             'employee_name' => 'required|min:3',
             'employee_position' => 'required|string',
             'division' => 'required|string'
@@ -106,6 +106,14 @@ class EmployeeController extends Controller
 
         // Fill fields & update
         $employee->fill($data);
+
+        // Update on child too if any
+        $goinEmployee = \App\Models\CarUsage::where('nip', $id)->get();
+        if ($goinEmployee->isNotEmpty()) {
+            $goinEmployee = $goinEmployee[0];
+            $goinEmployee->nip = $request->nip;
+            $goinEmployee->save();
+        }
         
         if ($employee->save()) return redirect()->route('employee.index')->with('success', 'Data pegawai berhasil diubah!');
     }
