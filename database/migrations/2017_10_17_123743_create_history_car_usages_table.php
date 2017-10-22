@@ -15,9 +15,11 @@ class CreateHistoryCarUsagesTable extends Migration
     {
         Schema::create('history_car_usages', function (Blueprint $table) {
             $table->integer('usage_id')->unsigned();
-            $table->string('nip', 64);
-            $table->string('car_plat_number', 10);
-            $table->integer('driver_id')->unsigned();
+            $table->string('employee');
+            $table->string('employee_position');
+            $table->string('employee_division');
+            $table->string('car');
+            $table->string('driver');
             $table->tinyInteger('total_passengers')->unsigned()->nullable();
             $table->string('destination')->nullable();
             $table->mediumText('necessity')->nullable();

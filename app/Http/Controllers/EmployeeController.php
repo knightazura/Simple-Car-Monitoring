@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Employee;
 
 class EmployeeController extends Controller
 {
@@ -13,8 +14,18 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Employee::orderBy('updated_at', 'desc')->paginate(10);
+        return view('employee.index', compact('employees'));
     }
+
+        public function available()
+        {
+            $employees = Employee::select('nip', 'employee_name')->get();
+            return response()
+                ->json([
+                    'model' => $employees
+                ]);
+        }
 
     /**
      * Show the form for creating a new resource.
@@ -23,7 +34,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        $meta = "Create";
+        return view('employee.form', compact('meta'));
     }
 
     /**
@@ -34,7 +46,18 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Validation
+        $data = $this->validate(request(), [
+            'nip' => 'required|min:6',
+            'employee_name' => 'required|min:3',
+            'employee_position' => 'required|string',
+            'division' => 'required|string'
+        ]);
+
+        // Store
+        $employee = Employee::create($data);
+
+        if ($employee) return redirect()->route('employee.index')->with('success', "Data Pegawai baru ({$request->employee_name}) berhasil dibuat!");
     }
 
     /**
@@ -56,7 +79,10 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $meta = "Edit";
+        $employee = Employee::findOrFail($id);
+
+        return view('employee.form', compact('meta', 'employee'));
     }
 
     /**
@@ -68,7 +94,20 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+
+        // Validation
+        $data = $this->validate(request(), [
+            'nip' => 'required|min:6',
+            'employee_name' => 'required|min:3',
+            'employee_position' => 'required|string',
+            'division' => 'required|string'
+        ]);
+
+        // Fill fields & update
+        $employee->fill($data);
+        
+        if ($employee->save()) return redirect()->route('employee.index')->with('success', 'Data pegawai berhasil diubah!');
     }
 
     /**
@@ -79,6 +118,19 @@ class EmployeeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Init
+        $employee   = Employee::findOrFail($id);
+        $data       = array(
+            'message' => "Data Pegawai {$employee->employee_name} telah berhasil dihapus!",
+            'redirect_url' => "/employee"
+        );
+
+        // Destroy entity
+        if ($employee->delete()) {
+            return response()
+                ->json([
+                    'data' => $data
+                ]);
+        }
     }
 }

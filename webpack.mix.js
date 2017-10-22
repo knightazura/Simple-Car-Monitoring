@@ -15,7 +15,10 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css');
 
 mix.browserSync({
-  proxy: 'lv55trial.dev',
+  browser: "google chrome",
+  proxy: {
+    target: 'http://lv55trial.dev'
+  },
   files: [
     {
       match: [

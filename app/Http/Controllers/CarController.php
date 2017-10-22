@@ -8,6 +8,16 @@ use App\Models\CarStatus;
 
 class CarController extends Controller
 {
+    public function __construct()
+    {
+        $this->car_status = array(
+            '0' => 'Tersedia',
+            '1' => 'Sedang dipakai',
+            '2' => 'Sedang diperbaiki',
+            '3' => 'Rusak'
+        );
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,15 +25,51 @@ class CarController extends Controller
      */
     public function index()
     {
-        $car_status = array(
-            '0' => 'Tersedia',
-            '1' => 'Sedang dipakai',
-            '2' => 'Sedang diperbaiki',
-            '3' => 'Rusak'
-        );
-        $cars = Car::with('hasStatus')->paginate(10);
+        $car_status = $this->car_status;
+        $cars = Car::with('hasStatus')
+            ->orderBy('updated_at', 'desc')
+            ->paginate(10);
         return view('car.index', compact('cars', 'car_status'));
     }
+
+        /**
+         *  API feeds, show available cars to used
+         *
+         *  @return \Illuminate\Http\Response
+         */
+        public function available()
+        {
+            // Init
+            $i = 0;
+            $cars = CarStatus::with('theCar')
+                ->where('status', 0)
+                ->get();
+
+            // Group by Car name
+            foreach ($cars as $car) {
+                $temp_name[] = $car->theCar->car_name;
+            }
+            $temp_name = array_unique($temp_name); // Distinct the name
+
+            // Fetch the plat numbers
+            foreach ($temp_name as $car_name) {
+                $ii = 0;
+                $model[$i]['label'] = $car_name;
+                foreach ($cars as $car) {
+                    if ($car->theCar->car_name == $car_name) {
+                        $model[$i]['options'][$ii]['value'] = $car->car_plat_number; 
+                        $model[$i]['options'][$ii]['label'] = $car->car_plat_number; 
+                        $ii++;
+                    }
+                }
+                $i++;
+            }
+
+            return response()
+                ->json([
+                    'model' => $model
+                ]);
+        }
 
     /**
      * Show the form for creating a new resource.
@@ -32,8 +78,10 @@ class CarController extends Controller
      */
     public function create()
     {
-        $meta = "Create";
-        return view('car.form', compact('meta'));
+        $car_status = $this->car_status;
+        $meta       = "Create";
+
+        return view('car.form', compact('meta', 'car_status'));
     }
 
     /**
@@ -54,7 +102,7 @@ class CarController extends Controller
         $car = Car::create($data);
 
         // Additional action, store to CarStatus table
-        $status  = new CarStatus(['status' => 0]);
+        $status  = new CarStatus(['status' => $request->car_status]);
         $new_car = Car::findOrFail($request->plat_number);
         $new_car->hasStatus()->save($status);
 
@@ -80,10 +128,11 @@ class CarController extends Controller
      */
     public function edit($id)
     {
-        $meta   = 'Edit';
-        $car    = Car::where('plat_number', $id)->get();
+        $car_status = $this->car_status;
+        $meta       = 'Edit';
+        $car        = Car::findOrFail($id);
 
-        return view('car.form', compact('car', 'meta'));
+        return view('car.form', compact('meta', 'car', 'car_status'));
     }
 
     /**
@@ -96,11 +145,14 @@ class CarController extends Controller
     public function update(Request $request, $id)
     {
         $car = Car::findOrFail($id);
+        $car->fill($request->except(['car_status']));
 
-        $car->car_name = $request->car_name;
-        $car->plat_number = $request->plat_number;
-
-        // Update
+        // Update (child first)
+        $car_status = CarStatus::findOrFail($id);
+        $car_status->update([
+            'car_plat_number' => $request->plat_number,
+            'status' => $request->car_status
+        ]);
         $car->save();
 
         return redirect()->route('car.index')->with('success', 'Data mobil berhasil diupdate!');
@@ -121,7 +173,7 @@ class CarController extends Controller
             'redirect_url' => "/car"
         );
 
-        // Destroy entity
+        // Destroy entity (and its relationships)
         if ($car->delete()) {
             return response()
                 ->json([

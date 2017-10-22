@@ -1,15 +1,18 @@
 @extends('layouts.app')
 
 <?php
+  // Init
   if ($meta == 'Create') {
-    $storeURL     = ["/car", "POST"];
-    $car_name     = '';
-    $plat_number  = '';
+    $storeURL      = ["/car", "POST"];
+    $car_name      = '';
+    $plat_number   = '';
+    $full_disabled = '';
   }
   else if ($meta == 'Edit') {
-    $storeURL     = ["/car/{$car[0]->plat_number}", "PUT"];
-    $car_name     = $car[0]->car_name;
-    $plat_number  = $car[0]->plat_number;
+    $full_disabled = ($car->hasStatus->status == 1) ? "disabled" : "";
+    $storeURL      = ["/car/{$car->plat_number}", "PUT"];
+    $car_name      = $car->car_name;
+    $plat_number   = $car->plat_number;
   }
 ?>
 
@@ -32,6 +35,28 @@
             <div class="form-group">
               <label for="platNumber">Nomor Plat Kendaraan</label>
               <input type="text" name="plat_number" class="form-control" id="platNumber" placeholder="Contoh: DD1234AB" value="{{ $plat_number }}">
+            </div>
+            <div class="form-group">
+              @foreach ($car_status as $key => $label)
+                @php
+                  $class_disabled = ($key == 1) ? "disabled" : "";
+                  if ($meta == 'Edit') {
+                    $checked = ($car->hasStatus->status == $key) ? "checked" : "";
+                  } else {
+                    $checked = ($key == 0) ? "checked" : "";
+                  }
+                @endphp
+                <div class="form-check form-check-inline {{ $class_disabled }} {{ $full_disabled }}">
+                  <label class="form-check-label">
+                    <input type="radio"
+                      class="form-check-input"
+                      name="car_status"
+                      id="inlineRadio{{ $key }}"
+                      value="{{ $key }}"
+                      {{ $checked }} {{ $class_disabled }} {{ $full_disabled }}> {{ $label }}
+                  </label>
+                </div>
+              @endforeach
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
             <a href="{{ route('car.index') }}" class="btn btn-default">Kembali</a>

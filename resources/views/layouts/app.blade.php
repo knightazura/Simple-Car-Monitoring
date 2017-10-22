@@ -25,15 +25,20 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('car.index') }}">Car</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Employee</a>
-                    </li>
+                    @if (!Auth::guest())
+                        <li class="nav-item active">
+                            <a class="nav-link" href="{{ route('home') }}">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('car.index') }}">Cars</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('employee.index') }}">Employees</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('driver.index') }}">Drivers</a>
+                        </li>
+                    @endif
                     <li class="nav-item dropdown float-right">
                         @if (Auth::guest())
                             <li class="nav-item">
@@ -67,7 +72,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    @stack('misc')
+    <script src="{{ asset('js/misc.js') }}"></script>
 
     @include('sweet::alert')
 </body>

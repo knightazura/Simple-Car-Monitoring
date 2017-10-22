@@ -8,6 +8,7 @@
 require('./bootstrap');
 
 import swal from 'sweetalert';
+import main from './main.js';
 
 // window.Vue = require('vue');
 

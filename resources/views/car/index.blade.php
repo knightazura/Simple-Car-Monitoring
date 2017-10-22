@@ -5,19 +5,6 @@
 
 <div class="container-fluid">
 
-  @if (session('status'))
-  <div class="row justify-content-md-end">
-    <div class="col-md-4">
-      <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        {{ session('status') }}
-      </div>
-    </div>
-  </div>
-  @endif
-
   <div class="row justify-content-md-center">
     <div class="col-md-8">
       <div class="card">
@@ -41,21 +28,29 @@
               @foreach($cars as $car)
                 <tr>
                   <th scope="row">{{ $no++ }}</th>
-                  <td>{{ $car->plat_number }}</td>
-                  <td>{{ $car->car_name }}</td>
-                  <td>{{ $car_status[$car->hasStatus->status] }}</td>
-                  <td>
+                  <td class="align-middle">{{ $car->plat_number }}</td>
+                  <td class="align-middle">{{ $car->car_name }}</td>
+                  <td class="align-middle">{{ $car_status[$car->hasStatus->status] }}</td>
+                  <td class="text-center align-middle">
                     <div class="dropdown">
                       <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        *
                       </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ route('car.edit', $car->plat_number) }}">Edit</a>
-                        <a class="dropdown-item text-danger delete-button"
-                          data-id="/car/{{ $car->plat_number }}"
-                          data-token="{{ csrf_token() }}">
-                            Hapus
-                        </a>
-                      </div>
+                      @if ($car->hasStatus->status == 1)
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item disabled" href="#">Edit</a>
+                          <a class="dropdown-item disabled" href="#">Hapus</a>
+                        </div>
+                      @else
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          <a class="dropdown-item" href="{{ route('car.edit', $car->plat_number) }}">Edit</a>
+                          <a class="dropdown-item text-danger delete-button"
+                            data-id="/car/{{ $car->plat_number }}"
+                            data-token="{{ csrf_token() }}">
+                              Hapus
+                          </a>
+                        </div>
+                      @endif
                     </div>
                   </td>
                 </tr>
@@ -70,9 +65,5 @@
     </div>
   </div>
 </div>
-
-@push('misc')
-  <script src="{{ asset('js/misc.js') }}"></script>
-@endpush
 
 @endsection
