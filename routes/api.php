@@ -22,6 +22,7 @@ Route::get('employees/available', 'EmployeeController@available');
 Route::get('driver/available', 'DriverController@available');
 Route::get('car/available', 'CarController@available');
 Route::get('usage/{entity_id}', 'CarUsageController@apiShow');
+Route::get('chart/current-car-status', 'CarController@current_status');
 Route::post('car-usage/finished', 'CarUsageController@historyStore');
 
 Route::post('a', function (Request $request) {

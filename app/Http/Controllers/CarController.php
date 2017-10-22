@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Car;
 use App\Models\CarStatus;
 
@@ -180,5 +181,21 @@ class CarController extends Controller
                     'data' => $data
                 ]);
         }
+    }
+
+    public function current_status()
+    {
+        $current_status = DB::table('car_statuses')
+            ->select(DB::raw('count(status) as total_status'))
+            ->groupBy('status')
+            ->get();
+        foreach ($current_status as $key => $value) {
+            $model[] = $value->total_status;
+        }
+
+        return response()
+            ->json([
+                'model' => $model
+            ]);
     }
 }
