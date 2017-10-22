@@ -1,9 +1,10 @@
 <?php $no = 1; ?>
 @if ($car_usages->isNotEmpty())
     <div class="card">
-        <h5 class="card-header">
-            <b>Dashboard</b>
-        </h5>
+        <div class="card-header">
+            <span style="font-size: 16pt"><b>Dashboard</b></span>
+            <a href="{{ route('car-usage-history-index') }}" class="btn btn-sm btn-dark float-right">Rekap</a>
+        </div>
 
         <div class="card-body">
             @if (session('status'))
@@ -18,7 +19,7 @@
         </div>
         <table class="table table-hover table-responsive">
             <thead>
-                <th>#</th>
+                <th class="text-center">#</th>
                 <th>Pegawai</th>
                 <th>Sopir</th>
                 <th>Mobil</th>
@@ -27,7 +28,7 @@
             <tbody>
                 @foreach($car_usages as $usage)
                 <tr>
-                    <td scope="head">
+                    <td class="text-center align-middle" scope="head">
                         <a href="{{ route('car-usage.show', $usage->id) }}">{{ $no++ }}</a>
                     </td>
                     <td class="align-middle">{{ $usage->requestedBy->employee_name }}</td>
@@ -46,9 +47,10 @@
     </div>
 @else
     <div class="card text-white bg-warning">
-        <h5 class="card-header">
-            <b>Dashboard</b>
-        </h5>
+        <div class="card-header">
+            <span style="font-size: 16pt;"><b>Dashboard</b></span>
+            <a href="{{ route('car-usage-history-index') }}" class="btn btn-sm btn-dark float-right">Rekap</a>
+        </div>
         <div class="card-body">
             {{ Auth::user()->name }}, selamat datang di aplikasi Web Monitoring Kendaraan. <br>
             Untuk saat ini tidak ada catatan untuk permohonan pemakaian kendaraan.

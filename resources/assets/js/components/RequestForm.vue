@@ -163,7 +163,10 @@
                                 })
                             })
                             .catch((error) => {
-                                console.log(error)
+                                swal({
+                                    icon: "error",
+                                    text: error
+                                })
                             })
                     } else {return false}
                 })

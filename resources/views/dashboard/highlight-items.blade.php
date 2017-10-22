@@ -6,7 +6,7 @@
                 <!-- 1 -->
                 <div class="card text-white bg-success">
                     <div class="card-body text-center">
-                        <p class="card-text">Jumlah mobil yang ketersediaan untuk saat ini.</p>
+                        <p class="card-text">Jumlah mobil yang tersedia untuk saat ini.</p>
                         <h1 class="display-1">
                             <b>{{ $highlights_data['tac'] }}</b>
                         </h1>

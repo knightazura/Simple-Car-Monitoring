@@ -113,6 +113,7 @@
           if (valid) {
             // Set computed usageTime to form
             this.form.usage_time = this.usageTime
+
             post(`/api/car-usage/finished`, this.form)
               .then((response) => {
                 swal({
@@ -121,6 +122,12 @@
                 })
                 .then(function () {
                     location.href = response.data.redirect_url
+                })
+              }).
+              catch((error) => {
+                swal({
+                  icon: "error",
+                  text: error
                 })
               })
 

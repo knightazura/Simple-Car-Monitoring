@@ -36,11 +36,15 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" href="{{ route('driver.edit', $driv->id) }}">Edit</a>
-                          <a class="dropdown-item text-danger delete-button"
-                            data-id="/driver/{{ $driv->id }}"
-                            data-token="{{ csrf_token() }}">
-                              Hapus
-                          </a>
+                          @if (is_null($driv->driveOn))
+                            <a class="dropdown-item text-danger delete-button"
+                              data-id="/driver/{{ $driv->id }}"
+                              data-token="{{ csrf_token() }}">
+                                Hapus
+                            </a>
+                          @else
+                            <a href="#" class="dropdown-item disabled">Hapus</a>
+                          @endif
                         </div>
                       </div>
                     </td>
@@ -52,6 +56,12 @@
           <div class="card-footer">
             @include('layouts.cf-navigation', ['collection' => $drivers, 'entity_name' => 'driver (sopir)'])
           </div>
+        </div>
+
+        <div class="alert alert-warning my-3 w-50 float-right" role="alert">
+          <small>
+            <b>Catatan: </b> Sopir yang sedang melakukan tugas untuk sementara tidak bisa dihapus.
+          </small>
         </div>
       @else
         <div class="card text-white bg-warning">

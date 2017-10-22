@@ -108,8 +108,8 @@ class CarController extends Controller
         if ($car && $new_car->hasStatus()->save($status)) {
             return response()
                 ->json([
-                    'message', 'Mobil baru berhasil dibuat!',
-                    'redirect_url', '/car'
+                    'message' => 'Mobil baru berhasil dibuat!',
+                    'redirect_url' => '/car'
                 ]);
         }
     }
@@ -151,7 +151,7 @@ class CarController extends Controller
     public function update(Request $request, $id)
     {
         $car = Car::findOrFail($id);
-        $car->fill($request->except(['car_status']));
+        $car->fill($request->except(['car_status', 'has_status']));
 
         // Update (child first)
         $car_status = CarStatus::findOrFail($id);
@@ -159,9 +159,13 @@ class CarController extends Controller
             'car_plat_number' => $request->plat_number,
             'status' => $request->car_status
         ]);
-        $car->save();
-
-        return redirect()->route('car.index')->with('success', 'Data mobil berhasil diupdate!');
+        if ($car->save()) {
+            return response()
+                ->json([
+                    'message' => 'Data mobil berhasil diupdate!',
+                    'redirect_url' => '/car'
+                ]);
+        }
     }
 
     /**

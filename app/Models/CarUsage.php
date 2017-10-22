@@ -8,7 +8,6 @@ class CarUsage extends Model
 {
     protected $guarded = [];
     public $timestamps = true;
-    public $incrementing = false; // this is for eloquent doesn't expect the primary key to be an autoIncrement
 
     // Relationships
     public function carStatus()

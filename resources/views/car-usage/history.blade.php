@@ -30,7 +30,7 @@
                 <td class="text-center">
                   <a href="{{ route('car-usage-history-show', $usage->usage_id) }}">{{ $no++ }}</a>
                 </td>
-                <td>{{ $usage->employee }}</td>
+                <td>{{ $usage->employee_name }}</td>
                 <td>{{ $usage->driver }}</td>
                 <td>{{ $usage->car }}</td>
                 <td>{{ $usage->destination }}</td>
@@ -49,6 +49,9 @@
           ])
         </div>
       </div>
+      <a href="{{ route('car-usage.index') }}" class="btn">
+        <i class="el-icon-arrow-left"></i> Kembali
+      </a>
     </div>
   </div>
 </div>

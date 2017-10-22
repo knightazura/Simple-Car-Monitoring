@@ -10,7 +10,7 @@
         </h4>
         <div class="card-body">
           <!-- Nama Pegawai -->
-          <h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->employee }} ({{ $usage->employee_nip }})</h6>
+          <h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->employee_name }} ({{ $usage->employee_nip }})</h6>
           <p class="card-text text-secondary">
             <small>Nama Pegawai (Pemohon)</small>
           </p>
@@ -70,13 +70,13 @@
           </p>
 
           <!-- Mulai digunakan & Posisi KM -->
-          <h6 class="card-title" style="margin-bottom: 0">{{ date('F d, Y', strtotime($usage->start_use)) }} & {{ $usage->start_km_pos }} KM</h6>
+          <h6 class="card-title" style="margin-bottom: 0">{{ date('F d, Y (H:i:s)', strtotime($usage->start_use)) }} & {{ $usage->start_km_pos }} KM</h6>
           <p class="card-text text-secondary">
             <small>Waktu mulainya penggunaan & Posisi KM</small>
           </p>
 
           <!-- Mulai digunakan & Posisi KM -->
-          <h6 class="card-title" style="margin-bottom: 0">{{ date('F d, Y', strtotime($usage->end_use)) }} & {{ $usage->end_km_pos }} KM</h6>
+          <h6 class="card-title" style="margin-bottom: 0">{{ date('F d, Y (H:i:s)', strtotime($usage->end_use)) }} & {{ $usage->end_km_pos }} KM</h6>
           <p class="card-text text-secondary">
             <small>Waktu selesainya penggunaan & Posisi KM</small>
           </p>
@@ -94,7 +94,9 @@
 
   <div class="row justify-content-md-center my-4">
     <div class="col-sm-12 col-md-8" id="finishedForm">
-      <a href="{{ route('car-usage-history-index') }}" class="btn btn-sm float-right">Kembali</a>
+      <a href="{{ route('car-usage-history-index') }}" class="btn">
+        <i class="el-icon-arrow-left"></i> Kembali
+      </a>
     </div>
   </div>
 </div>

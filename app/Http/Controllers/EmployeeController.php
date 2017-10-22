@@ -20,7 +20,7 @@ class EmployeeController extends Controller
 
     public function available()
     {
-        $employees = Employee::select('nip', 'employee_name')->get();
+        $employees = Employee::doesntHave('request')->get();
         return response()
             ->json([
                 'model' => $employees

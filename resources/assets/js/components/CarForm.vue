@@ -18,11 +18,10 @@
 
       <!-- Company -->
       <div class="form-group">
-        <label for="company">Nama Perusahaan</label>
+        <label for="company">Status Mobil</label>
         <el-form-item>
           <el-radio-group v-model="form.car_status">
             <el-radio :label="0">Tersedia</el-radio>
-            <el-radio :label="1">Sedang dipakai</el-radio>
             <el-radio :label="2">Diperbaiki</el-radio>
             <el-radio :label="3">Rusak</el-radio>
           </el-radio-group>
@@ -30,7 +29,7 @@
       </div>
 
     <el-button type="success" @click="onSubmit('form')">{{ buttonContext }}</el-button>
-    <el-button :plain="true" type="warning" @click="resetForm('form')">Clear</el-button>
+    <el-button v-if="!clearBtnVisibility" :plain="true" type="warning" @click="resetForm('form')">Clear</el-button>
     <el-button @click="back">Kembali</el-button>
 </el-form>
 </template>
@@ -50,7 +49,9 @@
       }
     },
     computed: {
-
+      clearBtnVisibility () {
+        return (this.meta == 'Edit') ? true : false
+      }
     },
     data () {
       return {

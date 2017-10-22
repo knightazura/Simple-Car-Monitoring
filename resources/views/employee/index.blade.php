@@ -40,11 +40,15 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                           <a class="dropdown-item" href="{{ route('employee.edit', $emp->nip) }}">Edit</a>
-                          <a class="dropdown-item text-danger delete-button"
-                            data-id="/employee/{{ $emp->nip }}"
-                            data-token="{{ csrf_token() }}">
-                              Hapus
-                          </a>
+                          @if (is_null($emp->request))
+                            <a class="dropdown-item text-danger delete-button"
+                              data-id="/employee/{{ $emp->nip }}"
+                              data-token="{{ csrf_token() }}">
+                                Hapus
+                            </a>
+                          @else
+                            <a href="#" class="dropdown-item disabled">Hapus</a>
+                          @endif
                         </div>
                       </div>
                     </td>
@@ -56,6 +60,12 @@
           <div class="card-footer">
             @include('layouts.cf-navigation', ['collection' => $employees, 'entity_name' => 'pegawai'])
           </div>
+        </div>
+
+        <div class="alert alert-warning my-3 w-50 float-right" role="alert">
+          <small>
+            <b>Catatan: </b> Pegawai yang sedang melakukan perjalanan / pemakaian mobil untuk sementara tidak bisa dihapus.
+          </small>
         </div>
       @else
         <div class="card text-white bg-warning">

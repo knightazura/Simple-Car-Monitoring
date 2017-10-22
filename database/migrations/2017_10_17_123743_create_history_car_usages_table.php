@@ -15,7 +15,8 @@ class CreateHistoryCarUsagesTable extends Migration
     {
         Schema::create('history_car_usages', function (Blueprint $table) {
             $table->integer('usage_id')->unsigned();
-            $table->string('employee');
+            $table->string('employee_nip');
+            $table->string('employee_name');
             $table->string('employee_position');
             $table->string('employee_division');
             $table->string('car');

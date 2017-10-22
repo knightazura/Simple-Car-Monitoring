@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CarUsage;
+use App\Models\CarStatus;
 use App\Models\HistoryCarUsage;
 
 class CarUsageController extends Controller
@@ -58,13 +59,19 @@ class CarUsageController extends Controller
             'additional_description' => 'nullable'
         ]);
 
+        // Store
         $usage = CarUsage::create($data);
+
+        // Update the Car status
+        $car_status = CarStatus::findOrFail($request->car_plat_number);
+        $car_status->status = 1;
+        $car_status->save();
 
         if ($usage) {
             return response()
                 ->json([
                     'message' => 'Berhasil membuat permohonan',
-                    'redirect_url' => '/'
+                    'redirect_url' => "/car-usage/{$usage->id}"
                 ]);
         }
     }
@@ -110,7 +117,7 @@ class CarUsageController extends Controller
 
         // Modify
         $usage->employee_nip      = $usage->nip;
-        $usage->employee          = $usage->requestedBy->employee_name;
+        $usage->employee_name     = $usage->requestedBy->employee_name;
         $usage->employee_position = $usage->requestedBy->employee_position;
         $usage->employee_division = $usage->requestedBy->division;
         $usage->driver            = $usage->drivenBy->driver_name;

@@ -45,8 +45,8 @@ class HomeController extends Controller
                 ->count();
         }
         else {
-            $total_avail_cars = 0;
-            $total_idle_drivers = 0;
+            $total_avail_cars   = CarStatus::where('status', 0)->count();
+            $total_idle_drivers = Driver::all()->count();
         }
 
         $highlights_data = array(

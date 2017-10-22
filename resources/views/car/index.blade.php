@@ -63,6 +63,12 @@
             @include('layouts.cf-navigation', ['collection' => $cars, 'entity_name' => 'mobil'])
           </div>
         </div>
+
+        <div class="alert alert-warning my-3 w-50 float-right" role="alert">
+          <small>
+            <b>Catatan: </b> Kendaraan yang sedang digunakan untuk sementara tidak bisa dihapus.
+          </small>
+        </div>
       @else
         <div class="card text-white bg-warning">
           <div class="card-header">

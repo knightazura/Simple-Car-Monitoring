@@ -85781,7 +85781,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             location.href = response.data.redirect_url;
                         });
                     }).catch(function (error) {
-                        console.log(error);
+                        swal({
+                            icon: "error",
+                            text: error
+                        });
                     });
                 } else {
                     return false;
@@ -87131,12 +87134,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (valid) {
           // Set computed usageTime to form
           _this2.form.usage_time = _this2.usageTime;
+
           Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])('/api/car-usage/finished', _this2.form).then(function (response) {
             swal({
               icon: "success",
               text: response.data.message
             }).then(function () {
               location.href = response.data.redirect_url;
+            });
+          }).catch(function (error) {
+            swal({
+              icon: "error",
+              text: error
             });
           });
         } else {
@@ -88053,7 +88062,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -88071,7 +88079,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
   },
 
-  computed: {},
+  computed: {
+    clearBtnVisibility: function clearBtnVisibility() {
+      return this.meta == 'Edit' ? true : false;
+    }
+  },
   data: function data() {
     return {
       cuba: true,
@@ -88192,9 +88204,7 @@ var render = function() {
         "div",
         { staticClass: "form-group" },
         [
-          _c("label", { attrs: { for: "company" } }, [
-            _vm._v("Nama Perusahaan")
-          ]),
+          _c("label", { attrs: { for: "company" } }, [_vm._v("Status Mobil")]),
           _vm._v(" "),
           _c(
             "el-form-item",
@@ -88212,10 +88222,6 @@ var render = function() {
                 },
                 [
                   _c("el-radio", { attrs: { label: 0 } }, [_vm._v("Tersedia")]),
-                  _vm._v(" "),
-                  _c("el-radio", { attrs: { label: 1 } }, [
-                    _vm._v("Sedang dipakai")
-                  ]),
                   _vm._v(" "),
                   _c("el-radio", { attrs: { label: 2 } }, [
                     _vm._v("Diperbaiki")
@@ -88245,18 +88251,20 @@ var render = function() {
         [_vm._v(_vm._s(_vm.buttonContext))]
       ),
       _vm._v(" "),
-      _c(
-        "el-button",
-        {
-          attrs: { plain: true, type: "warning" },
-          on: {
-            click: function($event) {
-              _vm.resetForm("form")
-            }
-          }
-        },
-        [_vm._v("Clear")]
-      ),
+      !_vm.clearBtnVisibility
+        ? _c(
+            "el-button",
+            {
+              attrs: { plain: true, type: "warning" },
+              on: {
+                click: function($event) {
+                  _vm.resetForm("form")
+                }
+              }
+            },
+            [_vm._v("Clear")]
+          )
+        : _vm._e(),
       _vm._v(" "),
       _c("el-button", { on: { click: _vm.back } }, [_vm._v("Kembali")])
     ],
