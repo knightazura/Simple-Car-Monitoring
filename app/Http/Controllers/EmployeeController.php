@@ -18,14 +18,14 @@ class EmployeeController extends Controller
         return view('employee.index', compact('employees'));
     }
 
-        public function available()
-        {
-            $employees = Employee::select('nip', 'employee_name')->get();
-            return response()
-                ->json([
-                    'model' => $employees
-                ]);
-        }
+    public function available()
+    {
+        $employees = Employee::select('nip', 'employee_name')->get();
+        return response()
+            ->json([
+                'model' => $employees
+            ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -34,8 +34,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        $meta = "Create";
-        return view('employee.form', compact('meta'));
+        $data = array("meta" => "Create", "entity_id" => null);
+        return view('employee.form', compact('data'));
     }
 
     /**
@@ -57,7 +57,13 @@ class EmployeeController extends Controller
         // Store
         $employee = Employee::create($data);
 
-        if ($employee) return redirect()->route('employee.index')->with('success', "Data Pegawai baru ({$request->employee_name}) berhasil dibuat!");
+        if ($employee) {
+            return response()
+                ->json([
+                    'message' => "Data pegawai ({$request->employee_name}) berhasil ditambahkan!",
+                    'redirect_url' => '/employee'
+                ]);
+        }
     }
 
     /**
@@ -66,9 +72,10 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function apiShow($id)
     {
-        //
+        $employee = Employee::findOrFail($id);
+        return response()->json(['model' => $employee]);
     }
 
     /**
@@ -79,10 +86,8 @@ class EmployeeController extends Controller
      */
     public function edit($id)
     {
-        $meta = "Edit";
-        $employee = Employee::findOrFail($id);
-
-        return view('employee.form', compact('meta', 'employee'));
+        $data = array("meta" => "Edit", "entity_id" => $id);
+        return view('employee.form', compact('data'));
     }
 
     /**
@@ -115,7 +120,13 @@ class EmployeeController extends Controller
             $goinEmployee->save();
         }
         
-        if ($employee->save()) return redirect()->route('employee.index')->with('success', 'Data pegawai berhasil diubah!');
+        if ($employee->save()) {
+            return response()
+                ->json([
+                    'message' => "Data pegawai ({$request->employee_name}) berhasil diubah!",
+                    'redirect_url' => '/employee'
+                ]);
+        }
     }
 
     /**

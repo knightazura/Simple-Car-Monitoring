@@ -19,10 +19,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 // App
 Route::get('employees/available', 'EmployeeController@available');
+Route::get('employee/{nip}', 'EmployeeController@apiShow');
+
 Route::get('driver/available', 'DriverController@available');
+Route::get('driver/{id}', 'DriverController@apiShow');
+
 Route::get('car/available', 'CarController@available');
-Route::get('usage/{entity_id}', 'CarUsageController@apiShow');
+Route::get('car/{plat_number}', 'CarController@apiShow');
 Route::get('chart/current-car-status', 'CarController@current_status');
+
+Route::get('usage/{entity_id}', 'CarUsageController@apiShow');
 Route::post('car-usage/finished', 'CarUsageController@historyStore');
 
 // Experiment

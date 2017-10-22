@@ -19,18 +19,18 @@ class DriverController extends Controller
         return view('driver.index', compact('drivers'));
     }
 
-        public function available()
-        {
-            $active_drivers = CarUsage::select('driver_id')->get();
-            $idle_drivers   = Driver::select('id', 'driver_name')
-                ->whereNotIn('id', $active_drivers)
-                ->get();
+    public function available()
+    {
+        $active_drivers = CarUsage::select('driver_id')->get();
+        $idle_drivers   = Driver::select('id', 'driver_name')
+            ->whereNotIn('id', $active_drivers)
+            ->get();
 
-            return response()
-                ->json([
-                    'model' => $idle_drivers
-                ]);
-        }
+        return response()
+            ->json([
+                'model' => $idle_drivers
+            ]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -39,8 +39,8 @@ class DriverController extends Controller
      */
     public function create()
     {
-        $meta = "Create";
-        return view('driver.form', compact('meta'));
+        $data = array("meta" => "Create", "entity_id" => null);
+        return view('driver.form', compact('data'));
     }
 
     /**
@@ -60,7 +60,13 @@ class DriverController extends Controller
         // Store
         $driver = Driver::create($data);
 
-        if ($driver) return redirect()->route('driver.index')->with('success', "Data driver ({$request->driver_name}) berhasil ditambahkan!");
+        if ($driver) {
+            return response()
+                ->json([
+                    'message' => "Data driver ({$request->driver_name}) berhasil ditambahkan!",
+                    'redirect_url' => '/driver'
+                ]);
+        }
     }
 
     /**
@@ -69,9 +75,10 @@ class DriverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function apiShow($id)
     {
-        //
+        $driver = Driver::findOrFail($id);
+        return response()->json(['model' => $driver]);
     }
 
     /**
@@ -82,9 +89,8 @@ class DriverController extends Controller
      */
     public function edit($id)
     {
-        $meta   = "Edit";
-        $driver = Driver::findOrFail($id);
-        return view('driver.form', compact('meta', 'driver'));
+        $data = array("meta" => "Edit", "entity_id" => $id);
+        return view('driver.form', compact('data'));
     }
 
     /**
@@ -97,15 +103,22 @@ class DriverController extends Controller
     public function update(Request $request, $id)
     {
         $driver = Driver::findOrFail($id);
-
+        
         // Validate
         $data = $this->validate(request(), [
             'driver_name' => 'required|min:3|string'
         ]);
-
+        
         // Update
         $driver->fill($data);
-        if ($driver->save()) return redirect()->route('driver.index')->with('success', "Data driver berhasil diupdate!");
+
+        if ($driver->save()) {
+            return response()
+                ->json([
+                    'message' => "Data driver berhasil diupdate!",
+                    'redirect_url' => '/driver'
+                ]);
+        }
     }
 
     /**

@@ -48662,6 +48662,12 @@ var Popover = function ($) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_RequestForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_RequestForm_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_FinishedForm_vue__ = __webpack_require__(117);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_FinishedForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_FinishedForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_EmployeeForm_vue__ = __webpack_require__(122);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_EmployeeForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_EmployeeForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_DriverForm_vue__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_DriverForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__components_DriverForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_CarForm_vue__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_CarForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__components_CarForm_vue__);
 
 
 
@@ -48672,10 +48678,16 @@ var Popover = function ($) {
 
 
 
+
+
+
 __WEBPACK_IMPORTED_MODULE_4_element_ui_lib_locale___default.a.use(__WEBPACK_IMPORTED_MODULE_3_element_ui_lib_locale_lang_en___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_element_ui___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('request-form', __WEBPACK_IMPORTED_MODULE_5__components_RequestForm_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('finished-form', __WEBPACK_IMPORTED_MODULE_6__components_FinishedForm_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('employee-form', __WEBPACK_IMPORTED_MODULE_7__components_EmployeeForm_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('driver-form', __WEBPACK_IMPORTED_MODULE_8__components_DriverForm_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('car-form', __WEBPACK_IMPORTED_MODULE_9__components_CarForm_vue___default.a);
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#app'
@@ -87363,6 +87375,903 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 121 */,
+/* 122 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(28)
+/* script */
+var __vue_script__ = __webpack_require__(123)
+/* template */
+var __vue_template__ = __webpack_require__(124)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/EmployeeForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-45f92466", Component.options)
+  } else {
+    hotAPI.reload("data-v-45f92466", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 123 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_api__ = __webpack_require__(29);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['meta', 'entity_id'],
+  created: function created() {
+    var _this = this;
+
+    if (this.meta == 'Edit') {
+      this.storeURL = '/employee/' + this.entity_id + '?_method=PUT';
+      this.buttonContext = 'Update';
+      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/employee/' + this.entity_id).then(function (response) {
+        _this.form = response.data.model;
+      });
+    }
+  },
+  data: function data() {
+    return {
+      storeURL: '/employee',
+      buttonContext: 'Submit',
+      form: {},
+      rules: {
+        nip: [{ required: true, message: 'Mohon masukkan NIK terlebih dahulu' }, { min: 6, message: 'NIP minimal mempunyai 6 karakter!' }],
+        employee_name: [{ required: true, message: 'Mohon masukkan Nama Pegawai terlebih dahulu' }, { min: 3, message: 'Nama Pegawai minimal mempunyai 3 karakter!' }],
+        employee_position: [{ required: true, message: 'Mohon masukkan Posisi pegawai terlebih dahulu' }, { min: 3, message: 'Posisi Pegawai minimal mempunyai 3 karakter!' }],
+        division: [{ required: true, message: 'Mohon masukkan field Divisi terlebih dahulu' }, { min: 3, message: 'Field Divisi minimal mempunyai 3 karakter!' }]
+      }
+    };
+  },
+
+  methods: {
+    onSubmit: function onSubmit(formName) {
+      var _this2 = this;
+
+      this.$refs[formName].validate(function (valid) {
+        if (valid) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this2.storeURL, _this2.form).then(function (response) {
+            swal({
+              icon: "success",
+              text: response.data.message
+            }).then(function () {
+              return location.href = response.data.redirect_url;
+            });
+          }).catch(function (error) {
+            return console.log(error);
+          });
+        } else {
+          console.log('Error');
+        }
+      });
+    },
+    resetForm: function resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    back: function back() {
+      location.href = '/employee';
+    }
+  }
+});
+
+/***/ }),
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "el-form",
+    {
+      ref: "form",
+      attrs: { rules: _vm.rules, model: _vm.form, "label-position": "top" }
+    },
+    [
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "nip" } }, [
+            _vm._v("Nomor Induk Pegawai")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "nip" } },
+            [
+              _c("el-input", {
+                attrs: { placeholder: "Contoh: 1122334456", id: "nip" },
+                model: {
+                  value: _vm.form.nip,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "nip", $$v)
+                  },
+                  expression: "form.nip"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "employee_name" } }, [
+            _vm._v("Nama Pegawai")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "employee_name" } },
+            [
+              _c("el-input", {
+                attrs: {
+                  placeholder: "Contoh: Saiko Mizuki",
+                  id: "employee_name"
+                },
+                model: {
+                  value: _vm.form.employee_name,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "employee_name", $$v)
+                  },
+                  expression: "form.employee_name"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "employee_position" } }, [
+            _vm._v("Posisi")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "employee_position" } },
+            [
+              _c("el-input", {
+                attrs: {
+                  placeholder: "Contoh: Ketua Divisi",
+                  id: "employee_position"
+                },
+                model: {
+                  value: _vm.form.employee_position,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "employee_position", $$v)
+                  },
+                  expression: "form.employee_position"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "division" } }, [_vm._v("Divisi")]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "division" } },
+            [
+              _c("el-input", {
+                attrs: {
+                  placeholder: "Contoh: General Affairs",
+                  id: "division"
+                },
+                model: {
+                  value: _vm.form.division,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "division", $$v)
+                  },
+                  expression: "form.division"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { type: "success" },
+          on: {
+            click: function($event) {
+              _vm.onSubmit("form")
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm.buttonContext))]
+      ),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { plain: true, type: "warning" },
+          on: {
+            click: function($event) {
+              _vm.resetForm("form")
+            }
+          }
+        },
+        [_vm._v("Clear")]
+      ),
+      _vm._v(" "),
+      _c("el-button", { on: { click: _vm.back } }, [_vm._v("Kembali")])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-45f92466", module.exports)
+  }
+}
+
+/***/ }),
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(28)
+/* script */
+var __vue_script__ = __webpack_require__(126)
+/* template */
+var __vue_template__ = __webpack_require__(127)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/DriverForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ef27ca40", Component.options)
+  } else {
+    hotAPI.reload("data-v-ef27ca40", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 126 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_api__ = __webpack_require__(29);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['meta', 'entity_id'],
+  created: function created() {
+    var _this = this;
+
+    if (this.meta == 'Edit') {
+      this.storeURL = '/driver/' + this.entity_id + '?_method=PUT';
+      this.buttonContext = 'Update';
+      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/driver/' + this.entity_id).then(function (response) {
+        _this.form = response.data.model;
+      });
+    }
+  },
+  data: function data() {
+    return {
+      storeURL: '/driver',
+      buttonContext: 'Submit',
+      form: {},
+      rules: {
+        driver_name: [{ required: true, message: 'Mohon masukkan Nama Pegawai terlebih dahulu' }, { min: 3, message: 'Nama Pegawai minimal mempunyai 3 karakter!' }],
+        company: [{ required: true, message: 'Mohon masukkan field Nama Perusahaan terlebih dahulu' }, { min: 3, message: 'Field Nama Perusahaan minimal mempunyai 3 karakter!' }]
+      }
+    };
+  },
+
+  methods: {
+    onSubmit: function onSubmit(formName) {
+      var _this2 = this;
+
+      this.$refs[formName].validate(function (valid) {
+        if (valid) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this2.storeURL, _this2.form).then(function (response) {
+            swal({
+              icon: "success",
+              text: response.data.message
+            }).then(function () {
+              return location.href = response.data.redirect_url;
+            });
+          }).catch(function (error) {
+            return console.log(error);
+          });
+        } else {
+          console.log('Error');
+        }
+      });
+    },
+    resetForm: function resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    back: function back() {
+      location.href = '/driver';
+    }
+  }
+});
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "el-form",
+    {
+      ref: "form",
+      attrs: { rules: _vm.rules, model: _vm.form, "label-position": "top" }
+    },
+    [
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "driver_name" } }, [
+            _vm._v("Nama Sopir")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "driver_name" } },
+            [
+              _c("el-input", {
+                attrs: {
+                  placeholder: "Contoh: Saiko Mizuki",
+                  id: "driver_name"
+                },
+                model: {
+                  value: _vm.form.driver_name,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "driver_name", $$v)
+                  },
+                  expression: "form.driver_name"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "company" } }, [
+            _vm._v("Nama Perusahaan")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "company" } },
+            [
+              _c("el-input", {
+                attrs: { placeholder: "Contoh: PT. IPS", id: "company" },
+                model: {
+                  value: _vm.form.company,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "company", $$v)
+                  },
+                  expression: "form.company"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { type: "success" },
+          on: {
+            click: function($event) {
+              _vm.onSubmit("form")
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm.buttonContext))]
+      ),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { plain: true, type: "warning" },
+          on: {
+            click: function($event) {
+              _vm.resetForm("form")
+            }
+          }
+        },
+        [_vm._v("Clear")]
+      ),
+      _vm._v(" "),
+      _c("el-button", { on: { click: _vm.back } }, [_vm._v("Kembali")])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ef27ca40", module.exports)
+  }
+}
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(28)
+/* script */
+var __vue_script__ = __webpack_require__(129)
+/* template */
+var __vue_template__ = __webpack_require__(130)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/CarForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8b3524d8", Component.options)
+  } else {
+    hotAPI.reload("data-v-8b3524d8", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 129 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_api__ = __webpack_require__(29);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['meta', 'entity_id'],
+  created: function created() {
+    var _this = this;
+
+    if (this.meta == 'Edit') {
+      this.storeURL = '/car/' + this.entity_id + '?_method=PUT';
+      this.buttonContext = 'Update';
+      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/car/' + this.entity_id).then(function (response) {
+        _this.form = response.data.model;
+      });
+    }
+  },
+
+  computed: {},
+  data: function data() {
+    return {
+      cuba: true,
+      storeURL: '/car',
+      buttonContext: 'Submit',
+      form: {},
+      rules: {
+        plat_number: [{ required: true, message: 'Mohon masukkan field Nomor Plat terlebih dahulu' }, { min: 3, message: 'Field Nama Plat minimal mempunyai 3 karakter!' }],
+        car_name: [{ required: true, message: 'Mohon masukkan field Jenis kendaraan terlebih dahulu' }, { min: 3, message: 'Field jenis kendaraan minimal mempunyai 3 karakter!' }]
+      }
+    };
+  },
+
+  methods: {
+    onSubmit: function onSubmit(formName) {
+      var _this2 = this;
+
+      this.$refs[formName].validate(function (valid) {
+        if (valid) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this2.storeURL, _this2.form).then(function (response) {
+            swal({
+              icon: "success",
+              text: response.data.message
+            }).then(function () {
+              return location.href = response.data.redirect_url;
+            });
+          }).catch(function (error) {
+            return console.log(error);
+          });
+        } else {
+          console.log('Error');
+        }
+      });
+    },
+    resetForm: function resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    back: function back() {
+      location.href = '/car';
+    }
+  }
+});
+
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "el-form",
+    {
+      ref: "form",
+      attrs: { rules: _vm.rules, model: _vm.form, "label-position": "top" }
+    },
+    [
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "plat_number" } }, [
+            _vm._v("Nomor Plat")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "plat_number" } },
+            [
+              _c("el-input", {
+                attrs: { placeholder: "Contoh: DD11A", id: "plat_number" },
+                model: {
+                  value: _vm.form.plat_number,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "plat_number", $$v)
+                  },
+                  expression: "form.plat_number"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "car_name" } }, [
+            _vm._v("Jenis Kendaraan")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "car_name" } },
+            [
+              _c("el-input", {
+                attrs: { placeholder: "Contoh: Toyota Innova", id: "car_name" },
+                model: {
+                  value: _vm.form.car_name,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "car_name", $$v)
+                  },
+                  expression: "form.car_name"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "company" } }, [
+            _vm._v("Nama Perusahaan")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            [
+              _c(
+                "el-radio-group",
+                {
+                  model: {
+                    value: _vm.form.car_status,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "car_status", $$v)
+                    },
+                    expression: "form.car_status"
+                  }
+                },
+                [
+                  _c("el-radio", { attrs: { label: 0 } }, [_vm._v("Tersedia")]),
+                  _vm._v(" "),
+                  _c("el-radio", { attrs: { label: 1 } }, [
+                    _vm._v("Sedang dipakai")
+                  ]),
+                  _vm._v(" "),
+                  _c("el-radio", { attrs: { label: 2 } }, [
+                    _vm._v("Diperbaiki")
+                  ]),
+                  _vm._v(" "),
+                  _c("el-radio", { attrs: { label: 3 } }, [_vm._v("Rusak")])
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { type: "success" },
+          on: {
+            click: function($event) {
+              _vm.onSubmit("form")
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm.buttonContext))]
+      ),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { plain: true, type: "warning" },
+          on: {
+            click: function($event) {
+              _vm.resetForm("form")
+            }
+          }
+        },
+        [_vm._v("Clear")]
+      ),
+      _vm._v(" "),
+      _c("el-button", { on: { click: _vm.back } }, [_vm._v("Kembali")])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8b3524d8", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

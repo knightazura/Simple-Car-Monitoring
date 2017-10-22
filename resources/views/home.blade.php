@@ -10,6 +10,7 @@
                 'car_usages' => $car_usages,
                 'username' => Auth::user()->name
             ])
+            <a href="{{ route('car-usage-history-index') }}" class="btn btn-info float-right ml-2">Rekap</a>
         </div>
     </div>
 
