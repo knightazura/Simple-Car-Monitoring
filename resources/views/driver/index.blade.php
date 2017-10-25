@@ -42,14 +42,15 @@
                         <i class="el-icon-more" aria-hidden="true"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="{{ route('driver.edit', $driv->id) }}">Edit</a>
                         @if (is_null($driv->driveOn))
+                          <a class="dropdown-item" href="{{ route('driver.edit', $driv->id) }}">Edit</a>
                           <a class="dropdown-item text-danger delete-button"
                             data-id="/driver/{{ $driv->id }}"
                             data-token="{{ csrf_token() }}">
                               Hapus
                           </a>
                         @else
+                          <a class="dropdown-item disabled" href="#">Edit</a>
                           <a href="#" class="dropdown-item disabled">Hapus</a>
                         @endif
                       </div>
