@@ -31,23 +31,12 @@ class HomeController extends Controller
         $id = null;
 
         // Highlights data
-        $init_highlights_data = CarUsage::select('car_plat_number', 'driver_id')->get();
-        if ($init_highlights_data->isNotEmpty()) {
-            foreach ($init_highlights_data as $data) {
-                $car_used[$i] = $data->car_plat_number;
-                $idle_drivers[$i] = $data->driver_id;
-                $i++;
-            }
-            $total_avail_cars = CarStatus::where('status', 0)
-                ->whereNotIn('car_plat_number', $car_used)
-                ->count();
-            $total_idle_drivers = Driver::whereNotIn('id', $idle_drivers)
-                ->count();
-        }
-        else {
-            $total_avail_cars   = CarStatus::where('status', 0)->count();
-            $total_idle_drivers = Driver::all()->count();
-        }
+        $total_avail_cars = CarStatus::where('status', 0)
+            ->doesntHave('usage')
+            ->count();
+        $total_idle_drivers = Driver::where('status', 0)
+            ->doesntHave('driveOn')
+            ->count();
 
         $highlights_data = array(
             'tac' => $total_avail_cars,
@@ -57,6 +46,6 @@ class HomeController extends Controller
         // Car Usages
         $car_usages = CarUsage::paginate(3);
 
-        return view('home', compact('car_usages', 'highlights_data', 'meta', 'id'));
+        return view('home-2', compact('car_usages', 'highlights_data', 'meta', 'id'));
     }
 }

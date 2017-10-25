@@ -2,7 +2,6 @@
     <div class="card-body">
         <div class="px-5">
             <el-form :model="formRule" :rules="rules" ref="formRule" label-position="right" label-width="200px">
-
                 <!-- NIP (Employee) -->
                 <el-form-item label="NIP / Nama Pegawai" prop="nip">
                     <el-select class="w-75" v-model="formRule.nip" filterable placeholder="Pilih">
@@ -71,7 +70,7 @@
 
                 <!-- Estimated time -->
                 <el-form-item label="Estimasi waktu penggunaan">
-                    <el-input class="w-10" v-model="formRule.estimates_time" placeholder=". . ."></el-input> hari
+                    <el-input-number v-model="formRule.estimates_time" :min="1"></el-input-number> hari
                 </el-form-item>
 
                 <!-- Additional Description -->
@@ -83,7 +82,7 @@
                 <el-form-item>
                     <el-button type="primary" @click="onSubmit('formRule')">Request</el-button>
                     <el-button v-if="cancelOrBack" @click="resetForm('formRule')">Reset</el-button>
-                    <a href="/car-usage" class="btn" v-if="!cancelOrBack">Kembali</a>
+                    <el-button @click="back">Kembali</el-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -132,19 +131,19 @@
                 }
             },
             idleEmployees () {
-                get(`/api/employees/available`)
+                get(`/api/employees-available/${this.meta.toLowerCase()}/${this.entity_id}`)
                     .then((response) => {
                         this.idle_employees = response.data.model
                     })
             },
             idleDriver () {
-                get(`/api/driver/available`)
+                get(`/api/driver-available/${this.meta.toLowerCase()}/${this.entity_id}`)
                     .then((response) => {
                         this.idle_drivers = response.data.model
                     })
             },
             availableCars () {
-                get(`/api/car/available`)
+                get(`/api/car-available/${this.meta.toLowerCase()}/${this.entity_id}`)
                     .then((response) => {
                         this.available_cars = response.data.model
                     })
@@ -173,6 +172,9 @@
             },
             resetForm (formName) {
                 this.$refs[formName].resetFields()
+            },
+            back () {
+                location.href = `/car-usage/${this.entity_id}`
             }
         },
         mounted() {

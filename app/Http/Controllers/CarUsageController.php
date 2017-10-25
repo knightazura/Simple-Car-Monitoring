@@ -33,7 +33,7 @@ class CarUsageController extends Controller
      */
     public function create()
     {
-        $meta = 'IndexCreate';
+        $meta = 'Create';
         $id = null;
         return view('car-usage.form', compact('meta', 'id'));
     }
@@ -62,10 +62,10 @@ class CarUsageController extends Controller
         // Store
         $usage = CarUsage::create($data);
 
-        // Update the Car status
-        $car_status = CarStatus::findOrFail($request->car_plat_number);
-        $car_status->status = 1;
-        $car_status->save();
+        // Update the Car status and the Driver
+        // $car_status = CarStatus::findOrFail($request->car_plat_number);
+        // $car_status->status = 1;
+        // $car_status->save();
 
         if ($usage) {
             return response()
@@ -79,7 +79,7 @@ class CarUsageController extends Controller
     // Recap into history
     public function historyStore(Request $request)
     {
-        $history = new HistoryCarUsage($request->except(['id', 'created_at', 'updated_at']));
+        $history = new HistoryCarUsage($request->except(['id', 'nip', 'driver_id', 'car_plat_number', 'created_at', 'updated_at']));
 
         $history->usage_id = $request->id;
         $history->original_created_date = $request->created_at;
@@ -122,11 +122,6 @@ class CarUsageController extends Controller
         $usage->employee_division = $usage->requestedBy->division;
         $usage->driver            = $usage->drivenBy->driver_name;
         $usage->car               = $usage->car_plat_number . " (".$usage->carStatus->theCar->car_name.")";
-
-        // Unset the old properties
-        unset($usage->nip);
-        unset($usage->driver_id);
-        unset($usage->car_plat_number);
 
         return response()
             ->json([

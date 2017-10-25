@@ -17,6 +17,7 @@ class CreateDriversTable extends Migration
             $table->increments('id');
             $table->string('driver_name');
             $table->string('company')->nullable();
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

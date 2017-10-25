@@ -16,8 +16,20 @@
         </el-form-item>
       </div>
 
+      <!-- Status -->
+      <div class="form-group">
+        <label for="company">Status Sopir</label>
+        <el-form-item>
+          <el-radio-group v-model="form.status">
+            <el-radio :label="0">Stand by</el-radio>
+            <el-radio :label="2">Sakit/Izin</el-radio>
+            <el-radio :label="3">Tidak ada informasi</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </div>
+
     <el-button type="success" @click="onSubmit('form')">{{ buttonContext }}</el-button>
-    <el-button :plain="true" type="warning" @click="resetForm('form')">Clear</el-button>
+    <el-button v-if="clearBtnVisibility" :plain="true" type="warning" @click="resetForm('form')">Clear</el-button>
     <el-button @click="back">Kembali</el-button>
 </el-form>
 </template>
@@ -36,11 +48,18 @@
           })
       }
     },
+    computed: {
+      clearBtnVisibility () {
+        return (this.meta == 'Edit') ? false : true
+      }
+    },
     data () {
       return {
         storeURL: `/driver`,
         buttonContext: 'Submit',
-        form: {},
+        form: {
+          status: 0
+        },
         rules: {
           driver_name: [
             { required: true, message: 'Mohon masukkan Nama Pegawai terlebih dahulu' },
@@ -65,7 +84,12 @@
                 })
                 .then(() => location.href = response.data.redirect_url)
               })
-              .catch((error) => console.log(error))
+              .catch((error) => {
+                swal({
+                  icon: "error",
+                  text: error
+                })
+              })
           } else { console.log('Error') }
         })
       },

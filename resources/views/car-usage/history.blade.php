@@ -5,14 +5,16 @@
 <div class="container-fluid">
   <div class="row justify-content-md-center">
     <div class="col-sm-12 col-md-10">
-      <div class="card border-info my-4">
-        <h4 class="card-header text-white bg-info">
-          Rekap Penggunaan Kendaraan 
-        </h4>
-        <div class="card-body">
-          <p class="card-text">
-            Berikut rekap seluruh data untuk penggunaan kendaraan yang dilakukan.
-          </p>
+      @if ($car_usages->isNotEmpty())
+        <div class="card border-info my-4">
+          <h4 class="card-header text-white bg-info">
+            Rekap Penggunaan Kendaraan 
+          </h4>
+          <div class="card-body">
+            <p class="card-text">
+              Berikut rekap seluruh data untuk penggunaan kendaraan yang dilakukan.
+            </p>
+          </div>
           <table class="table table-hover table-striped table-responsive">
             <thead>
               <th class="text-center">#</th>
@@ -41,14 +43,24 @@
             @endforeach
             </tbody>
           </table>
+          <div class="card-footer">
+            @include('layouts.cf-navigation', [
+              'collection' => $car_usages,
+              'entity_name' => 'data penggunaan kendaraan'
+            ])
+          </div>
         </div>
-        <div class="card-footer">
-          @include('layouts.cf-navigation', [
-            'collection' => $car_usages,
-            'entity_name' => 'data penggunaan kendaraan'
-          ])
+      @else
+        <div class="card text-white bg-warning my-4">
+          <h5 class="card-header">
+            <b>Rekap penggunaan kendaraan</b>
+          </h5>
+          <div class="card-body">
+            Saat ini belum ada catatan untuk rekap penggunaan kendaraan.
+          </div>
         </div>
-      </div>
+      @endif
+      <!-- <a href="{{ route('car-usage.index') }}" class="btn"> -->
       <a href="{{ route('car-usage.index') }}" class="btn">
         <i class="el-icon-arrow-left"></i> Kembali
       </a>

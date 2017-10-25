@@ -33,7 +33,7 @@
       </div>
 
     <el-button type="success" @click="onSubmit('form')">{{ buttonContext }}</el-button>
-    <el-button :plain="true" type="warning" @click="resetForm('form')">Clear</el-button>
+    <el-button v-if="clearBtnVisibility" :plain="true" type="warning" @click="resetForm('form')">Clear</el-button>
     <el-button @click="back">Kembali</el-button>
 </el-form>
 </template>
@@ -50,6 +50,11 @@
           .then((response) => {
             this.form = response.data.model
           })
+      }
+    },
+    computed: {
+      clearBtnVisibility () {
+        return (this.meta == 'Edit') ? false : true
       }
     },
     data () {

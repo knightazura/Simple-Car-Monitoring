@@ -37,11 +37,25 @@ class CarUsage extends Model
     {
         parent::boot();
 
+        // Set the Driver & Car status into available state
         static::deleting(function ($usage) {
-            foreach ($usage->carStatus()->get() as $car) {
-                $car->status = 0;
-                $car->save();
-            }
+            static::setStatus($usage, 0);
         });
+
+        // Set the Driver & Car status into busy
+        static::creating(function ($usage) {
+            static::setStatus($usage, 1);
+        });
+    }
+
+    protected static function setStatus($usage, $status) {
+        foreach ($usage->drivenBy()->get() as $driver) {
+            $driver->status = $status;
+            $driver->save();
+        }
+        foreach ($usage->carStatus()->get() as $car) {
+            $car->status = $status;
+            $car->save();
+        }
     }
 }

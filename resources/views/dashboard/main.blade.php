@@ -1,7 +1,7 @@
 <?php $no = 1; ?>
 @if ($car_usages->isNotEmpty())
-    <div class="card">
-        <div class="card-header">
+    <div class="card border-info">
+        <div class="card-header bg-info text-white">
             <span style="font-size: 16pt"><b>Dashboard</b></span>
             <a href="{{ route('car-usage-history-index') }}" class="btn btn-sm btn-dark float-right">Rekap</a>
         </div>

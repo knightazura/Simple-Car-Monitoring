@@ -8,6 +8,15 @@ use App\Models\CarUsage;
 
 class DriverController extends Controller
 {
+    public function __construct()
+    {
+        $this->driver_status = array(
+            '0' => array('status' => 'Stand By', 'class' => 'success'),
+            '1' => array('status' => 'Bertugas', 'class' => 'info'),
+            '2' => array('status' => 'Sakit/Izin', 'class' => 'warning'),
+            '3' => array('status' => 'Tidak ada informasi', 'class' => 'danger')
+        );
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,15 +24,31 @@ class DriverController extends Controller
      */
     public function index()
     {
-        $drivers = Driver::orderBy('updated_at', 'desc')->paginate(10);
-        return view('driver.index', compact('drivers'));
+        $driver_status  = $this->driver_status;
+        $drivers        = Driver::orderBy('updated_at', 'desc')->paginate(10);
+        return view('driver.index', compact('drivers', 'driver_status'));
     }
 
     public function available()
     {
-        $active_drivers = CarUsage::select('driver_id')->get();
         $idle_drivers   = Driver::select('id', 'driver_name')
-            ->whereNotIn('id', $active_drivers)
+            ->where('status', 0)
+            ->doesntHave('driveOn')
+            ->get();
+
+        return response()
+            ->json([
+                'model' => $idle_drivers
+            ]);
+    }
+
+    public function editAvailable($id)
+    {
+        $cu = CarUsage::findOrFail($id);
+        $idle_drivers   = Driver::select('id', 'driver_name')
+            ->where('status', 0)
+            ->orWhere('id', $cu->driver_id)
+            ->doesntHave('driveOn')
             ->get();
 
         return response()
@@ -54,7 +79,8 @@ class DriverController extends Controller
         // Validate
         $data = $this->validate(request(), [
             'driver_name' => 'required|min:3|string',
-            'company' => 'nullable'
+            'company' => 'nullable',
+            'status' => 'nullable'
         ]);
 
         // Store
@@ -106,7 +132,9 @@ class DriverController extends Controller
         
         // Validate
         $data = $this->validate(request(), [
-            'driver_name' => 'required|min:3|string'
+            'driver_name' => 'required|min:3|string',
+            'company' => 'nullable',
+            'status' => 'nullable'
         ]);
         
         // Update

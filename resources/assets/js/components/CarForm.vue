@@ -58,7 +58,9 @@
         cuba: true,
         storeURL: `/car`,
         buttonContext: 'Submit',
-        form: {},
+        form: {
+          status: 0
+        },
         rules: {
           plat_number: [
             { required: true, message: 'Mohon masukkan field Nomor Plat terlebih dahulu' },

@@ -12,10 +12,10 @@ class CarController extends Controller
     public function __construct()
     {
         $this->car_status = array(
-            '0' => 'Tersedia',
-            '1' => 'Sedang dipakai',
-            '2' => 'Sedang diperbaiki',
-            '3' => 'Rusak'
+            '0' => array('status' => 'Tersedia', 'class' => 'success'),
+            '1' => array('status' => 'Sedang dipakai', 'class' => 'info'),
+            '2' => array('status' => 'Sedang diperbaiki', 'class' => 'warning'),
+            '3' => array('status' => 'Rusak', 'class' => 'danger')
         );
     }
 
@@ -44,6 +44,42 @@ class CarController extends Controller
         $i = 0;
         $cars = CarStatus::with('theCar')
             ->where('status', 0)
+            ->get();
+
+        // Group by Car name
+        foreach ($cars as $car) {
+            $temp_name[] = $car->theCar->car_name;
+        }
+        $temp_name = array_unique($temp_name); // Distinct the name
+
+        // Fetch the plat numbers
+        foreach ($temp_name as $car_name) {
+            $ii = 0;
+            $model[$i]['label'] = $car_name;
+            foreach ($cars as $car) {
+                if ($car->theCar->car_name == $car_name) {
+                    $model[$i]['options'][$ii]['value'] = $car->car_plat_number; 
+                    $model[$i]['options'][$ii]['label'] = $car->car_plat_number; 
+                    $ii++;
+                }
+            }
+            $i++;
+        }
+
+        return response()
+            ->json([
+                'model' => $model
+            ]);
+    }
+
+    public function editAvailable($id)
+    {
+        // Init
+        $i = 0;
+        $cu = \App\Models\CarUsage::findOrFail($id);
+        $cars = CarStatus::with('theCar')
+            ->where('status', 0)
+            ->orWhere('car_plat_number', $cu->car_plat_number)
             ->get();
 
         // Group by Car name

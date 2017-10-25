@@ -1,7 +1,7 @@
 <!-- Medium & Large viewport -->
 <div class="d-none d-sm-none d-md-block">
     <div class="row justify-content-md-center mt-4">
-        <div class="col-md-8">
+        <div class="col-sm-12 col-md-8 col-xl-7">
             <div class="card-deck">
                 <!-- 1 -->
                 <div class="card text-white bg-success">

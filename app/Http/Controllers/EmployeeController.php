@@ -27,6 +27,19 @@ class EmployeeController extends Controller
             ]);
     }
 
+    public function editAvailable($id)
+    {
+        $cu = \App\Models\CarUsage::findOrFail($id);
+        $employees = Employee::doesntHave('request')
+            ->orWhere('nip', $cu->nip)
+            ->get();
+
+        return response()
+            ->json([
+                'model' => $employees
+            ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
