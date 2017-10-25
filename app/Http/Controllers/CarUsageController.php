@@ -159,16 +159,42 @@ class CarUsageController extends Controller
     {
         // Init
         $usage = CarUsage::findOrFail($id);
-        $usage->fill($request->all());
 
-        // Update
+        if ($usage->driver_id != $request->driver_id) {
+            $this->setStatus("\App\Models\Driver", $usage->driver_id, 0);
+        }
+
+        if ($usage->car_plat_number != $request->car_plat_number) {
+            $this->setStatus("\App\Models\CarStatus", $usage->car_plat_number, 0);
+        }
+
+
+        $usage->fill($request->except([
+            "employee_nip",
+            "employee_name",
+            "employee_position",
+            "employee_division",
+            "driver",
+            "car",
+            "created_at",
+            "updated_at",
+            "_method"
+        ]));
+
+        // Update        
         if ($usage->save()) {
             return response()
                 ->json([
                     'message' => 'Data permohonan / pemakaian kendaraan berhasil diupdate!',
                     'redirect_url' => '/car-usage'
                 ]);
-            }
+        }
+    }
+
+    private function setStatus($model_name, $primary_key, $status) {
+        $entity = $model_name::findOrFail($primary_key);
+        $entity->status = $status;
+        $entity->save();
     }
 
     /**

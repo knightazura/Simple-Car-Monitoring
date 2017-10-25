@@ -63,21 +63,6 @@
             @include('layouts.cf-navigation', ['collection' => $drivers, 'entity_name' => 'driver (sopir)'])
           </div>
         </div>
-
-        <div class="row my-3">
-          <div class="col-sm-12 col-md-6">
-            <a href="{{ route('home') }}">
-              <i class="el-icon-arrow-left"></i> Kembali
-            </a>
-          </div>
-          <div class="col-sm-12 col-md-6 float-right">
-            <div class="alert alert-warning" role="alert">
-              <small>
-                <b>Catatan: </b> Sopir yang sedang melakukan tugas, untuk sementara tidak bisa dihapus.
-              </small>
-            </div>
-          </div>
-        </div>
       @else
         <div class="card text-white bg-warning">
           <div class="card-header">
@@ -89,6 +74,22 @@
           </div>
         </div>
       @endif
+
+      <div class="row my-3">
+        <div class="col-sm-12 col-md-6">
+          <a href="{{ route('home') }}">
+            <i class="el-icon-arrow-left"></i> Kembali
+          </a>
+        </div>
+        <div class="col-sm-12 col-md-6 float-right">
+          <div class="alert alert-warning" role="alert">
+            <small>
+              <b>Catatan: </b> Sopir yang sedang melakukan tugas, untuk sementara tidak bisa dihapus.
+            </small>
+          </div>
+        </div>
+      </div>
+        
     </div>
   </div>
 </div>

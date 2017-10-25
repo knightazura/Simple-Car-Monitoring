@@ -48,7 +48,7 @@ class DriverController extends Controller
         $idle_drivers   = Driver::select('id', 'driver_name')
             ->where('status', 0)
             ->orWhere('id', $cu->driver_id)
-            ->doesntHave('driveOn')
+            // ->doesntHave('driveOn')
             ->get();
 
         return response()

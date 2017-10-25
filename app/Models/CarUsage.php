@@ -46,6 +46,10 @@ class CarUsage extends Model
         static::creating(function ($usage) {
             static::setStatus($usage, 1);
         });
+
+        static::updating(function ($usage) {
+            static::setStatus($usage, 1);
+        });
     }
 
     protected static function setStatus($usage, $status) {

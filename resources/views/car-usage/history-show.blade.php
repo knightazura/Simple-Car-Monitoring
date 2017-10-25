@@ -16,7 +16,7 @@
           </p>
 
           <!-- Jabatan & Divisi Pegawai -->
-          <h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->employee_position }} / {{ $usage->division }}</h6>
+          <h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->employee_position }} / {{ $usage->employee_division }}</h6>
           <p class="card-text text-secondary">
             <small>Jabatan / Divisi</small>
           </p>
