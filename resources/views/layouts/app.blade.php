@@ -16,7 +16,11 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-lg justify-content-between bg-light" style="margin-bottom: 2em">
-            <a class="navbar-brand" href="{{ route('home') }}">
+            @auth
+                <a class="navbar-brand" href="{{ route('home') }}">
+            @else
+                <a class="navbar-brand" href="{{ url('/') }}">
+            @endauth
                 {{ config('app.name', 'Laravel') }}
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
