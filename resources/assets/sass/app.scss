@@ -5,6 +5,13 @@
 // Variables
 // @import "variables";
 
+// Font Awesome
+$fa-font-path: "../../../node_modules/font-awesome/fonts" !default;
+@import 'node_modules/font-awesome/scss/font-awesome.scss';
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
 // Custom Style
 .default-form {
   padding: 1em 0;
@@ -14,10 +21,13 @@
   border-top: none !important;
 }
 
-// Font Awesome
-$fa-font-path: "../../../node_modules/font-awesome/fonts" !default;
-@import 'node_modules/font-awesome/scss/font-awesome.scss';
+.table-print td {
+  font-family: 'Times New Roman', 'Sans Serif';
+  // border: 0;
+}
 
-// Bootstrap
-@import "~bootstrap/scss/bootstrap";
+.print-head {
+  font-size: 18pt;
+  font-weight: 700;
+}
 

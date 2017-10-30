@@ -6,7 +6,7 @@
                 <!-- 1 -->
                 <div class="card text-white bg-success">
                     <div class="card-body text-center">
-                        <p class="card-text">Jumlah mobil yang tersedia untuk saat ini.</p>
+                        <p class="card-text">JUMLAH MOBIL YANG TERSEDIA</p>
                         <h1 class="display-1">
                             <b>{{ $highlights_data['tac'] }}</b>
                         </h1>
@@ -15,9 +15,9 @@
                 <!-- 2 -->
                 <div class="card text-white bg-primary">
                     <div class="card-body text-center">
-                        <p class="card-text">Jumlah sopir yang standby.</p>
+                        <p class="card-text">JUMLAH MOBIL YANG DIGUNAKAN</p>
                         <h1 class="display-1">
-                            <b>{{ $highlights_data['tid'] }}</b>
+                            <b>{{ $highlights_data['tuc'] }}</b>
                         </h1>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="card-body">
                         <p class="card-text">Jumlah sopir yang standby</p>
                         <h1 class="text-center display-1">
-                            <b>{{ $highlights_data['tid'] }}</b>
+                            <b>{{ $highlights_data['tuc'] }}</b>
                         </h1>
                     </div>
                 </div>

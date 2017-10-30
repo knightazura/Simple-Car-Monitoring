@@ -13,7 +13,7 @@
             <a href="{{ route('employee.create') }}" class="btn btn-sm btn-primary float-right">Daftar</a>
           </div>
           <div class="card-body">
-            <p class="card-text">Berikut daftar pegawai yang terdaftar pada aplikasi Monitoring.</p>
+            <p class="card-text">Daftar pegawai yang terdaftar pada aplikasi Monitoring.</p>
           </div>
           <table class="table table-hover table-responsive">
             <thead class="thead-inverse">

@@ -8,6 +8,7 @@ class CarUsage extends Model
 {
     protected $guarded = [];
     public $timestamps = true;
+    public $incrementing = true;
 
     // Relationships
     public function carStatus()

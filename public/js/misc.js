@@ -1,3 +1,8 @@
+// Tooltip
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+
 // SweetAlert delete
 $(document).on('click', '.delete-button', function (e) {
   e.preventDefault();

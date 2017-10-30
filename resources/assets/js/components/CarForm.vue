@@ -12,7 +12,20 @@
       <div class="form-group">
         <label for="car_name">Jenis Kendaraan</label>
         <el-form-item prop="car_name">
-          <el-input v-model="form.car_name" placeholder="Contoh: Toyota Innova" id="car_name"></el-input>
+          <el-select class="w-100"
+            v-model="form.car_name"
+            :multiple-limit="1"
+            clearable
+            filterable
+            allow-create
+            placeholder="Pilih mobil atau buat baru">
+            <el-option
+              v-for="car in car_options"
+              :key="car.value"
+              :label="car.label"
+              :value="car.value">
+            </el-option>
+          </el-select>
         </el-form-item>
       </div>
 
@@ -39,6 +52,7 @@
   export default {
     props: ['meta', 'entity_id'],
     created () {
+      this.init()
       if (this.meta == 'Edit') {
         this.storeURL = `/car/${this.entity_id}?_method=PUT`
         this.buttonContext = 'Update'
@@ -61,6 +75,7 @@
         form: {
           status: 0
         },
+        car_options: [],
         rules: {
           plat_number: [
             { required: true, message: 'Mohon masukkan field Nomor Plat terlebih dahulu' },
@@ -74,6 +89,18 @@
       }
     },
     methods: {
+      init() {
+        get(`/api/car/existing`)
+          .then((response) => {
+            this.car_options = response.data.model
+          })
+          .catch((erorr) => {
+            swak({
+              icon: "error",
+              text: error
+            })
+          })
+      },
       onSubmit (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

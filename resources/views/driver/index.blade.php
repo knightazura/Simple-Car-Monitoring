@@ -13,13 +13,14 @@
             <a href="{{ route('driver.create') }}" class="btn btn-sm btn-primary float-right">Daftar</a>
           </div>
           <div class="card-body">
-            <p class="card-text">Berikut daftar driver (Sopir) yang terdaftar pada aplikasi Monitoring.</p>
+            <p class="card-text">Daftar driver (Sopir) yang terdaftar pada aplikasi Monitoring.</p>
           </div>
           <table class="table table-hover table-responsive">
             <thead class="thead-inverse">
               <tr>
                 <th class="text-center">#</th>
                 <th>Nama Lengkap</th>
+                <th>Nomor HP</th>
                 <th>Perusahaan</th>
                 <th>Status</th>
                 <th class="w-10">&nbsp;</th>
@@ -30,6 +31,7 @@
                 <tr>
                   <th scope="head" class="text-center align-middle">{{ $no++ }}</td>
                   <td class="align-middle"><b>{{ $driv->driver_name }}</b></td>
+                  <td class="align-middle">{{ $driv->phonenumber }}</td>
                   <td class="align-middle">{{ $driv->company }}</td>
                   <td class="align-middle">
                     <span class="badge badge-pill badge-{{ $driver_status[$driv->status]['class'] }} p-2">

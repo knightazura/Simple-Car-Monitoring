@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="driver_name">Nama Sopir</label>
         <el-form-item prop="driver_name">
-          <el-input v-model="form.driver_name" placeholder="Contoh: Saiko Mizuki" id="driver_name"></el-input>
+          <el-input v-model="form.driver_name" placeholder="Contoh: Abdullah" id="driver_name"></el-input>
         </el-form-item>
       </div>
 
@@ -12,7 +12,28 @@
       <div class="form-group">
         <label for="company">Nama Perusahaan</label>
         <el-form-item prop="company">
-          <el-input v-model="form.company" placeholder="Contoh: PT. IPS" id="company"></el-input>
+          <el-select class="w-100"
+            v-model="form.company"
+            :multiple-limit="1"
+            clearable
+            filterable
+            allow-create
+            placeholder="Pilih perusahaan atau buat baru">
+            <el-option
+              v-for="comp in companies"
+              :key="comp.value"
+              :label="comp.label"
+              :value="comp.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </div>
+
+      <!-- Phone Number -->
+      <div class="form-group">
+        <label for="phonenumber">Nomor HP</label>
+        <el-form-item prop="phonenumber">
+          <el-input v-model="form.phonenumber" placeholder="Contoh: 08123456789" id="phonenumber"></el-input>
         </el-form-item>
       </div>
 
@@ -39,6 +60,8 @@
   export default {
     props: ['meta', 'entity_id'],
     created () {
+      this.init()
+
       if (this.meta == 'Edit') {
         this.storeURL = `/driver/${this.entity_id}?_method=PUT`
         this.buttonContext = 'Update'
@@ -60,6 +83,7 @@
         form: {
           status: 0
         },
+        companies: [],
         rules: {
           driver_name: [
             { required: true, message: 'Mohon masukkan Nama Pegawai terlebih dahulu' },
@@ -73,6 +97,18 @@
       }
     },
     methods: {
+      init () {
+        get(`/api/driver-company/existing`)
+          .then((response) => {
+            this.companies = response.data.model
+          })
+          .catch((erorr) => {
+            swak({
+              icon: "error",
+              text: error
+            })
+          })
+      },
       onSubmit (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

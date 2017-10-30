@@ -22,8 +22,9 @@ class CarUsageController extends Controller
 
     public function historyIndex()
     {
-        $car_usages = HistoryCarUsage::orderBy('created_at', 'desc')->paginate(50);
-        return view('car-usage.history', compact('car_usages'));   
+        $mode = 'all';
+        $car_usages = HistoryCarUsage::orderBy('created_at', 'desc')->get();
+        return view('car-usage.history', compact('car_usages', 'mode'));   
     }
 
     /**
@@ -62,11 +63,6 @@ class CarUsageController extends Controller
         // Store
         $usage = CarUsage::create($data);
 
-        // Update the Car status and the Driver
-        // $car_status = CarStatus::findOrFail($request->car_plat_number);
-        // $car_status->status = 1;
-        // $car_status->save();
-
         if ($usage) {
             return response()
                 ->json([
@@ -87,8 +83,7 @@ class CarUsageController extends Controller
 
         if ($history->save()) {
             // Remove the entity on current usage
-            $current_usage = CarUsage::findOrFail($request->id);
-            $current_usage->delete();
+            $current_usage = CarUsage::destroy($request->id);
 
             return response()
                 ->json([

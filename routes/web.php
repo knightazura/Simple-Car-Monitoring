@@ -1,5 +1,7 @@
 <?php
 
+// use PDF;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -12,7 +14,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 })->name('welcome');
 
 Auth::routes();
@@ -27,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
   Route::resource('car-usage', 'CarUsageController');
   Route::get('car-usage/history/all', 'CarUsageController@historyIndex')->name('car-usage-history-index');
   Route::get('car-usage/history/{usage_id}', 'CarUsageController@historyShow')->name('car-usage-history-show');
+  Route::post('/car-usage/history/filter', 'MiscController@historyFilter')->name('history-filter');
 });
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -35,4 +38,5 @@ Route::get('/exp', 'CarController@index')->name('car_exp');
 Route::get('/exp/ajax/{id}', function ($id) {
   return response()->json(['data' => $id]);
 });
-
+Route::get('/exp/print/{id}', 'MiscController@streamFirstDoc')->name('stream-first-doc');
+Route::get('/exp/print-2/{id}', 'MiscController@streamSecondDoc')->name('stream-second-doc');

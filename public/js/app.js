@@ -14751,9 +14751,9 @@ try {
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
  * a simple convenience so we don't have to attach every token manually.
- */
 
-// let token = document.head.querySelector('meta[name="csrf-token"]');
+let token = document.head.querySelector('meta[name="csrf-token"]');
+ */
 
 /*
   if (token) {
@@ -48680,6 +48680,7 @@ var Popover = function ($) {
 
 
 
+// import RecapTable from './components/RecapTable.vue'
 
 __WEBPACK_IMPORTED_MODULE_4_element_ui_lib_locale___default.a.use(__WEBPACK_IMPORTED_MODULE_3_element_ui_lib_locale_lang_en___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_element_ui___default.a);
@@ -48688,6 +48689,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('finished-form', __WEBPACK
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('employee-form', __WEBPACK_IMPORTED_MODULE_7__components_EmployeeForm_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('driver-form', __WEBPACK_IMPORTED_MODULE_8__components_DriverForm_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('car-form', __WEBPACK_IMPORTED_MODULE_9__components_CarForm_vue___default.a);
+// Vue.component('recap-table', RecapTable)
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#app'
@@ -87470,6 +87472,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -87477,6 +87505,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: ['meta', 'entity_id'],
   created: function created() {
     var _this = this;
+
+    this.init();
 
     if (this.meta == 'Edit') {
       this.storeURL = '/employee/' + this.entity_id + '?_method=PUT';
@@ -87497,22 +87527,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       storeURL: '/employee',
       buttonContext: 'Submit',
       form: {},
+      pos_options: [],
+      div_options: [],
       rules: {
         nip: [{ required: true, message: 'Mohon masukkan NIK terlebih dahulu' }, { min: 6, message: 'NIP minimal mempunyai 6 karakter!' }],
         employee_name: [{ required: true, message: 'Mohon masukkan Nama Pegawai terlebih dahulu' }, { min: 3, message: 'Nama Pegawai minimal mempunyai 3 karakter!' }],
-        employee_position: [{ required: true, message: 'Mohon masukkan Posisi pegawai terlebih dahulu' }, { min: 3, message: 'Posisi Pegawai minimal mempunyai 3 karakter!' }],
-        division: [{ required: true, message: 'Mohon masukkan field Divisi terlebih dahulu' }, { min: 3, message: 'Field Divisi minimal mempunyai 3 karakter!' }]
+        employee_position: [{ required: true, message: 'Mohon masukkan Posisi pegawai terlebih dahulu' }],
+        division: [{ required: true, message: 'Mohon masukkan field Divisi terlebih dahulu' }]
       }
     };
   },
 
   methods: {
-    onSubmit: function onSubmit(formName) {
+    init: function init() {
       var _this2 = this;
+
+      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/employee-positions&divisions').then(function (response) {
+        _this2.pos_options = response.data.model.positions;
+        _this2.div_options = response.data.model.divisions;
+      }).catch(function (error) {
+        swal({
+          icon: "error",
+          text: error
+        });
+      });
+    },
+    onSubmit: function onSubmit(formName) {
+      var _this3 = this;
 
       this.$refs[formName].validate(function (valid) {
         if (valid) {
-          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this2.storeURL, _this2.form).then(function (response) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this3.storeURL, _this3.form).then(function (response) {
             swal({
               icon: "success",
               text: response.data.message
@@ -87593,10 +87638,7 @@ var render = function() {
             { attrs: { prop: "employee_name" } },
             [
               _c("el-input", {
-                attrs: {
-                  placeholder: "Contoh: Saiko Mizuki",
-                  id: "employee_name"
-                },
+                attrs: { placeholder: "Contoh: Abdullah", id: "employee_name" },
                 model: {
                   value: _vm.form.employee_name,
                   callback: function($$v) {
@@ -87624,19 +87666,32 @@ var render = function() {
             "el-form-item",
             { attrs: { prop: "employee_position" } },
             [
-              _c("el-input", {
-                attrs: {
-                  placeholder: "Contoh: Ketua Divisi",
-                  id: "employee_position"
-                },
-                model: {
-                  value: _vm.form.employee_position,
-                  callback: function($$v) {
-                    _vm.$set(_vm.form, "employee_position", $$v)
+              _c(
+                "el-select",
+                {
+                  staticClass: "w-100",
+                  attrs: {
+                    "multiple-limit": 1,
+                    clearable: "",
+                    filterable: "",
+                    "allow-create": "",
+                    placeholder: "Pilih posisi atau buat baru"
                   },
-                  expression: "form.employee_position"
-                }
-              })
+                  model: {
+                    value: _vm.form.employee_position,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "employee_position", $$v)
+                    },
+                    expression: "form.employee_position"
+                  }
+                },
+                _vm._l(_vm.pos_options, function(pos) {
+                  return _c("el-option", {
+                    key: pos.value,
+                    attrs: { label: pos.label, value: pos.value }
+                  })
+                })
+              )
             ],
             1
           )
@@ -87654,19 +87709,32 @@ var render = function() {
             "el-form-item",
             { attrs: { prop: "division" } },
             [
-              _c("el-input", {
-                attrs: {
-                  placeholder: "Contoh: General Affairs",
-                  id: "division"
-                },
-                model: {
-                  value: _vm.form.division,
-                  callback: function($$v) {
-                    _vm.$set(_vm.form, "division", $$v)
+              _c(
+                "el-select",
+                {
+                  staticClass: "w-100",
+                  attrs: {
+                    "multiple-limit": 1,
+                    clearable: "",
+                    filterable: "",
+                    "allow-create": "",
+                    placeholder: "Pilih divisi atau buat baru"
                   },
-                  expression: "form.division"
-                }
-              })
+                  model: {
+                    value: _vm.form.division,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "division", $$v)
+                    },
+                    expression: "form.division"
+                  }
+                },
+                _vm._l(_vm.div_options, function(div) {
+                  return _c("el-option", {
+                    key: div.value,
+                    attrs: { label: div.label, value: div.value }
+                  })
+                })
+              )
             ],
             1
           )
@@ -87807,6 +87875,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -87814,6 +87903,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   props: ['meta', 'entity_id'],
   created: function created() {
     var _this = this;
+
+    this.init();
 
     if (this.meta == 'Edit') {
       this.storeURL = '/driver/' + this.entity_id + '?_method=PUT';
@@ -87836,6 +87927,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       form: {
         status: 0
       },
+      companies: [],
       rules: {
         driver_name: [{ required: true, message: 'Mohon masukkan Nama Pegawai terlebih dahulu' }, { min: 3, message: 'Nama Pegawai minimal mempunyai 3 karakter!' }],
         company: [{ required: true, message: 'Mohon masukkan field Nama Perusahaan terlebih dahulu' }, { min: 3, message: 'Field Nama Perusahaan minimal mempunyai 3 karakter!' }]
@@ -87844,12 +87936,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
-    onSubmit: function onSubmit(formName) {
+    init: function init() {
       var _this2 = this;
+
+      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/driver-company/existing').then(function (response) {
+        _this2.companies = response.data.model;
+      }).catch(function (erorr) {
+        swak({
+          icon: "error",
+          text: error
+        });
+      });
+    },
+    onSubmit: function onSubmit(formName) {
+      var _this3 = this;
 
       this.$refs[formName].validate(function (valid) {
         if (valid) {
-          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this2.storeURL, _this2.form).then(function (response) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this3.storeURL, _this3.form).then(function (response) {
             swal({
               icon: "success",
               text: response.data.message
@@ -87904,10 +88008,7 @@ var render = function() {
             { attrs: { prop: "driver_name" } },
             [
               _c("el-input", {
-                attrs: {
-                  placeholder: "Contoh: Saiko Mizuki",
-                  id: "driver_name"
-                },
+                attrs: { placeholder: "Contoh: Abdullah", id: "driver_name" },
                 model: {
                   value: _vm.form.driver_name,
                   callback: function($$v) {
@@ -87935,14 +88036,60 @@ var render = function() {
             "el-form-item",
             { attrs: { prop: "company" } },
             [
-              _c("el-input", {
-                attrs: { placeholder: "Contoh: PT. IPS", id: "company" },
-                model: {
-                  value: _vm.form.company,
-                  callback: function($$v) {
-                    _vm.$set(_vm.form, "company", $$v)
+              _c(
+                "el-select",
+                {
+                  staticClass: "w-100",
+                  attrs: {
+                    "multiple-limit": 1,
+                    clearable: "",
+                    filterable: "",
+                    "allow-create": "",
+                    placeholder: "Pilih perusahaan atau buat baru"
                   },
-                  expression: "form.company"
+                  model: {
+                    value: _vm.form.company,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "company", $$v)
+                    },
+                    expression: "form.company"
+                  }
+                },
+                _vm._l(_vm.companies, function(comp) {
+                  return _c("el-option", {
+                    key: comp.value,
+                    attrs: { label: comp.label, value: comp.value }
+                  })
+                })
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "phonenumber" } }, [_vm._v("Nomor HP")]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "phonenumber" } },
+            [
+              _c("el-input", {
+                attrs: {
+                  placeholder: "Contoh: 08123456789",
+                  id: "phonenumber"
+                },
+                model: {
+                  value: _vm.form.phonenumber,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "phonenumber", $$v)
+                  },
+                  expression: "form.phonenumber"
                 }
               })
             ],
@@ -88125,6 +88272,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -88133,6 +88293,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
+    this.init();
     if (this.meta == 'Edit') {
       this.storeURL = '/car/' + this.entity_id + '?_method=PUT';
       this.buttonContext = 'Update';
@@ -88155,6 +88316,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       form: {
         status: 0
       },
+      car_options: [],
       rules: {
         plat_number: [{ required: true, message: 'Mohon masukkan field Nomor Plat terlebih dahulu' }, { min: 3, message: 'Field Nama Plat minimal mempunyai 3 karakter!' }],
         car_name: [{ required: true, message: 'Mohon masukkan field Jenis kendaraan terlebih dahulu' }, { min: 3, message: 'Field jenis kendaraan minimal mempunyai 3 karakter!' }]
@@ -88163,12 +88325,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   },
 
   methods: {
-    onSubmit: function onSubmit(formName) {
+    init: function init() {
       var _this2 = this;
+
+      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/car/existing').then(function (response) {
+        _this2.car_options = response.data.model;
+      }).catch(function (erorr) {
+        swak({
+          icon: "error",
+          text: error
+        });
+      });
+    },
+    onSubmit: function onSubmit(formName) {
+      var _this3 = this;
 
       this.$refs[formName].validate(function (valid) {
         if (valid) {
-          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this2.storeURL, _this2.form).then(function (response) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this3.storeURL, _this3.form).then(function (response) {
             swal({
               icon: "success",
               text: response.data.message
@@ -88248,16 +88422,32 @@ var render = function() {
             "el-form-item",
             { attrs: { prop: "car_name" } },
             [
-              _c("el-input", {
-                attrs: { placeholder: "Contoh: Toyota Innova", id: "car_name" },
-                model: {
-                  value: _vm.form.car_name,
-                  callback: function($$v) {
-                    _vm.$set(_vm.form, "car_name", $$v)
+              _c(
+                "el-select",
+                {
+                  staticClass: "w-100",
+                  attrs: {
+                    "multiple-limit": 1,
+                    clearable: "",
+                    filterable: "",
+                    "allow-create": "",
+                    placeholder: "Pilih mobil atau buat baru"
                   },
-                  expression: "form.car_name"
-                }
-              })
+                  model: {
+                    value: _vm.form.car_name,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "car_name", $$v)
+                    },
+                    expression: "form.car_name"
+                  }
+                },
+                _vm._l(_vm.car_options, function(car) {
+                  return _c("el-option", {
+                    key: car.value,
+                    attrs: { label: car.label, value: car.value }
+                  })
+                })
+              )
             ],
             1
           )

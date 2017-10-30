@@ -15,7 +15,7 @@
               Berikut seluruh data untuk penggunaan kendaraan yang masih aktif saat ini.
             </p>
           </div>
-          <table class="table table-hover table-striped table-responsive">
+          <table class="table table-hover table-striped table-sm table-responsive">
             <thead>
               <th class="text-center">#</th>
               <th>Pegawai</th>
@@ -24,19 +24,27 @@
               <th>Tempat Tujuan</th>
               <th>Tanggal mulai penggunaan</th>
               <th class="text-center">Perkiraan waktu</th>
+              <th>&nbsp;</th>
             </thead>
             <tbody>
             @foreach ($car_usages as $usage)
               <tr>
-                <td class="text-center">
-                  <a href="{{ route('car-usage.show', $usage->id) }}">{{ $no++ }}</a>
+                <td class="text-center align-middle">
+                  {{ $no++ }}
                 </td>
-                <td>{{ $usage->requestedBy->employee_name }}</td>
-                <td>{{ $usage->drivenBy->driver_name }}</td>
-                <td>{{ $usage->car_plat_number }} ({{ $usage->carStatus->theCar->car_name }})</td>
-                <td>{{ $usage->destination }}</td>
-                <td>{{ $usage->desire_time }}</td>
-                <td class="text-center">{{ $usage->estimates_time }} hari</td>
+                <td class="align-middle">{{ $usage->requestedBy->employee_name }}</td>
+                <td class="align-middle">{{ $usage->drivenBy->driver_name }}</td>
+                <td class="align-middle">{{ $usage->car_plat_number }} ({{ $usage->carStatus->theCar->car_name }})</td>
+                <td class="align-middle">{{ $usage->destination }}</td>
+                <td class="align-middle">{{ $usage->desire_time }}</td>
+                <td class="text-center align-middle">{{ $usage->estimates_time }} hari</td>
+                <td class="align-middle text-right">
+                  <a href="{{ route('car-usage.show', $usage->id) }}"
+                    class="btn btn-sm btn-primary"
+                    data-toggle="tooltip" data-placement="top" title="Lihat detail">
+                      <i class="fa fa-bookmark" aria-hidden="true"></i>
+                  </a>
+                </td>
               </tr>
             @endforeach
             </tbody>
@@ -66,7 +74,6 @@
           </a>
         </div>
         <div class="col-sm-12 col-md-6">
-          <a href="{{ route('car-usage-history-index') }}" class="btn btn-info float-right ml-2">Rekap</a>
           <a href="{{ route('car-usage.create') }}" class="btn btn-success float-right">Request Baru</a>
         </div>
       </div>

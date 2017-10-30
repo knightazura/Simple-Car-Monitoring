@@ -120,6 +120,12 @@ class CarController extends Controller
         return view('car.form', compact('data'));
     }
 
+    public function apiCreate()
+    {
+        $cars = $this->createDistinctApiData('\App\Models\Car', 'car_name');
+        return response()->json(['model' => $cars]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

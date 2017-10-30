@@ -14,7 +14,7 @@
             <a href="{{ route('car.create') }}" class="btn btn-sm btn-primary float-right">Buat</a>
           </div>
           <div class="card-body">
-            <p class="card-text">Berikut daftar mobil dan status ketersediaannya.</p>
+            <p class="card-text">Daftar mobil dan status ketersediaannya.</p>
           </div>
           <table class="table table-hover table-responsive">
             <thead class="thead-inverse">

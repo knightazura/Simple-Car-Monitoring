@@ -34,13 +34,13 @@ class HomeController extends Controller
         $total_avail_cars = CarStatus::where('status', 0)
             ->doesntHave('usage')
             ->count();
-        $total_idle_drivers = Driver::where('status', 0)
-            ->doesntHave('driveOn')
+        $total_used_cars = CarStatus::where('status', 1)
+            ->has('usage')
             ->count();
 
         $highlights_data = array(
             'tac' => $total_avail_cars,
-            'tid' => $total_idle_drivers
+            'tuc' => $total_used_cars
         );
 
         // Car Usages

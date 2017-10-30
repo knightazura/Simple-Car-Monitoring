@@ -79,7 +79,8 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Aplikasi Web Monitoring
+                    Sistem Informasi Penggunaan Kendaraan Dinas Operasional<br>
+                    (SIP-RANDIS)
                 </div>
 
                 <div class="links">

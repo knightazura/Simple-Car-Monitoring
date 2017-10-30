@@ -10,6 +10,7 @@ import FinishedForm from './components/FinishedForm.vue'
 import EmployeeForm from './components/EmployeeForm.vue'
 import DriverForm from './components/DriverForm.vue'
 import CarForm from './components/CarForm.vue'
+// import RecapTable from './components/RecapTable.vue'
 
 locale.use(lang)
 Vue.use(ElementUI)
@@ -18,6 +19,7 @@ Vue.component('finished-form', FinishedForm)
 Vue.component('employee-form', EmployeeForm)
 Vue.component('driver-form', DriverForm)
 Vue.component('car-form', CarForm)
+// Vue.component('recap-table', RecapTable)
 
 const app = new Vue({
   el: '#app'

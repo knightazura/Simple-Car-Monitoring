@@ -51,6 +51,13 @@ class EmployeeController extends Controller
         return view('employee.form', compact('data'));
     }
 
+    public function apiCreate()
+    {
+        $data['positions'] = $this->createDistinctApiData('\App\Models\Employee', 'employee_position');
+        $data['divisions'] = $this->createDistinctApiData('\App\Models\Employee', 'division');
+        return response()->json(['model' => $data]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

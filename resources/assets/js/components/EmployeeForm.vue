@@ -12,7 +12,7 @@
       <div class="form-group">
         <label for="employee_name">Nama Pegawai</label>
         <el-form-item prop="employee_name">
-          <el-input v-model="form.employee_name" placeholder="Contoh: Saiko Mizuki" id="employee_name"></el-input>
+          <el-input v-model="form.employee_name" placeholder="Contoh: Abdullah" id="employee_name"></el-input>
         </el-form-item>
       </div>
 
@@ -20,7 +20,20 @@
       <div class="form-group">
         <label for="employee_position">Posisi</label>
         <el-form-item prop="employee_position">
-          <el-input v-model="form.employee_position" placeholder="Contoh: Ketua Divisi" id="employee_position"></el-input>
+          <el-select class="w-100"
+            v-model="form.employee_position"
+            :multiple-limit="1"
+            clearable
+            filterable
+            allow-create
+            placeholder="Pilih posisi atau buat baru">
+            <el-option
+              v-for="pos in pos_options"
+              :key="pos.value"
+              :label="pos.label"
+              :value="pos.value">
+            </el-option>
+          </el-select>
         </el-form-item>
       </div>
 
@@ -28,7 +41,20 @@
       <div class="form-group">
         <label for="division">Divisi</label>
         <el-form-item prop="division">
-          <el-input v-model="form.division" placeholder="Contoh: General Affairs" id="division"></el-input>
+          <el-select class="w-100"
+            v-model="form.division"
+            :multiple-limit="1"
+            clearable
+            filterable
+            allow-create
+            placeholder="Pilih divisi atau buat baru">
+            <el-option
+              v-for="div in div_options"
+              :key="div.value"
+              :label="div.label"
+              :value="div.value">
+            </el-option>
+          </el-select>
         </el-form-item>
       </div>
 
@@ -43,6 +69,8 @@
   export default {
     props: ['meta', 'entity_id'],
     created () {
+      this.init()
+
       if (this.meta == 'Edit') {
         this.storeURL = `/employee/${this.entity_id}?_method=PUT`
         this.buttonContext = 'Update'
@@ -62,6 +90,8 @@
         storeURL: `/employee`,
         buttonContext: 'Submit',
         form: {},
+        pos_options: [],
+        div_options: [],
         rules: {
           nip: [
             { required: true, message: 'Mohon masukkan NIK terlebih dahulu' },
@@ -72,17 +102,28 @@
             { min: 3, message: 'Nama Pegawai minimal mempunyai 3 karakter!' }
           ],
           employee_position: [
-            { required: true, message: 'Mohon masukkan Posisi pegawai terlebih dahulu' },
-            { min: 3, message: 'Posisi Pegawai minimal mempunyai 3 karakter!' }
+            { required: true, message: 'Mohon masukkan Posisi pegawai terlebih dahulu' }
           ],
           division: [
-            { required: true, message: 'Mohon masukkan field Divisi terlebih dahulu' },
-            { min: 3, message: 'Field Divisi minimal mempunyai 3 karakter!' }
+            { required: true, message: 'Mohon masukkan field Divisi terlebih dahulu' }
           ]
         }
       }
     },
     methods: {
+      init () {
+        get(`/api/employee-positions&divisions`)
+          .then((response) => {
+            this.pos_options = response.data.model.positions
+            this.div_options = response.data.model.divisions
+          })
+          .catch((error) => {
+            swal({
+              icon: "error",
+              text: error
+            })
+          })
+      },
       onSubmit (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {

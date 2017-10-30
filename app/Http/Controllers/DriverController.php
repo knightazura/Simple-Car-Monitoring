@@ -68,6 +68,12 @@ class DriverController extends Controller
         return view('driver.form', compact('data'));
     }
 
+    public function apiCreate()
+    {
+        $companies = $this->createDistinctApiData('\App\Models\Driver', 'company');
+        return response()->json(['model' => $companies]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -80,6 +86,7 @@ class DriverController extends Controller
         $data = $this->validate(request(), [
             'driver_name' => 'required|min:3|string',
             'company' => 'nullable',
+            'phonenumber' => 'nullable',
             'status' => 'nullable'
         ]);
 
@@ -134,6 +141,7 @@ class DriverController extends Controller
         $data = $this->validate(request(), [
             'driver_name' => 'required|min:3|string',
             'company' => 'nullable',
+            'phonenumber' => 'nullable',
             'status' => 'nullable'
         ]);
         
