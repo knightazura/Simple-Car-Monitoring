@@ -28,17 +28,19 @@
                                 </button>
                                 <table class="table">
                                     <tbody>
-                                    @foreach($highlights_data['ac'] as $car)
-                                        <tr>
-                                            <td>{{ $car->car_plat_number }}</td>
-                                            <td>{{ $car->theCar->responsibleBy->withDriver->driver_name }}</td>
-                                            <td>
-                                                <span class="badge badge-pill badge-{{ $highlights_data['ds'][$car->theCar->responsibleBy->withDriver->status]['class'] }}">
-                                                    &nbsp;
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                        @if ($highlights_data['ac']->isNotEmpty())
+                                            @foreach($highlights_data['ac'] as $car)
+                                                <tr>
+                                                    <td>{{ $car->car_plat_number }}</td>
+                                                    <td>{{ $car->theCar->responsibleBy->withDriver->driver_name }}</td>
+                                                    <td>
+                                                        <span class="badge badge-pill badge-{{ $highlights_data['ds'][$car->theCar->responsibleBy->withDriver->status]['class'] }}">
+                                                            &nbsp;
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

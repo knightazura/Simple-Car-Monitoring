@@ -41,7 +41,11 @@ class HomeController extends Controller
         $fuel_husage = HistoryCarUsage::whereBetween('start_use', [$csd, $ced])
             ->sum('fuel_usage');
 
-        $fuel_status = $fuel_month[0]->fuel_ratio - ($fuel_cusage + $fuel_husage);
+        if ($fuel_month->isNotEmpty()) {
+            $fuel_status = $fuel_month[0]->fuel_ratio - ($fuel_cusage + $fuel_husage);
+        } else {
+            $fuel_status = 0;
+        }
 
         $highlights_data = array(
             'ac' => $avail_cars,
