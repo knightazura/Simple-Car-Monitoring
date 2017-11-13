@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username', 'email', 'password',
     ];
 
     /**
@@ -26,4 +26,18 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    // Relationships
+    public function roles()
+    {
+        return $this->belongsToMany('App\Role', 'role_users');
+    }
+
+    /**
+     * Checks if the user belongs to role.
+     */
+    public function inRole(string $roleSlug)
+    {
+        return $this->roles()->where('slug', $roleSlug)->count() == 1;
+    }
 }

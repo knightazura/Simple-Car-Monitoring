@@ -17,6 +17,11 @@ class Car extends Model
       return $this->hasOne('App\Models\CarStatus', 'car_plat_number');
     }
 
+    public function responsibleBy()
+    {
+      return $this->hasOne('App\Models\DriverCar', 'car_plat_number');
+    }
+
     // Observe this model being deleted and delete the child
     protected static function boot()
     {
@@ -26,6 +31,10 @@ class Car extends Model
         // Status
         foreach ($car->hasStatus()->get() as $status) {
           $status->delete();
+        }
+        // DriverCar
+        foreach ($car->responsibleBy()->get() as $drv_car) {
+          $drv_car->delete();
         }
       });
     }

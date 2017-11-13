@@ -31,23 +31,30 @@
         <nav class="navbar navbar-expand-lg justify-content-between bg-light" style="margin-bottom: 2em">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 @auth
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item mr-2">
-                        <a class="nav-link" href="{{ route('employee.index') }}">
-                            <i class="fa fa-group" aria-hidden="true"></i> Data Pegawai
-                        </a>
-                    </li>
-                    <li class="nav-item mx-2">
-                        <a class="nav-link" href="{{ route('car.index') }}">
-                            <i class="fa fa-car" aria-hidden="true"></i> Data Mobil
-                        </a>
-                    </li>
-                    <li class="nav-item mx-2">
-                        <a class="nav-link" href="{{ route('driver.index') }}">
-                            <i class="fa fa-drivers-license" aria-hidden="true"></i> Data Sopir
-                        </a>
-                    </li>
-                </ul>
+                    @if (Auth::user()->inRole('administrator'))
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item mr-2">
+                                <a class="nav-link" href="{{ route('employee.index') }}">
+                                    <i class="fa fa-group" aria-hidden="true"></i> Data Pegawai
+                                </a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" href="{{ route('car.index') }}">
+                                    <i class="fa fa-car" aria-hidden="true"></i> Data Mobil
+                                </a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" href="{{ route('driver.index') }}">
+                                    <i class="fa fa-drivers-license" aria-hidden="true"></i> Data Sopir
+                                </a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" href="{{ route('driver-car.index') }}">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> Pengaturan Sopir & Mobil
+                                </a>
+                            </li>
+                        </ul>
+                    @endif
                 @endauth
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown float-right">
@@ -59,7 +66,8 @@
                             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-user-circle" aria-hidden="true"></i> {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a href="{{ route('manage-users.index') }}" class="dropdown-item">Manajemen User</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">

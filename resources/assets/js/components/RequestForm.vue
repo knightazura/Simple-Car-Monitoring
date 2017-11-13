@@ -14,21 +14,9 @@
                     </el-select>
                 </el-form-item>
 
-                <!-- Driver -->
-                <el-form-item label="Driver" prop="driver_id">
-                    <el-select class="w-75" v-model="formRule.driver_id" filterable placeholder="Pilih">
-                        <el-option
-                            v-for="driver in idle_drivers"
-                            :key="driver.id"
-                            :label="driver.driver_name"
-                            :value="driver.id">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
-                <!-- Car Type (car_plat_number) -->
+                <!-- Car Type (car_plat_number) v-model="formRule.car_plat_number" -->
                 <el-form-item label="Jenis Kendaraan" prop="car_plat_number">
-                    <el-select class="w-50" v-model="formRule.car_plat_number" filterable placeholder="Pilih">
+                    <el-select class="w-50" v-model="formRule.car_plat_number" filterable placeholder="Pilih" @change="carSelect">
                         <el-option-group
                             v-for="group in available_cars"
                             :key="group.label"
@@ -43,6 +31,38 @@
                     </el-select>
                 </el-form-item>
 
+                <!-- Driver -->
+                <el-form-item label="Driver" prop="driver_id">
+                    <el-input type="text" class="w-75" v-model="dnm" readonly placeholder="Pilih kendaraan terlebih dahulu"></el-input>
+                    <el-tooltip placement="top">
+                        <div slot="content">Jika sopir diganti, mohon tuliskan alasannya pada kolom "Keterangan tambahan" dibawah</div>
+                        <i class="el-icon-warning"></i>
+                    </el-tooltip>
+                    <el-input type="hidden" class="w-10" v-model="formRule.driver_id"></el-input>
+                    <el-alert
+                        class="w-100 mt-2"
+                        :title="dsm"
+                        type="warning"
+                        style="line-height: 0"
+                        :closable="false"
+                        v-if="cda"
+                        show-icon>
+                    </el-alert>
+                </el-form-item>
+
+                <!-- Backup Driver -->
+                <el-form-item label="Driver pengganti" prop="backup_driver_id">
+                    <el-select class="w-75" v-model="formRule.backup_driver_id" filterable clearable placeholder="Pilih">
+                        <el-option
+                            v-for="bd in bup_drivers"
+                            :key="bd.id"
+                            :label="bd.driver_name"
+                            :value="bd.id"
+                            :disabled="bd.disabled">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
                 <!-- Total Passengers -->
                 <el-form-item label="Jumlah penumpang">
                     <el-input-number v-model="formRule.total_passengers" :min="1"></el-input-number>
@@ -51,11 +71,31 @@
                 <!-- Destination -->
                 <el-form-item label="Tempat tujuan" prop="destination">
                     <el-input class="w-75" v-model="formRule.destination"></el-input>
+                    <el-tooltip placement="top">
+                        <div slot="content">Jika tempat tujuan lebih dari satu, pisahkan dengan tanda koma<br/>Contoh: Palopo, Mamuju, Palu</div>
+                        <i class="el-icon-warning"></i>
+                    </el-tooltip>
                 </el-form-item>
 
                 <!-- Necessity -->
                 <el-form-item label="Keperluan" prop="necessity">
-                    <el-input class="w-75" type="textarea" v-model="formRule.necessity"></el-input>
+                    <el-select class="w-75" v-model="formRule.necessity" placeholder="Pilih">
+                        <el-option :label="'DINAS DALAM KOTA'" :value="'DINAS DALAM KOTA'"></el-option>
+                        <el-option :label="'DINAS LUAR KOTA'" :value="'DINAS LUAR KOTA'"></el-option>
+                        <el-option :label="'PRIBADI DALAM KOTA'" :value="'PRIBADI DALAM KOTA'"></el-option>
+                        <el-option :label="'PRIBADI LUAR KOTA'" :value="'PRIBADI LUAR KOTA'"></el-option>
+                    </el-select>
+                </el-form-item>
+
+                <!-- Fuel Usage Status -->
+                <el-form-item label="Status BBM" prop="fuel_status">
+                    <el-radio v-model="formRule.fuel_status" label="Kurang">Kurang</el-radio>
+                    <el-radio v-model="formRule.fuel_status" label="Cukup">Cukup</el-radio>
+                </el-form-item>
+
+                <!-- Fuel Usage -->
+                <el-form-item label="BBM" prop="fuel">
+                    <el-input-number v-model="formRule.fuel_usage" :min="0" :step="10"></el-input-number>
                 </el-form-item>
 
                 <!-- Desire time -->
@@ -80,7 +120,7 @@
 
                 <!-- Buttons -->
                 <el-form-item>
-                    <el-button type="primary" @click="onSubmit('formRule')">Request</el-button>
+                    <el-button type="primary" @click="onSubmit('formRule')">{{ buttonDesc }}</el-button>
                     <el-button v-if="cancelOrBack" @click="resetForm('formRule')">Reset</el-button>
                     <el-button @click="back">Kembali</el-button>
                 </el-form-item>
@@ -97,13 +137,20 @@
         data () {
             return {
                 storeURL: `/car-usage`,
-                formRule: {},
+                formRule: {
+                    driver_id: '',
+                    fuel_status: 'Cukup'
+                },
+                dnm: '',
+                cda: false,
+                dsm: '',
                 idle_employees: [],
                 idle_drivers: [],
+                bup_drivers: [],
                 available_cars: [],
                 rules: {
                     nip: [{ required: true, message: 'NIP / Pegawai tidak boleh kosong!' }],
-                    driver_id: [{ required: true, message: 'Driver tidak boleh kosong!' }],
+                    driver_id: [{ required: true, message: 'Driver tidak boleh kosong! Silahkan pilih kendaraan terlebih dahulu' }],
                     car_plat_number: [{ required: true, message: 'Jenis kendaraan tidak boleh kosong!' }],
                     destination: [{ required: true, message: 'Tempat tujuan tidak boleh kosong!' }],
                     necessity: [{ required: true, message: 'Keperluan tidak boleh kosong!' }]
@@ -113,6 +160,9 @@
         computed: {
             cancelOrBack () {
                 return (this.meta == 'Create') ? true : false
+            },
+            buttonDesc () {
+                return (this.meta == 'Create') ? 'Request' : 'Update'
             }
         },
         methods: {
@@ -140,6 +190,7 @@
                 get(`/api/driver-available/${this.meta.toLowerCase()}/${this.entity_id}`)
                     .then((response) => {
                         this.idle_drivers = response.data.model
+                        this.bup_drivers = response.data.model
                     })
             },
             availableCars () {
@@ -169,6 +220,26 @@
                             })
                     } else {return false}
                 })
+            },
+            carSelect () {
+                get(`/api/b/${this.formRule.car_plat_number}`)
+                    .then((response) => {
+                        this.checkDriverAvail(response.data.data.id)
+                        this.formRule.driver_id = response.data.data.id
+                        this.dnm = response.data.data.driver_name
+                        this.bup_drivers.forEach(function (driver) {
+                            driver.disabled = (driver.id == response.data.data.id) ? true : false
+                        })
+                    })
+                    .catch((error) => console.log(error))
+            },
+            checkDriverAvail(did) {
+                get(`/api/check-driver-availability/${did}`)
+                    .then((response) => {
+                        this.cda = response.data.model
+                        this.dsm = response.data.msg
+                    })
+                    .catch((error) => console.log(error))
             },
             resetForm (formName) {
                 this.$refs[formName].resetFields()

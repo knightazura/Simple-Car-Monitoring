@@ -16,6 +16,14 @@
   <small>Nama Sopir</small>
 </p>
 
+<!-- Data Sopir Pengganti (Jika ada) -->
+@if (!is_null($usage->backup_driver_id))
+<h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->backupDrivenBy->driver_name }} ({{ $usage->backupDrivenBy->company }})</h6>
+<p class="card-text text-secondary">
+  <small>Sopir Pengganti</small>
+</p>
+@endif
+
 <!-- Data Kendaraan yang dipakai -->
 <h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->car_plat_number }} ({{ $usage->carStatus->theCar->car_name }})</h6>
 <p class="card-text text-secondary">
@@ -34,6 +42,12 @@
   <small>Keperluan</small>
 </p>
 
+<!-- Keperluan -->
+<h6 class="card-title" style="margin-bottom: 0">{{ $usage->fuel_status }} ({{ $usage->fuel_usage }} L)</h6>
+<p class="card-text text-secondary">
+  <small>Status BBM</small>
+</p>
+
 <!-- Waktu keberangkatan -->
 <h6 class="card-title" style="margin-bottom: 0">{{ $usage->desire_time }}</h6>
 <p class="card-text text-secondary">
@@ -47,7 +61,13 @@
 </p>
 
 <!-- Keterangan tambahan -->
-<h6 class="card-title" style="margin-bottom: 0">{{ $usage->additional_description }}</h6>
+<h6 class="card-title" style="margin-bottom: 0">
+  @if(!empty($usage->additional_description))
+    {{ $usage->additional_description }}
+  @else
+    -
+  @endif
+</h6>
 <p class="card-text text-secondary">
   <small>Keterangan tambahan</small>
 </p>

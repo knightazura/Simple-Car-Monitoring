@@ -13,7 +13,7 @@
               </el-form-item>
             </div>
             <div class="col-md-6">
-              <el-form-item label="Posisi KM">
+              <el-form-item label="Posisi KM awal">
                 <el-input v-model="form.start_km_pos" placeholder="Contoh: 1703"></el-input>
               </el-form-item>
             </div>
@@ -30,7 +30,7 @@
               </el-form-item>
             </div>
             <div class="col-md-6">
-              <el-form-item label="Posisi KM">
+              <el-form-item label="Posisi KM akhir">
                 <el-input v-model="form.end_km_pos" placeholder="Contoh: 1714"></el-input>
               </el-form-item>
             </div>
@@ -44,6 +44,11 @@
               </el-form-item>
             </div>
           </div>
+
+          <!-- Fuel Usage -->
+          <el-form-item label="BBM" prop="fuel">
+              <el-input-number v-model="form.fuel_usage" :min="0" :step="10"></el-input-number>
+          </el-form-item>
 
           <div class="row">
             <div class="col">

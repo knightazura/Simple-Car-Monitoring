@@ -24,9 +24,35 @@
                             @endif
                         </div>
 
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
+                            <label for="username">Username</label>
+                            <input id="username" type="text" class="form-control" name="username" placeholder="Tidak boleh ada karakter spasi." value="{{ old('username') }}" required autofocus>
+
+                            @if ($errors->has('username'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('username') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
+                        <!-- Default role (User) and only accessed by Administrator -->
+                        <div class="form-group {{ $errors->has('role_id' ? 'has-error' : '') }}">
+                            <label for="role_id">User Role</label>
+                            <select class="form-control" name="role_id" id="role_id">
+                                <option value="1">Administrator</option>
+                                <option value="2" selected>User</option>
+                            </select>
+
+                             @if ($errors->has('role_id'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('role_id') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email">E-Mail Address</label>
-                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                            <label for="email">Alamat e-Mail</label>
+                            <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}">
 
                             @if ($errors->has('email'))
                                 <span class="help-block">
@@ -55,7 +81,7 @@
                             <button type="submit" class="btn btn-primary">
                                 Submit
                             </button>
-                            <a href="{{ route('welcome') }}" class="btn text-secondary">Cancel</a>
+                            <a href="{{ route('manage-users.index') }}" class="btn text-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>

@@ -19,11 +19,6 @@ class CarController extends Controller
         );
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $car_status = $this->car_status;
@@ -33,11 +28,6 @@ class CarController extends Controller
         return view('car.index', compact('cars', 'car_status'));
     }
 
-    /**
-     *  API feeds, show available cars to used
-     *
-     *  @return \Illuminate\Http\Response
-     */
     public function available()
     {
         // Init
@@ -108,11 +98,6 @@ class CarController extends Controller
             ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $data['meta']       = "Create";
@@ -126,12 +111,6 @@ class CarController extends Controller
         return response()->json(['model' => $cars]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // Validation
@@ -145,9 +124,13 @@ class CarController extends Controller
 
         // Additional action, store to CarStatus table
         $status  = new CarStatus(['status' => $request->car_status]);
+
+        // Additional action, register it to DriverCar pairing table
+        $drv_car = new \App\Models\DriverCar(['car_plat_number' => $request->plat_number]);
+        
         $new_car = Car::findOrFail($request->plat_number);
 
-        if ($car && $new_car->hasStatus()->save($status)) {
+        if ($car && $new_car->hasStatus()->save($status) && $new_car->responsibleBy()->save($drv_car)) {
             return response()
                 ->json([
                     'message' => 'Mobil baru berhasil dibuat!',
@@ -156,12 +139,6 @@ class CarController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function apiShow($id)
     {
         $car = Car::with('hasStatus:car_plat_number,status')->findOrFail($id);
@@ -170,12 +147,6 @@ class CarController extends Controller
         return response()->json(['model' => $car]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $data['meta']       = "Edit";
@@ -183,13 +154,6 @@ class CarController extends Controller
         return view('car.form', compact('data'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $car = Car::findOrFail($id);

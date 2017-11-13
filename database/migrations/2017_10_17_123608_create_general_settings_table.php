@@ -14,10 +14,10 @@ class CreateGeneralSettingsTable extends Migration
     public function up()
     {
         /*
-            Schema::create('general_settings', function (Blueprint $table) {
-                $table->increments('id');
-                $table->timestamps();
-            });
+        Schema::create('general_settings', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+        });
         */
     }
 

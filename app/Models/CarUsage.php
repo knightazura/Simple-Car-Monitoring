@@ -26,6 +26,11 @@ class CarUsage extends Model
       return $this->belongsTo('App\Models\Driver', 'driver_id');
     }
 
+    public function backupDrivenBy()
+    {
+      return $this->belongsTo('App\Models\Driver', 'backup_driver_id');
+    }
+
     // Mutators
     // Change the format into UNIX timestamp, because the format that provided from VueJS is ISO8601
     public function setDesireTimeAttribute ($value)
@@ -34,6 +39,7 @@ class CarUsage extends Model
     }
 
     // If the current's entity was removed, update the Car status to available
+    /*
     protected static function boot()
     {
         parent::boot();
@@ -63,4 +69,5 @@ class CarUsage extends Model
             $car->save();
         }
     }
+    */
 }

@@ -33,7 +33,14 @@
                   {{ $no++ }}
                 </td>
                 <td class="align-middle">{{ $usage->requestedBy->employee_name }}</td>
-                <td class="align-middle">{{ $usage->drivenBy->driver_name }}</td>
+                <td class="align-middle">
+                  {{ $usage->drivenBy->driver_name }}
+                  @if (!is_null($usage->backupDrivenBy))
+                    <a href="#" data-toggle="tooltip" data-placement="top" title="Sopir Pengganti: {{ $usage->backupDrivenBy->driver_name }}">
+                        *
+                    </a>
+                  @endif
+                </td>
                 <td class="align-middle">{{ $usage->car_plat_number }} ({{ $usage->carStatus->theCar->car_name }})</td>
                 <td class="align-middle">{{ $usage->destination }}</td>
                 <td class="align-middle">{{ $usage->desire_time }}</td>

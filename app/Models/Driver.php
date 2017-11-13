@@ -14,4 +14,14 @@ class Driver extends Model
     {
       return $this->hasOne('App\Models\CarUsage', 'driver_id', 'id');
     }
+
+    public function backupDriveOn()
+    {
+      return $this->hasOne('App\Models\CarUsage', 'backup_driver_id', 'id');
+    }
+
+    public function responsibleTo()
+    {
+      return $this->hasOne('App\Models\DriverCar', 'driver_id', 'id');
+    }
 }

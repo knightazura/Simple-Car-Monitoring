@@ -8,23 +8,9 @@ use App\Models\CarUsage;
 
 class DriverController extends Controller
 {
-    public function __construct()
-    {
-        $this->driver_status = array(
-            '0' => array('status' => 'Stand By', 'class' => 'success'),
-            '1' => array('status' => 'Bertugas', 'class' => 'info'),
-            '2' => array('status' => 'Sakit/Izin', 'class' => 'warning'),
-            '3' => array('status' => 'Tidak ada informasi', 'class' => 'danger')
-        );
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $driver_status  = $this->driver_status;
+        $driver_status  = $this->driverStatus();
         $drivers        = Driver::orderBy('updated_at', 'desc')->paginate(10);
         return view('driver.index', compact('drivers', 'driver_status'));
     }
@@ -35,6 +21,10 @@ class DriverController extends Controller
             ->where('status', 0)
             ->doesntHave('driveOn')
             ->get();
+
+        foreach ($idle_drivers as $id) {
+            $id['disabled'] = false;
+        }
 
         return response()
             ->json([
@@ -48,6 +38,7 @@ class DriverController extends Controller
         $idle_drivers   = Driver::select('id', 'driver_name')
             ->where('status', 0)
             ->orWhere('id', $cu->driver_id)
+            ->orWhere('id', $cu->backup_driver_id)
             // ->doesntHave('driveOn')
             ->get();
 
@@ -171,6 +162,10 @@ class DriverController extends Controller
             'message' => "Driver {$driver->driver_name} telah berhasil dihapus!",
             'redirect_url' => "/driver"
         );
+
+        // Relationship
+        $dc = \App\Models\DriverCar::where('driver_id', $id)
+            ->update(['driver_id' => null]);
 
         // Destroy
         if ($driver->delete()) {

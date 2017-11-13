@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Sistem Informasi Pemakaian Kendaraan Dinas Operasional'),
+    'name' => env('APP_NAME', 'SISTEM MONITORING KENDARAAN SEWA OPERASIONAL'),
 
     /*
     |--------------------------------------------------------------------------
@@ -169,6 +169,7 @@ return [
          */
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -230,6 +231,7 @@ return [
         'Alert' => UxWeb\SweetAlert\SweetAlert::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

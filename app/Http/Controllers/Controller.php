@@ -22,4 +22,16 @@ class Controller extends BaseController
         }
         return $result;
     }
+
+    public function driverStatus()
+    {
+        $output = array(
+            '0' => array('status' => 'Stand By', 'class' => 'success'),
+            '1' => array('status' => 'Bertugas', 'class' => 'info'),
+            '2' => array('status' => 'Sakit/Izin', 'class' => 'warning'),
+            '3' => array('status' => 'Tidak ada informasi', 'class' => 'danger')
+        );
+
+        return $output;
+    }
 }

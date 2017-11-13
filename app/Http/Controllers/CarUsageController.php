@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Models\CarUsage;
 use App\Models\CarStatus;
 use App\Models\HistoryCarUsage;
+use App\Support\CarUsageMisc;
 
 class CarUsageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    use CarUsageMisc;
+
     public function index()
     {
         $car_usages = CarUsage::orderBy('updated_at', 'desc')->paginate(20);
@@ -23,15 +22,10 @@ class CarUsageController extends Controller
     public function historyIndex()
     {
         $mode = 'all';
-        $car_usages = HistoryCarUsage::orderBy('created_at', 'desc')->get();
+        $car_usages = HistoryCarUsage::orderBy('start_use', 'desc')->get();
         return view('car-usage.history', compact('car_usages', 'mode'));   
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         $meta = 'Create';
@@ -39,12 +33,6 @@ class CarUsageController extends Controller
         return view('car-usage.form', compact('meta', 'id'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         // Validate
@@ -52,16 +40,26 @@ class CarUsageController extends Controller
             'nip' => 'required',
             'car_plat_number' => 'required',
             'driver_id' => 'required',
+            'backup_driver_id' => 'nullable',
             'destination' => 'required',
             'total_passengers' => 'nullable',
             'necessity' => 'nullable',
             'desire_time' => 'nullable',
             'estimates_time' => 'nullable',
+            'fuel_status' => 'required',
+            'fuel_usage' => 'required|min:0',
             'additional_description' => 'nullable'
         ]);
 
         // Store
         $usage = CarUsage::create($data);
+
+        // Set Driver status (whether it Backup or Original)
+        $driver_id = (!is_null($request->backup_driver_id)) ? $request->backup_driver_id : $request->driver_id;
+        CarUsageMisc::setStatus($driver_id, "Driver", 1);
+
+        // Set Car status (the original one)
+        CarUsageMisc::setStatus($request->car_plat_number, "CarStatus", 1);
 
         if ($usage) {
             return response()
@@ -75,7 +73,7 @@ class CarUsageController extends Controller
     // Recap into history
     public function historyStore(Request $request)
     {
-        $history = new HistoryCarUsage($request->except(['id', 'nip', 'driver_id', 'car_plat_number', 'created_at', 'updated_at']));
+        $history = new HistoryCarUsage($request->except(['id', 'nip', 'driver_id', 'backup_driver_id', 'car_plat_number', 'created_at', 'updated_at']));
 
         $history->usage_id = $request->id;
         $history->original_created_date = $request->created_at;
@@ -85,6 +83,12 @@ class CarUsageController extends Controller
             // Remove the entity on current usage
             $current_usage = CarUsage::destroy($request->id);
 
+            // Set all relationships status to Standby
+            $this->setStatus("\App\Models\Driver", $request->driver_id, 0);
+            $this->setStatus("\App\Models\CarStatus", $request->car_plat_number, 0);
+            if (!is_null($request->backup_driver_id))
+                $this->setStatus("\App\Models\Driver", $request->backup_driver_id, 0);
+
             return response()
                 ->json([
                     'message' => 'Pemakaian kendaraan telah selesai!',
@@ -93,12 +97,6 @@ class CarUsageController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $usage = CarUsage::findOrFail($id);
@@ -118,9 +116,11 @@ class CarUsageController extends Controller
         $usage->driver            = $usage->drivenBy->driver_name;
         $usage->car               = $usage->car_plat_number . " (".$usage->carStatus->theCar->car_name.")";
 
+        $usage->backup_driver     = (!is_null($usage->backup_driver_id)) ? $usage->backupDrivenBy->driver_name : "-";
+
         return response()
             ->json([
-                'model' => $usage->makeHidden(['requestedBy', 'drivenBy', 'carStatus'])->toArray()
+                'model' => $usage->makeHidden(['requestedBy', 'drivenBy', 'backupDrivenBy', 'carStatus'])->toArray()
             ]);
     }
 
@@ -131,38 +131,26 @@ class CarUsageController extends Controller
         return view('car-usage.history-show', compact('usage'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         $meta = 'Edit';
         return view('car-usage.form', compact('meta', 'id'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         // Init
         $usage = CarUsage::findOrFail($id);
 
-        if ($usage->driver_id != $request->driver_id) {
-            $this->setStatus("\App\Models\Driver", $usage->driver_id, 0);
+        // Set the Old to standby & the New to work
+        if ($usage->backup_driver_id != $request->backup_driver_id) {
+            $this->setStatus("\App\Models\Driver", $usage->backup_driver_id, 0);
+            $this->setStatus("\App\Models\Driver", $request->backup_driver_id, 1);
         }
 
         if ($usage->car_plat_number != $request->car_plat_number) {
             $this->setStatus("\App\Models\CarStatus", $usage->car_plat_number, 0);
         }
-
 
         $usage->fill($request->except([
             "employee_nip",
@@ -178,6 +166,7 @@ class CarUsageController extends Controller
 
         // Update        
         if ($usage->save()) {
+            Log::info("Record penggunaan kendaraan #{$id} diubah");
             return response()
                 ->json([
                     'message' => 'Data permohonan / pemakaian kendaraan berhasil diupdate!',
@@ -192,12 +181,6 @@ class CarUsageController extends Controller
         $entity->save();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         // Init
@@ -207,8 +190,16 @@ class CarUsageController extends Controller
             'redirect_url' => "/car-usage"
         );
 
+        $driver_id = (!is_null($usage->backup_driver_id)) ? $usage->backup_driver_id : $usage->driver_id;
+
         // Destroy
         if ($usage->delete()) {
+            // Setback Driver status
+            CarUsageMisc::setStatus($driver_id, "Driver", 0);
+
+            // Setback Car status
+            CarUsageMisc::setStatus($usage->car_plat_number, "CarStatus", 0);
+
             return response()
                 ->json([
                     'data' => $data

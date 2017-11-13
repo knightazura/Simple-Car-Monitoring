@@ -1,6 +1,9 @@
 // Tooltip
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
+  $('#fuelPreserveYear').change(function () {
+    location.href = $(this).val()
+  })
 })
 
 // SweetAlert delete

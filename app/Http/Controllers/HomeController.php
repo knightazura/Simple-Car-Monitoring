@@ -6,46 +6,50 @@ use Illuminate\Http\Request;
 use App\Models\CarStatus;
 use App\Models\Driver;
 use App\Models\CarUsage;
+use App\Models\HistoryCarUsage;
+use App\Models\DriverCar;
+use App\Models\FuelSetting;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $i = 0;
         $meta = 'Create';
         $id = null;
+        $csd = date('Y-m-d H:i:s', mktime(0,0,0,date('m'),1,date('Y')));
+        $ced = date('Y-m-d H:i:s', strtotime('+1 months', strtotime($csd)));
 
         // Highlights data
-        $total_avail_cars = CarStatus::where('status', 0)
+        $avail_cars = CarStatus::where('status', 0)
             ->doesntHave('usage')
-            ->count();
-        $total_used_cars = CarStatus::where('status', 1)
+            ->get();
+
+        $used_cars = CarStatus::where('status', 1)
             ->has('usage')
-            ->count();
+            ->get();
+
+        $fuel_month = FuelSetting::where('month', date('m'))
+            ->where('year', date('Y'))
+            ->get();
+        $fuel_cusage = CarUsage::sum('fuel_usage');
+        $fuel_husage = HistoryCarUsage::whereBetween('start_use', [$csd, $ced])
+            ->sum('fuel_usage');
+
+        $fuel_status = $fuel_month[0]->fuel_ratio - ($fuel_cusage + $fuel_husage);
 
         $highlights_data = array(
-            'tac' => $total_avail_cars,
-            'tuc' => $total_used_cars
+            'ac' => $avail_cars,
+            'uc' => $used_cars,
+            'fs' => $fuel_status,
+            'ds' => $this->driverStatus()
         );
 
-        // Car Usages
-        $car_usages = CarUsage::paginate(3);
-
-        return view('home-2', compact('car_usages', 'highlights_data', 'meta', 'id'));
+        return view('home-2', compact('highlights_data', 'meta', 'id'));
     }
 }
