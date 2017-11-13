@@ -8,7 +8,7 @@
         <div class="card">
           <div class="card-header">
             <span style="font-size: 14pt"><b>Daftar Sopir & Mobil</b></span>
-            <a href="{{ route('driver-car.create') }}" class="btn btn-sm btn-primary float-right">Atur</a>
+            <!-- <a href="{{ route('driver-car.create') }}" class="btn btn-sm btn-primary float-right">Atur</a> -->
           </div>
           <div class="card-body">
             <p class="card-text">Daftar sopir & mobil yang terdaftar pada aplikasi Monitoring.</p>
