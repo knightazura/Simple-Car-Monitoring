@@ -41,6 +41,7 @@ class InstallProject extends Command
         $this->call('cache:clear');
         $this->call('config:clear');
         $this->call('key:generate');
+        $this->call('db:seed');
         
         // $this->call('env');
         // $this->call('inspire');

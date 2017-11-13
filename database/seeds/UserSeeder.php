@@ -19,7 +19,12 @@ class UserSeeder extends Seeder
             'email' => 'admin@email.com',
             'password' => $password ?: $password = bcrypt('secret'),
             'remember_token' => str_random(10)
-        ]);
+        ])->each(function ($user){
+            RoleUser::create([
+                'user_id' => $user->id,
+                'role_id' => 1
+            ]);
+        });
         
         /**
          *  In development environment, use Faker package
