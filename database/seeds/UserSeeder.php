@@ -13,12 +13,24 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-      factory(User::class, 1)->create()
-        ->each(function ($user) {
-          DB::table('role_users')->insert([
-            'user_id' => $user->id,
-            'role_id' => 1
-          ]);
-        });
+        $administrator = User::create([
+            'name' => 'Administrator', 
+            'username' => 'administrator',
+            'email' => 'admin@email.com',
+            'password' => $password ?: $password = bcrypt('secret'),
+            'remember_token' => str_random(10)
+        ]);
+        
+        /**
+         *  In development environment, use Faker package
+         *
+          factory(User::class, 1)->create()
+            ->each(function ($user) {
+              DB::table('role_users')->insert([
+                'user_id' => $user->id,
+                'role_id' => 1
+              ]);
+            });
+         */
     }
 }
