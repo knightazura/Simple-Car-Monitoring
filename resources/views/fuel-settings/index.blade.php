@@ -49,7 +49,7 @@
           </table>
         @else
           <div class="card-body">
-            Nothing
+            Belum ada record jatah BBM.
           </div>
         @endif
       </div>

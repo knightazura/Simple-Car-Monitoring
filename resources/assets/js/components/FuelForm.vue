@@ -62,7 +62,9 @@
         storeURL: `/fuel`,
         current_year: new Date().getFullYear(),
         buttonContext: 'Save',
-        form: {},
+        form: {
+          month: 1
+        },
         rules: {
           month: [{ required: true, message: 'Field bulan tidak boleh kosong' }],
           year: [{ required: true, message: 'Field tahun tidak boleh kosong' }],
@@ -91,11 +93,11 @@
             post(this.storeURL, this.form)
               .then((response) => {
                 swal({
-                  icon: "success",
-                  text: response.message
+                  icon: response.data.icon,
+                  text: response.data.message
                 })
                 .then(() => {
-                  location.href = `/home`
+                  location.href = response.data.redirect_url
                 })
               })
           }

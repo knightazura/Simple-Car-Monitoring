@@ -89601,7 +89601,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       storeURL: '/fuel',
       current_year: new Date().getFullYear(),
       buttonContext: 'Save',
-      form: {},
+      form: {
+        month: 1
+      },
       rules: {
         month: [{ required: true, message: 'Field bulan tidak boleh kosong' }],
         year: [{ required: true, message: 'Field tahun tidak boleh kosong' }],
@@ -89619,10 +89621,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (valid) {
           Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this2.storeURL, _this2.form).then(function (response) {
             swal({
-              icon: "success",
-              text: response.message
+              icon: response.data.icon,
+              text: response.data.message
             }).then(function () {
-              location.href = '/home';
+              location.href = response.data.redirect_url;
             });
           });
         }

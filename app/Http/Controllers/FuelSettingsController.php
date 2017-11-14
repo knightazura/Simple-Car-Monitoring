@@ -46,12 +46,28 @@ class FuelSettingsController extends Controller
         'month' => 'required',
         'year' => 'required'
       ]);
-      $fuel_record = FuelSetting::create($data);
 
-      return response()
-        ->json([
-          'message' => "Jatah Bahan Bakar berhasil diset"
-        ]);
+      // Check existence of records
+      $fuel = FuelSetting::where('month', $request->month)
+        ->where('year', $request->year)
+        ->get();
+      if (empty($fuel)) {
+        $fuel_record = FuelSetting::create($data);
+
+        return response()
+          ->json([
+            'icon' => 'success',
+            'message' => "Jatah Bahan Bakar berhasil diset",
+            'redirect_url' => "/home"
+          ]);
+      } else {
+        return response()
+          ->json([
+            'icon' => 'warning',
+            'message' => "Jatah bahan bakar untuk periode bulan {$request->month} / tahun {$request->year} sudah ada. Silahkan lakukan edit jika ingin mengubahnya",
+            'redirect_url' => "/fuel/index/{$request->year}"
+          ]);
+      }
     }
 
     public function update(Request $request, $id)

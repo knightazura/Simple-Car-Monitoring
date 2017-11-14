@@ -16,7 +16,7 @@ class CreateFuelSettingsTable extends Migration
         Schema::create('fuel_settings', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('fuel_ratio');
-            $table->string('month');
+            $table->smallInteger('month');
             $table->string('year');
             $table->timestamps();
         });
