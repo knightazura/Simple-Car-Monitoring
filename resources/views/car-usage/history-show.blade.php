@@ -28,7 +28,7 @@
           </p>
 
           <!-- Data Sopir Pengganti (Jika ada) -->
-          @if (!is_null($usage->backup_driver_id))
+          @if (!is_null($usage->backup_driver))
             <h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->backup_driver }}</h6>
             <p class="card-text text-secondary">
               <small>Sopir Pengganti</small>
