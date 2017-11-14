@@ -18,7 +18,7 @@
         </tr>
         <tr>
           <td colspan="6" class="w-60 border-0">&nbsp;</td>
-          <td colspan="5" class="border-0 text-center print-head">No. </td>
+          <td colspan="5" class="border-0 text-center print-head">No. {{ $data->id }}</td>
         </tr>
         <tr style="border-top: 1px solid #222">
           <td class="text-left border-dark" colspan="12">

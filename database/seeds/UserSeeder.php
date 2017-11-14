@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use App\User;
+use App\RoleUser;
 
 class UserSeeder extends Seeder
 {
@@ -13,6 +14,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        static $password;
+        
         $administrator = User::create([
             'name' => 'Administrator', 
             'username' => 'administrator',
