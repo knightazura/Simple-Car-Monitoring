@@ -40,9 +40,15 @@
               <tr>
                 <td>{{ date('F', mktime(0,0,0,$fd->month,10)) }}</td>
                 <td>{{ $fd->fuel_ratio }}</td>
-                <td class="w-10">
-                  <a href="{{ route('fuel.edit', $fd->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                </td>
+                @if ($fd->month >= (int)date('m'))
+                  <td class="w-10">
+                    <a href="{{ route('fuel.edit', $fd->id) }}" class="btn btn-sm btn-primary">Edit</a>
+                  </td>
+                @else
+                  <td class="w-10">
+                    &nbsp;
+                  </td>
+                @endif
               </tr>
               @endforeach
             </tbody>

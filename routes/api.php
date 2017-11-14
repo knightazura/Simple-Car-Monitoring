@@ -77,6 +77,18 @@ Route::get('d', function() {
   return response()->json(['model' => $fuel_month]);
 });
 
+Route::get('e/{month}/{year}', function($month, $year) {
+  $fuel = \App\Models\FuelSetting::where('month', $month)
+    ->where('year', $year)
+    ->get();
+
+  return response()
+    ->json([
+      'logic' => $fuel->isEmpty(),
+      'model' => $fuel
+    ]);
+});
+
 Route::get('check-driver-availability/{did}', function($did) {
   $driver = \App\Models\Driver::findOrFail($did);
 

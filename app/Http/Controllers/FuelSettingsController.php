@@ -51,7 +51,8 @@ class FuelSettingsController extends Controller
       $fuel = FuelSetting::where('month', $request->month)
         ->where('year', $request->year)
         ->get();
-      if (empty($fuel)) {
+
+      if ($fuel->isEmpty()) {
         $fuel_record = FuelSetting::create($data);
 
         return response()
