@@ -67,7 +67,9 @@
                                 <i class="fa fa-user-circle" aria-hidden="true"></i> {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                <a href="{{ route('manage-users.index') }}" class="dropdown-item">Manajemen User</a>
+                                @if (Auth::user()->inRole('administrator'))
+                                    <a href="{{ route('manage-users.index') }}" class="dropdown-item">Manajemen User</a>
+                                @endif
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">

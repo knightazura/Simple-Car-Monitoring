@@ -32,11 +32,13 @@
                   <td>{{ $user->roles[0]->name }}</td>
                   <td>
                     <a href="{{ route('manage-users.edit', $user->id) }}" class="btn btn-sm btn-info">Edit</a>
-                    <a href="#" class="btn btn-sm btn-danger delete-button"
-                      data-id="/manage-users/{{ $user->id }}"
-                      data-token="{{ csrf_token() }}">
-                        <i class="el-icon-delete"></i>
-                    </a>
+                    @if ($user->id != Auth::user()->id)
+                      <a href="#" class="btn btn-sm btn-danger delete-button"
+                        data-id="/manage-users/{{ $user->id }}"
+                        data-token="{{ csrf_token() }}">
+                          <i class="el-icon-delete"></i>
+                      </a>
+                    @endif
                   </td>
                 </tr>
               @endforeach

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Alert;
 use App\User;
 use App\RoleUser;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -78,6 +80,16 @@ class RegisterController extends Controller
             'role_id' => $data['role_id']
         ]);
 
-        return $user;
+        return ($user) ? true : false;
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $this->create($request->all());
+
+        Alert::success('User berhasil ditambahkan');
+        
+        return redirect()->route('manage-users.index');
     }
 }

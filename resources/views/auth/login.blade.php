@@ -21,7 +21,7 @@
                 <div class="card" style="box-shadow: 0 7px 14px rgba(70,70,70,.17)">
                     <div class="card-header text-center">
                         <img class="mt-2 mb-3" src="{{ asset('images/pln.png') }}" height="64px" alt="Header Logo">
-                        <h6><b>PLN UNIT INDUK SULBAGSEL</b></h6>
+                        <h6><b>PLN UNIT INDUK PEMBANGUNAN SULAWESI BAGIAN SELATAN</b></h6>
                         <h6><b>SISTEM MONITORING KENDARAAN SEWA OPERASIONAL</b></h6>
                     </div>
 
