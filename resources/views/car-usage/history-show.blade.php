@@ -27,6 +27,14 @@
             <small>Nama Sopir</small>
           </p>
 
+          <!-- Data Sopir Pengganti (Jika ada) -->
+          @if (!is_null($usage->backup_driver_id))
+            <h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->backup_driver }}</h6>
+            <p class="card-text text-secondary">
+              <small>Sopir Pengganti</small>
+            </p>
+          @endif
+
           <!-- Data Kendaraan yang dipakai -->
           <h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->car }}</h6>
           <p class="card-text text-secondary">
@@ -43,6 +51,12 @@
           <h6 class="card-title" style="margin-bottom: 0">{{ $usage->necessity }}</h6>
           <p class="card-text text-secondary">
             <small>Keperluan</small>
+          </p>
+
+          <!-- Status BBM -->
+          <h6 class="card-title" style="margin-bottom: 0">{{ $usage->fuel_status }} ({{ $usage->fuel_usage }} L)</h6>
+          <p class="card-text text-secondary">
+            <small>Status BBM</small>
           </p>
 
           <!-- Waktu keberangkatan -->

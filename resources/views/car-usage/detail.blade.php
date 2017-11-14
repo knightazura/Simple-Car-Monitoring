@@ -42,7 +42,7 @@
   <small>Keperluan</small>
 </p>
 
-<!-- Keperluan -->
+<!-- Status BBM -->
 <h6 class="card-title" style="margin-bottom: 0">{{ $usage->fuel_status }} ({{ $usage->fuel_usage }} L)</h6>
 <p class="card-text text-secondary">
   <small>Status BBM</small>
