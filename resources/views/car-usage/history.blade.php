@@ -61,7 +61,7 @@
                   <div class="dropdown">
                     <button type="button" class="btn btn-sm btn-primary" id="dropdownMenuButton"
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ $no++ }}
+                        <i class="fa fa-bookmark" aria-hidden="true"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                       <a class="dropdown-item" href="{{ route('car-usage-history-show', $usage->usage_id) }}">Lihat</a>

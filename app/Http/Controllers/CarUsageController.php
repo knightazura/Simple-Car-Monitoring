@@ -22,8 +22,8 @@ class CarUsageController extends Controller
     public function historyIndex()
     {
         $mode = 'all';
-        $car_usages = HistoryCarUsage::orderBy('start_use', 'desc')->get();
-        return view('car-usage.history', compact('car_usages', 'mode'));   
+        $car_usages = HistoryCarUsage::orderBy('end_use', 'desc')->get();
+        return view('car-usage.history', compact('car_usages', 'mode'));
     }
 
     public function create()
@@ -50,6 +50,16 @@ class CarUsageController extends Controller
             'fuel_usage' => 'required|min:0',
             'additional_description' => 'nullable'
         ]);
+        $driver = \App\Models\Driver::findOrFail($request->driver_id);
+
+        // When original driver isn't standby and no backup driver selected
+        if ($driver->status > 0 && (is_null($request->backup_driver_id) || empty($request->backup_driver_id))) {
+            return response()
+                ->json([
+                    'valid' => false,
+                    'message' => 'Driver pengganti harus dipilih apabila driver utama sedang tugas, sakit, izin atau tidak ada informasi'
+                ]);
+        }
 
         // Store
         $usage = CarUsage::create($data);
@@ -64,6 +74,7 @@ class CarUsageController extends Controller
         if ($usage) {
             return response()
                 ->json([
+                    'valid' => true,
                     'message' => 'Berhasil membuat permohonan',
                     'redirect_url' => "/car-usage/{$usage->id}"
                 ]);
@@ -74,6 +85,7 @@ class CarUsageController extends Controller
     public function historyStore(Request $request)
     {
         $history = new HistoryCarUsage($request->except(['id', 'nip', 'driver_id', 'backup_driver_id', 'car_plat_number', 'created_at', 'updated_at']));
+        $driver = \App\Models\Driver::findOrFail($request->driver_id);
 
         $history->usage_id = $request->id;
         $history->original_created_date = $request->created_at;
@@ -84,10 +96,12 @@ class CarUsageController extends Controller
             $current_usage = CarUsage::destroy($request->id);
 
             // Set all relationships status to Standby
-            $this->setStatus("\App\Models\Driver", $request->driver_id, 0);
-            $this->setStatus("\App\Models\CarStatus", $request->car_plat_number, 0);
+            if ($driver_id == 1)
+                $this->setStatus("\App\Models\Driver", $request->driver_id, 0);
             if (!is_null($request->backup_driver_id))
                 $this->setStatus("\App\Models\Driver", $request->backup_driver_id, 0);
+
+            $this->setStatus("\App\Models\CarStatus", $request->car_plat_number, 0);
 
             return response()
                 ->json([
@@ -145,11 +159,46 @@ class CarUsageController extends Controller
     {
         // Init
         $usage = CarUsage::findOrFail($id);
+        $driver = \App\Models\Driver::findOrFail($usage->driver_id);
 
-        // Set the Old to standby & the New to work
-        if ($usage->backup_driver_id != $request->backup_driver_id) {
-            $this->setStatus("\App\Models\Driver", $usage->backup_driver_id, 0);
-            $this->setStatus("\App\Models\Driver", $request->backup_driver_id, 1);
+        // When original driver isn't standby and no backup driver selected
+        if ($driver->status > 1 && (is_null($request->backup_driver_id) || empty($request->backup_driver_id))) {
+            return response()
+                ->json([
+                    'valid' => false,
+                    'message' => 'Driver pengganti harus dipilih apabila driver utama sedang tugas, sakit, izin atau tidak ada informasi'
+                ]);
+        }
+
+        // Behavior between main driver & backup driver
+        if (!is_null($usage->backup_driver_id)) {
+            // Backup driver is exist from the first time
+            if (is_null($request->backup_driver_id) || empty($request->backup_driver_id)) {
+                /**
+                 *  the backup driver removed
+                 *  then the original driver should be work
+                 */
+                if ($driver->status == 0) $this->setStatus("\App\Models\Driver", $usage->driver_id, 1);
+                $this->setStatus("\App\Models\Driver", $usage->backup_driver_id, 0);
+            }
+            else if ($usage->backup_driver_id != $request->backup_driver_id) {
+                /**
+                 *  the backup driver changed to another backup driver
+                 *  then the the old backup driver should be standby / removed
+                 */
+                $this->setStatus("\App\Models\Driver", $usage->backup_driver_id, 0);
+                $this->setStatus("\App\Models\Driver", $request->backup_driver_id, 1);
+            }
+        }
+        else {
+            // If first time there's no backup driver and want to change it to backup driver
+            if (!is_null($request->backup_driver_id)) {
+                $this->setStatus("\App\Models\Driver", $request->backup_driver_id, 1);
+                // The main driver should be back to standby
+                if($driver->status == 1) {
+                    $this->setStatus("\App\Models\Driver", $request->driver_id, 0);
+                }
+            }
         }
 
         if ($usage->car_plat_number != $request->car_plat_number) {
@@ -178,6 +227,7 @@ class CarUsageController extends Controller
             Log::info("Record penggunaan kendaraan #{$id} diubah");
             return response()
                 ->json([
+                    'valid' => true,
                     'message' => 'Data permohonan / pemakaian kendaraan berhasil diupdate!',
                     'redirect_url' => '/car-usage'
                 ]);
@@ -205,7 +255,7 @@ class CarUsageController extends Controller
         // Destroy
         if ($usage->delete()) {
             // Setback Driver status
-            CarUsageMisc::setStatus($driver_id, "Driver", 0);
+            CarUsageMisc::setStatus($usage->backup_driver_id, "Driver", 0);
 
             // Setback Car status
             CarUsageMisc::setStatus($usage->car_plat_number, "CarStatus", 0);

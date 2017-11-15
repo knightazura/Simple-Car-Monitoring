@@ -84,13 +84,26 @@
           </p>
 
           <!-- Mulai digunakan & Posisi KM -->
-          <h6 class="card-title" style="margin-bottom: 0">{{ date('F d, Y (H:i:s)', strtotime($usage->start_use)) }} & {{ $usage->start_km_pos }} KM</h6>
+          <h6 class="card-title" style="margin-bottom: 0">
+            {{ date('F d, Y (H:i:s)', strtotime($usage->start_use)) }} &
+            @if (!is_null($usage->start_km_pos))
+              {{ $usage->start_km_pos }} KM
+            @else
+              - (posisi KM tidak di-isi)
+            @endif
+            </h6>
           <p class="card-text text-secondary">
             <small>Waktu mulainya penggunaan & Posisi KM</small>
           </p>
 
           <!-- Mulai digunakan & Posisi KM -->
-          <h6 class="card-title" style="margin-bottom: 0">{{ date('F d, Y (H:i:s)', strtotime($usage->end_use)) }} & {{ $usage->end_km_pos }} KM</h6>
+          <h6 class="card-title" style="margin-bottom: 0">
+            {{ date('F d, Y (H:i:s)', strtotime($usage->end_use)) }} & 
+            @if (!is_null($usage->end_km_pos)) {{ $usage->end_km_pos }} KM
+            @else
+              - (posisi KM tidak di-isi)
+            @endif
+          </h6>
           <p class="card-text text-secondary">
             <small>Waktu selesainya penggunaan & Posisi KM</small>
           </p>

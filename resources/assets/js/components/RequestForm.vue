@@ -151,6 +151,7 @@
                 rules: {
                     nip: [{ required: true, message: 'NIP / Pegawai tidak boleh kosong!' }],
                     driver_id: [{ required: true, message: 'Driver tidak boleh kosong! Silahkan pilih kendaraan terlebih dahulu' }],
+                    backup_driver: [{ required: this.cda, message: 'Harus ada driver pengganti!' }],
                     car_plat_number: [{ required: true, message: 'Jenis kendaraan tidak boleh kosong!' }],
                     destination: [{ required: true, message: 'Tempat tujuan tidak boleh kosong!' }],
                     necessity: [{ required: true, message: 'Keperluan tidak boleh kosong!' }]
@@ -204,13 +205,21 @@
                     if (valid) {
                         post(this.storeURL, this.formRule)
                             .then((response) => {
-                                swal({
-                                    icon: "success",
-                                    text: response.data.message
-                                })
-                                .then(function () {
-                                    location.href = response.data.redirect_url
-                                })
+                                if (response.data.valid) {
+                                    swal({
+                                        icon: "success",
+                                        text: response.data.message
+                                    })
+                                    .then(function () {
+                                        location.href = response.data.redirect_url
+                                    })
+                                }
+                                else {
+                                    swal({
+                                        icon: "error",
+                                        text: response.data.message
+                                    })
+                                }
                             })
                             .catch((error) => {
                                 swal({
