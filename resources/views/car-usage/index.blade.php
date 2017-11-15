@@ -65,9 +65,10 @@
       </div>
       @else
         <div class="card text-white bg-warning my-4">
-          <h5 class="card-header">
-            <b>Daftar pemakaian kendaraan</b>
-          </h5>
+          <div class="card-header">
+            <span style="font-size: 14pt"><b>Daftar Penggunaan Kendaraan</b></span>
+            <a href="{{ route('car-usage.create') }}" class="btn btn-sm btn-dark float-right">Request Baru</a>
+          </div>
           <div class="card-body">
             <p class="card-text">Belum ada permohonan penggunaan kendaraan untuk saat ini.</p>
           </div>
@@ -80,11 +81,13 @@
             <i class="el-icon-arrow-left"></i> Kembali
           </a>
         </div>
-        <div class="col-sm-12 col-md-6">
-          <div class="alert alert-warning">
-            <b>*</b> Driver pengganti
+        @if ($car_usages->isNotEmpty())
+          <div class="col-sm-12 col-md-6">
+            <div class="alert alert-warning">
+              <b>*</b> Driver pengganti
+            </div>
           </div>
-        </div>
+        @endif
       </div>
       
     </div>
