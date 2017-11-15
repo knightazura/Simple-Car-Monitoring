@@ -46,9 +46,9 @@
           <td colspan="6" class="w-50 text-center">
             <small>Menyetujui,<br>
             <b>DIREKTUR</b><br>
-            <b>{{ $data->drivenBy->company }}</b>
+            <b>{{ $data->drivenBy->workOn->company_name }}</b>
             <br><br><br>
-            <b>ASRUL TINAI</b></small>
+            <b>{{ $data->drivenBy->workOn->company_director }}</b></small>
           </td>
           <td colspan="6" class="w-50 align-top text-center">
             <small>Makassar, {{ date('d-m-Y') }}<br>
@@ -71,7 +71,7 @@
       <table>
         <tr>
           <td colspan="4" class="w-40">
-            <b><u>{{ $data->drivenBy->company }}</u></b>
+            <b><u>{{ $data->drivenBy->workOn->company_name }}</u></b>
           </td>
           <td colspan="8">&nbsp;</td>
         </tr>
@@ -111,9 +111,9 @@
           <td colspan="6" class="w-50 text-center">
             <small>Menyetujui,<br>
             <b>DIREKTUR</b><br>
-            <b>{{ $data->drivenBy->company }}</b>
+            <b>{{ $data->drivenBy->workOn->company_name }}</b>
             <br><br><br>
-            <b>ASRUL TINAI</b></small>
+            <b>{{ $data->drivenBy->workOn->company_director }}</b></small>
           </td>
           <td colspan="6" class="w-50 align-top text-center">
             <small>Makassar, {{ date('d-m-Y') }}<br>

@@ -24,4 +24,9 @@ class Driver extends Model
     {
       return $this->hasOne('App\Models\DriverCar', 'driver_id', 'id');
     }
+
+    public function workOn()
+    {
+        return $this->belongsTo('App\Models\DriverCompany', 'company_id');
+    }
 }

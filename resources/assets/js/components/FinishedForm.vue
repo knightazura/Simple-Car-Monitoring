@@ -59,7 +59,6 @@
           </div>
 
           <el-button type="primary" @click="onSubmit('form')">Submit</el-button>
-          <el-button type="success" @click="printForm">Print Form SPPD</el-button>
       </el-form>
     </div>
   </div>

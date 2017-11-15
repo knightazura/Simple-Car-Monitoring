@@ -92,7 +92,7 @@ class CarUsageController extends Controller
             return response()
                 ->json([
                     'message' => 'Pemakaian kendaraan telah selesai!',
-                    'redirect_url' => '/car-usage'
+                    'redirect_url' => '/car-usage/history/' . $request->id
                 ]);
         }
     }
@@ -113,10 +113,14 @@ class CarUsageController extends Controller
         $usage->employee_name     = $usage->requestedBy->employee_name;
         $usage->employee_position = $usage->requestedBy->employee_position;
         $usage->employee_division = $usage->requestedBy->division;
-        $usage->driver            = $usage->drivenBy->driver_name;
         $usage->car               = $usage->car_plat_number . " (".$usage->carStatus->theCar->car_name.")";
+        $usage->driver            = $usage->drivenBy->driver_name;
+        $usage->driver_company    = $usage->drivenBy->workOn->company_name;
+        $usage->company_director  = $usage->drivenBy->workOn->company_director;
 
-        $usage->backup_driver     = (!is_null($usage->backup_driver_id)) ? $usage->backupDrivenBy->driver_name : "-";
+        $usage->backup_driver           = (!is_null($usage->backup_driver_id)) ? $usage->backupDrivenBy->driver_name : "-";
+        $usage->backup_driver_company   = (!is_null($usage->backup_driver_id)) ? $usage->backupDrivenBy->workOn->company_name : "-";
+        $usage->backup_company_director = (!is_null($usage->backup_driver_id)) ? $usage->backupDrivenBy->workOn->company_director : "-";
 
         return response()
             ->json([
@@ -158,6 +162,11 @@ class CarUsageController extends Controller
             "employee_position",
             "employee_division",
             "driver",
+            "backup_driver",
+            "driver_company",
+            "backup_driver_company",
+            "company_director",
+            "backup_company_director",
             "car",
             "created_at",
             "updated_at",

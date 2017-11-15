@@ -12,9 +12,18 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background: url('images/login-bg.jpg') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+    </style>
 </head>
 
-<body style="background: url('images/login-bg.jpg')">
+<body>
     <div class="container mt-5 pt-5">
         <div class="row justify-content-md-center">
             <div class="col-md-6">

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class HistoryCarUsage extends Model
 {
+    protected $primaryKey = 'usage_id';
     protected $guarded = [];
     public $timestamps = true;
 

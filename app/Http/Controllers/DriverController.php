@@ -76,7 +76,7 @@ class DriverController extends Controller
         // Validate
         $data = $this->validate(request(), [
             'driver_name' => 'required|min:3|string',
-            'company' => 'nullable',
+            'company_id' => 'required',
             'phonenumber' => 'nullable',
             'status' => 'nullable'
         ]);
@@ -131,7 +131,7 @@ class DriverController extends Controller
         // Validate
         $data = $this->validate(request(), [
             'driver_name' => 'required|min:3|string',
-            'company' => 'nullable',
+            'company_id' => 'required',
             'phonenumber' => 'nullable',
             'status' => 'nullable'
         ]);

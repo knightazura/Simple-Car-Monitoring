@@ -44,17 +44,165 @@ class MiscController extends Controller
 
   public function streamThirdDoc($id)
   {
-    $data = \App\Models\CarUsage::findOrFail($id);
-    return view('layouts.print-3', compact('data'));
+    $data = \App\Models\HistoryCarUsage::findOrFail($id);
+    $cd = date('Y-m-d');
 
-    // view()->share('data', $data);
-    // $genTime = date('FdYHis');
+    $excel = Excel::create("form-sppd-{$id}-{$cd}", function ($excel) use ($data) {
+      $excel->sheet('Laporan Kembali', function ($sheet) use ($data) {
+        $sheet->setWidth(array(
+          'A' => 1.83,
+          'B' => 20.83,
+          'C' => 2.17,
+          'N' => 1.83
+        ));
 
-    // $pdf = PDF::loadView('layouts.print-3')
-    //   ->setPaper('a4')
-    //   ->save("requestDoc-{$genTime}.pdf");
+        for($i = 1; $i <= 34; $i++) {
+          $rows[$i] = 20;
+        }
+        $sheet->setHeight($rows);
 
-    // return $pdf->inline();
+        // Company Name on left top
+        $company = ($data->backup_driver_company != "-") ? $data->backup_driver_company : $data->driver_company;
+        $company_director = ($data->backup_company_director != "-") ? $data->backup_company_director : $data->company_director;
+
+        $sheet->cell('B1', function ($cell) use ($company) {
+          $cell->setValue($company);
+          $cell->setFontSize(14);
+          $cell->setFontWeight('bold');
+        });
+
+        // Title
+        $sheet->mergeCells('B3:M3');
+        $sheet->cell('B3', function ($cell) {
+          $cell->setValue('SURAT LAPORAN KEMBALI PEMAKAIAN KENDARAAN');
+          $cell->setFontSize(16);
+          $cell->setFontWeight('bold');
+          $cell->setAlignment('center');
+        });
+        
+        // Number
+        $sheet->mergeCells('B4:M4');
+        $sheet->cell('B4', function ($cell) use ($data) {
+          $cell->setValue('Nomor: ' . $data->usage_id);
+          $cell->setAlignment('center');
+        });
+
+        // Contents
+        $sheet->cell('B6', function ($cell) { $cell->setValue('Dengan ini menerangkan:'); });
+        
+        $driver = ($data->backup_driver != "-") ? "{$data->backup_driver} (sopir pengganti)" : $data->driver;
+        $column_fields = array(
+          7 => array( 'fn' => 'Nama Pengemudi', 'fv' => $driver ),
+          array( 'fn' => 'Tempat Tujuan', 'fv' => $data->destination ),
+          array( 'fn' => 'Plat Kendaraan / Jenis Kendaraan', 'fv' => $data->car ),
+          array( 'fn' => 'Lama Perjalanan', 'fv' => $data->usage_time ),
+          array( 'fn' => 'Waktu Berangkat', 'fv' => $data->start_use ),
+          array( 'fn' => 'Waktu Kembali', 'fv' => $data->end_use ),
+          array( 'fn' => 'Maksud Perjalanan', 'fv' => $data->necessity ),
+          array( 'fn' => 'Posisi KM Awal', 'fv' => $data->start_km_pos ),
+          array( 'fn' => 'Posisi KM Kembali', 'fv' => $data->end_km_pos ),
+          array( 'fn' => 'Status BBM', 'fv' => "{$data->fuel_status} (Penggunaan BBM: {$data->fuel_usage})" )
+        );
+
+        foreach ($column_fields as $key => $value) {
+          $sheet->mergeCells("D{$key}:M{$key}");
+          $sheet->cell("B{$key}", function ($cell) use ($key, $value) {
+            $cell->setValue($value['fn']); 
+            $cell->setAlignment('left');
+            $cell->setValignment('center');
+          });
+          $sheet->cell("C{$key}", function ($cell) {
+            $cell->setValue(':');
+            $cell->setAlignment('center');
+          });
+          $sheet->cell("D{$key}", function ($cell) use ($key, $value) {
+            $cell->setValue($value['fv']);
+            $cell->setAlignment('left');
+            $cell->setValignment('center');
+            $cell->setBorder('none', 'none', 'thin', 'none');
+          });
+        }
+
+        // Left Footer
+        $left_footer_cells = array(
+          18 => "DIREKTUR",
+          19 => $company
+        );
+        foreach ($left_footer_cells as $key => $value) {
+          $sheet->mergeCells("B{$key}:D{$key}");
+          $sheet->cell("B{$key}", function ($cell) use ($value) {
+            $cell->setValue($value);
+            $cell->setFontWeight('bold');
+            $cell->setAlignment('center');
+            $cell->setValignment('center');
+          });
+        }
+        $sheet->mergeCells("B24:D24");
+        $sheet->cell("B24", function ($cell) use ($company_director) {
+          $cell->setValue($company_director);
+          $cell->setFontWeight('bold');
+          $cell->setAlignment('center');
+          $cell->setValignment('center');
+        });
+
+        
+        // Right Footer
+        $sheet->mergeCells('I19:K19');
+        $sheet->cell('I19', function ($cell) {
+          $cell->setValue('PENGEMUDI');
+          $cell->setFontWeight('bold');
+          $cell->setAlignment('center');
+          $cell->setValignment('center');
+        });
+
+        // Additional footer
+        $sheet->cell('B26:L26', function ($cell) { $cell->setBorder('none', 'none', 'dotted', 'none'); });
+        $sheet->cell('B33:L33', function ($cell) { $cell->setBorder('none', 'none', 'mediumDashDot', 'none'); });
+
+        $small_caf = ['G', 'M'];
+        foreach ($small_caf as $key => $value) {
+          $sheet->setWidth($value, 1);
+          for($i = 28; $i <= 32; $i++) {
+            $sheet->cell("{$value}{$i}", function ($cell) use ($i, $value) {
+              if ($value == 'G') {
+                if ($i == 28) $cell->setBorder('thin', 'none', 'none', 'thin');
+                else if ($i == 32) $cell->setBorder('none', 'none', 'thin', 'thin');
+                else $cell->setBorder('none', 'none', 'none', 'thin');
+              }
+              else {
+                if ($i == 28) $cell->setBorder('thin', 'thin', 'none', 'none');
+                else if ($i == 32) $cell->setBorder('none', 'thin', 'thin', 'none');
+                else $cell->setBorder('none', 'thin', 'none', 'none');
+              }
+            });
+          }
+        }
+
+        $additional_footer_cells = array(
+          28 => "Perpanjangan Perjalanan Keluar Daerah :",
+          29 => ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."
+        );
+        foreach ($additional_footer_cells as $key => $value) {
+          $sheet->mergeCells("H{$key}:L{$key}");
+          $sheet->cell("H{$key}", function ($cell) use ($key, $value) {
+            $cell->setValue($value);
+            if ($key == 28) $cell->setBorder('thin', 'none', 'none', 'none');
+          });
+        }
+        $sheet->mergeCells('H32:L32');
+        $sheet->cell('H32', function ($cell) {
+          $cell->setValue('Paraf SPV ADM UMUM');
+          $cell->setAlignment('right');
+          $cell->setBorder('none', 'none', 'thin', 'none');
+        });
+
+        $sheet->protect('secret');
+      });
+    })->download('xls');
+
+    if ($excel) {
+      return redirect()->route('car-usage.index');
+    }
   }
 
   public function historyFilter(Request $request)

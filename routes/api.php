@@ -39,6 +39,9 @@ Route::get('chart/current-car-status', 'CarController@current_status');
 Route::get('driver-car/create-available', 'DriverCarController@apiCreate');
 Route::get('driver-car/{cpn}/edit-available', 'DriverCarController@apiEdit');
 
+Route::get('driver-company/all', 'DriverCompanyController@apiShowAll');
+Route::get('driver-company/edit/{id}', 'DriverCompanyController@apiEdit');
+
 Route::get('fuel/edit/{entity_id}', 'FuelSettingsController@apiEdit');
 
 Route::get('usage/{entity_id}', 'CarUsageController@apiShow');

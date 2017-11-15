@@ -10,20 +10,19 @@
 
       <!-- Company -->
       <div class="form-group">
-        <label for="company">Nama Perusahaan</label>
-        <el-form-item prop="company">
+        <label for="company_id">Nama Perusahaan</label>
+        <el-form-item prop="company_id">
           <el-select class="w-100"
-            v-model="form.company"
+            v-model="form.company_id"
             :multiple-limit="1"
             clearable
             filterable
-            allow-create
             placeholder="Pilih perusahaan atau buat baru">
             <el-option
               v-for="comp in companies"
-              :key="comp.value"
-              :label="comp.label"
-              :value="comp.value">
+              :key="comp.id"
+              :label="comp.company_name"
+              :value="comp.id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -89,16 +88,15 @@
             { required: true, message: 'Mohon masukkan Nama Pegawai terlebih dahulu' },
             { min: 3, message: 'Nama Pegawai minimal mempunyai 3 karakter!' }
           ],
-          company: [
-            { required: true, message: 'Mohon masukkan field Nama Perusahaan terlebih dahulu' },
-            { min: 3, message: 'Field Nama Perusahaan minimal mempunyai 3 karakter!' }
+          company_id: [
+            { required: true, message: 'Mohon pilih Perusahaan terlebih dahulu' }
           ]
         }
       }
     },
     methods: {
       init () {
-        get(`/api/driver-company/existing`)
+        get(`/api/driver-company/all`)
           .then((response) => {
             this.companies = response.data.model
           })

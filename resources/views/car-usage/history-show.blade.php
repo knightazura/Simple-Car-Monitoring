@@ -102,7 +102,15 @@
           </p>
 
         </div>
-      </div>
+
+        <div class="card-footer">
+          <div class="float-right">
+            <a href="{{ route('stream-third-doc', $usage->usage_id) }}" class="btn btn-sm btn-success">
+              <i class="fa fa-print" aria-hidden="true"></i> Print
+            </a>
+          </div>
+        </div>
+      </div> <!-- End Card element -->
     </div>
   </div>
 

@@ -14,3 +14,7 @@ yarn-error.log
 .env
 *.sublime-*
 yarn.lock
+
+*.pdf
+
+*.sql

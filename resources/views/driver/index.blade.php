@@ -11,6 +11,7 @@
           <div class="card-header">
             <span style="font-size: 14pt"><b>Daftar Sopir (Driver)</b></span>
             <a href="{{ route('driver.create') }}" class="btn btn-sm btn-primary float-right">Daftar</a>
+            <a href="{{ route('driver-company.index') }}" class="btn btn-sm btn-warning float-right mr-2">Perusahaan Vendor Driver</a>
           </div>
           <div class="card-body">
             <p class="card-text">Daftar driver (Sopir) yang terdaftar pada aplikasi Monitoring.</p>
@@ -32,7 +33,13 @@
                   <th scope="head" class="text-center align-middle">{{ $no++ }}</td>
                   <td class="align-middle"><b>{{ $driv->driver_name }}</b></td>
                   <td class="align-middle">{{ $driv->phonenumber }}</td>
-                  <td class="align-middle">{{ $driv->company }}</td>
+                  <td class="align-middle">
+                    @if (!is_null($driv->workOn))
+                      {{ $driv->workOn->company_name }}
+                    @else
+                      -
+                    @endif
+                  </td>
                   <td class="align-middle">
                     <span class="badge badge-pill badge-{{ $driver_status[$driv->status]['class'] }} p-2">
                       {{ $driver_status[$driv->status]['status'] }}
@@ -71,6 +78,7 @@
           <div class="card-header">
             <span style="font-size: 14pt"><b>Daftar Sopir (Driver)</b></span>
             <a href="{{ route('driver.create') }}" class="btn btn-sm btn-dark float-right">Daftar</a>
+            <a href="{{ route('driver-company.index') }}" class="btn btn-sm btn-light float-right mr-2">Perusahaan Vendor Driver</a>
           </div>
           <div class="card-body">
             Belum ada data sopir untuk saat ini, silahkan tambah terlebih dahulu.

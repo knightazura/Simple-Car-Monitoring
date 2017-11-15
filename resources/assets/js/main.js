@@ -13,6 +13,7 @@ import DriverForm from './components/DriverForm.vue'
 import CarForm from './components/CarForm.vue'
 import DriverCarForm from './components/DriverCarForm.vue'
 import FuelForm from './components/FuelForm.vue'
+import DriverCompany from './components/DriverCompanyForm.vue'
 
 locale.use(lang)
 Vue.use(ElementUI)
@@ -24,6 +25,7 @@ Vue.component('driver-form', DriverForm)
 Vue.component('car-form', CarForm)
 Vue.component('driver-car-form', DriverCarForm)
 Vue.component('fuel-form', FuelForm)
+Vue.component('driver-company-form', DriverCompany)
 
 const app = new Vue({
   el: '#app'

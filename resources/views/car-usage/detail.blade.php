@@ -11,14 +11,14 @@
 </p>
 
 <!-- Data Sopir -->
-<h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->drivenBy->driver_name }} ({{ $usage->drivenBy->company }})</h6>
+<h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->drivenBy->driver_name }} ({{ $usage->drivenBy->workOn->company_name }})</h6>
 <p class="card-text text-secondary">
   <small>Nama Sopir</small>
 </p>
 
 <!-- Data Sopir Pengganti (Jika ada) -->
 @if (!is_null($usage->backup_driver_id))
-<h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->backupDrivenBy->driver_name }} ({{ $usage->backupDrivenBy->company }})</h6>
+<h6 class="card-title" style="margin-bottom: 0.3em">{{ $usage->backupDrivenBy->driver_name }} ({{ $usage->backupDrivenBy->workOn->company_name }})</h6>
 <p class="card-text text-secondary">
   <small>Sopir Pengganti</small>
 </p>

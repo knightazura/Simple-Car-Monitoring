@@ -27,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('driver', 'DriverController');
     Route::resource('car', 'CarController');
     Route::resource('driver-car', 'DriverCarController');
+    Route::resource('driver-company', 'DriverCompanyController');
     Route::resource('fuel', 'FuelSettingsController');
     Route::get('fuel/index/{cy}', 'FuelSettingsController@customIndex')->name('fuel-custom-index');
 

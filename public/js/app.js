@@ -48674,6 +48674,8 @@ var Popover = function ($) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_DriverCarForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__components_DriverCarForm_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_FuelForm_vue__ = __webpack_require__(135);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_FuelForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__components_FuelForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_DriverCompanyForm_vue__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_DriverCompanyForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__components_DriverCompanyForm_vue__);
 
 
 
@@ -48681,6 +48683,7 @@ var Popover = function ($) {
 
 
 // Components
+
 
 
 
@@ -48700,6 +48703,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('driver-form', __WEBPACK_I
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('car-form', __WEBPACK_IMPORTED_MODULE_10__components_CarForm_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('driver-car-form', __WEBPACK_IMPORTED_MODULE_11__components_DriverCarForm_vue___default.a);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('fuel-form', __WEBPACK_IMPORTED_MODULE_12__components_FuelForm_vue___default.a);
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('driver-company-form', __WEBPACK_IMPORTED_MODULE_13__components_DriverCompanyForm_vue___default.a);
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   el: '#app'
@@ -87721,7 +87725,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -88027,12 +88030,6 @@ var render = function() {
                 }
               },
               [_vm._v("Submit")]
-            ),
-            _vm._v(" "),
-            _c(
-              "el-button",
-              { attrs: { type: "success" }, on: { click: _vm.printForm } },
-              [_vm._v("Print Form SPPD")]
             )
           ],
           1
@@ -88569,7 +88566,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -88604,7 +88600,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       companies: [],
       rules: {
         driver_name: [{ required: true, message: 'Mohon masukkan Nama Pegawai terlebih dahulu' }, { min: 3, message: 'Nama Pegawai minimal mempunyai 3 karakter!' }],
-        company: [{ required: true, message: 'Mohon masukkan field Nama Perusahaan terlebih dahulu' }, { min: 3, message: 'Field Nama Perusahaan minimal mempunyai 3 karakter!' }]
+        company_id: [{ required: true, message: 'Mohon pilih Perusahaan terlebih dahulu' }]
       }
     };
   },
@@ -88613,7 +88609,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     init: function init() {
       var _this2 = this;
 
-      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/driver-company/existing').then(function (response) {
+      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/driver-company/all').then(function (response) {
         _this2.companies = response.data.model;
       }).catch(function (erorr) {
         swak({
@@ -88702,13 +88698,13 @@ var render = function() {
         "div",
         { staticClass: "form-group" },
         [
-          _c("label", { attrs: { for: "company" } }, [
+          _c("label", { attrs: { for: "company_id" } }, [
             _vm._v("Nama Perusahaan")
           ]),
           _vm._v(" "),
           _c(
             "el-form-item",
-            { attrs: { prop: "company" } },
+            { attrs: { prop: "company_id" } },
             [
               _c(
                 "el-select",
@@ -88718,21 +88714,20 @@ var render = function() {
                     "multiple-limit": 1,
                     clearable: "",
                     filterable: "",
-                    "allow-create": "",
                     placeholder: "Pilih perusahaan atau buat baru"
                   },
                   model: {
-                    value: _vm.form.company,
+                    value: _vm.form.company_id,
                     callback: function($$v) {
-                      _vm.$set(_vm.form, "company", $$v)
+                      _vm.$set(_vm.form, "company_id", $$v)
                     },
-                    expression: "form.company"
+                    expression: "form.company_id"
                   }
                 },
                 _vm._l(_vm.companies, function(comp) {
                   return _c("el-option", {
-                    key: comp.value,
-                    attrs: { label: comp.label, value: comp.value }
+                    key: comp.id,
+                    attrs: { label: comp.company_name, value: comp.id }
                   })
                 })
               )
@@ -89800,6 +89795,257 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(5)
+/* script */
+var __vue_script__ = __webpack_require__(146)
+/* template */
+var __vue_template__ = __webpack_require__(147)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/DriverCompanyForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-0721b6f5", Component.options)
+  } else {
+    hotAPI.reload("data-v-0721b6f5", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 146 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__helpers_api__ = __webpack_require__(6);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['meta', 'entity_id'],
+  created: function created() {
+    var _this = this;
+
+    if (this.meta == 'Edit') {
+      this.storeURL = '/driver-company/' + this.entity_id + '?_method=PUT', this.buttonContext = 'Update';
+      Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/driver-company/edit/' + this.entity_id).then(function (response) {
+        _this.form = response.data.model;
+      }).catch(function (error) {
+        swal({
+          icon: 'error',
+          message: error
+        });
+      });
+    }
+  },
+  data: function data() {
+    return {
+      storeURL: '/driver-company',
+      buttonContext: 'Submit',
+      form: {},
+      rules: {
+        company_name: [{ required: true, message: 'Mohon masukkan nama Perusahaan terlebih dahulu!' }, { min: 5, message: 'Nama perusahaan minimal mempunyai 5 karakter' }],
+        company_director: [{ required: true, message: 'Mohon masukkan nama Direktur Perusahaan terlebih dahulu!' }, { min: 3, message: 'Nama Direktur Perusahaan minimal mempunyai 3 karakter' }]
+      }
+    };
+  },
+
+  methods: {
+    onSubmit: function onSubmit(formName) {
+      var _this2 = this;
+
+      this.$refs[formName].validate(function (valid) {
+        if (valid) {
+          Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["b" /* post */])(_this2.storeURL, _this2.form).then(function (response) {
+            swal({
+              icon: "success",
+              text: response.data.message
+            }).then(function () {
+              return location.href = response.data.redirect_url;
+            });
+          }).catch(function (error) {
+            swal({
+              icon: "error",
+              text: error
+            });
+          });
+        } else {
+          console.log('Error');
+        }
+      });
+    },
+    back: function back() {
+      location.href = '/driver';
+    }
+  }
+});
+
+/***/ }),
+/* 147 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "el-form",
+    {
+      ref: "form",
+      attrs: { rules: _vm.rules, model: _vm.form, "label-position": "top" }
+    },
+    [
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "company_name" } }, [
+            _vm._v("Nama Perusahaan")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "company_name" } },
+            [
+              _c("el-input", {
+                attrs: {
+                  placeholder: "Contoh: PT. INDUK SULMAPA KEKAR",
+                  id: "company_name"
+                },
+                model: {
+                  value: _vm.form.company_name,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "company_name", $$v)
+                  },
+                  expression: "form.company_name"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "form-group" },
+        [
+          _c("label", { attrs: { for: "company_director" } }, [
+            _vm._v("Nama Direktur Perusahaan")
+          ]),
+          _vm._v(" "),
+          _c(
+            "el-form-item",
+            { attrs: { prop: "company_director" } },
+            [
+              _c("el-input", {
+                attrs: {
+                  placeholder: "Contoh: ASRUL TINAI",
+                  id: "company_director"
+                },
+                model: {
+                  value: _vm.form.company_director,
+                  callback: function($$v) {
+                    _vm.$set(_vm.form, "company_director", $$v)
+                  },
+                  expression: "form.company_director"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "el-button",
+        {
+          attrs: { type: "success" },
+          on: {
+            click: function($event) {
+              _vm.onSubmit("form")
+            }
+          }
+        },
+        [_vm._v(_vm._s(_vm.buttonContext))]
+      ),
+      _vm._v(" "),
+      _c("el-button", { on: { click: _vm.back } }, [_vm._v("Kembali")])
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-0721b6f5", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
