@@ -175,7 +175,8 @@ class CarUsageController extends Controller
         }
     }
 
-    private function setStatus($model_name, $primary_key, $status) {
+    private function setStatus($model_name, $primary_key, $status)
+    {
         $entity = $model_name::findOrFail($primary_key);
         $entity->status = $status;
         $entity->save();

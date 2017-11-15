@@ -59,6 +59,7 @@
           </div>
 
           <el-button type="primary" @click="onSubmit('form')">Submit</el-button>
+          <el-button type="success" @click="printForm">Print Form SPPD</el-button>
       </el-form>
     </div>
   </div>
@@ -112,6 +113,9 @@
           .then((response) => {
             this.form = response.data.model
           })
+      },
+      printForm () {
+        location.href = `/exp/print-3/${this.entity}`
       },
       onSubmit (formName) {
         this.$refs[formName].validate((valid) => {

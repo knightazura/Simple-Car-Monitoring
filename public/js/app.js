@@ -87721,6 +87721,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -87771,6 +87772,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       Object(__WEBPACK_IMPORTED_MODULE_0__helpers_api__["a" /* get */])('/api/usage/' + this.entity).then(function (response) {
         _this.form = response.data.model;
       });
+    },
+    printForm: function printForm() {
+      location.href = '/exp/print-3/' + this.entity;
     },
     onSubmit: function onSubmit(formName) {
       var _this2 = this;
@@ -88023,6 +88027,12 @@ var render = function() {
                 }
               },
               [_vm._v("Submit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "el-button",
+              { attrs: { type: "success" }, on: { click: _vm.printForm } },
+              [_vm._v("Print Form SPPD")]
             )
           ],
           1

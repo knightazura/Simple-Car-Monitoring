@@ -42,6 +42,21 @@ class MiscController extends Controller
     return $pdf->inline();
   }
 
+  public function streamThirdDoc($id)
+  {
+    $data = \App\Models\CarUsage::findOrFail($id);
+    return view('layouts.print-3', compact('data'));
+
+    // view()->share('data', $data);
+    // $genTime = date('FdYHis');
+
+    // $pdf = PDF::loadView('layouts.print-3')
+    //   ->setPaper('a4')
+    //   ->save("requestDoc-{$genTime}.pdf");
+
+    // return $pdf->inline();
+  }
+
   public function historyFilter(Request $request)
   {
     $mode = 'filter';

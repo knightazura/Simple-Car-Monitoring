@@ -11,7 +11,7 @@
   <div class="row justify-content-md-center">
     <div class="col-sm-12">
       @if ($car_usages->isNotEmpty())
-        <div class="card border-info my-4">
+        <div class="card border-info my-4 pb-3">
           <div class="card-header text-white bg-info">
             <span style="font-size: 14pt"><b>Rekap Penggunaan Kendaraan </b></span>
             <a href="#filter-search" data-toggle="collapse" aria-expanded="false" aria-controls="filter-search" class="btn btn-sm btn-dark float-right">Filter</a>
@@ -19,6 +19,8 @@
               <a href="{{ route('car-usage-history-index') }}" class="btn btn-sm btn-light mx-3 float-right">Hapus Filter</a>
             @endif
           </div>
+
+            <!-- Form Filter -->
             <div class="row">
               <div class="col-sm-12 col-md-6">
                 <div class="collapse p-3" id="filter-search">
@@ -30,6 +32,7 @@
                   </form>
                 </div>
             </div>
+            
           </div>
           <div class="card-body">
             <p class="card-text">
@@ -83,9 +86,9 @@
             @endforeach
             </tbody>
           </table>
-          <div class="card-footer mt-2">
+          <!-- <div class="card-footer mt-2">
             <p class="card-text">Total rekap data penggunaan kendaraan: {{ $car_usages->count() }}</p>
-          </div>
+          </div> -->
         </div>
       @else
         <div class="card text-white bg-warning my-4">

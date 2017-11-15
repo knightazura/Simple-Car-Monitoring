@@ -51,6 +51,7 @@ Route::get('/exp', 'CarController@index')->name('car_exp');
 Route::get('/exp/ajax/{id}', function ($id) {
   return response()->json(['data' => $id]);
 });
-Route::get('/exp/print/{id}', 'MiscController@streamFirstDoc')->name('stream-first-doc');
-Route::get('/exp/print-2/{id}', 'MiscController@streamSecondDoc')->name('stream-second-doc');
+Route::get('/exp/print/{id}', 'MiscController@streamFirstDoc')->name('stream-first-doc'); // Form C
+Route::get('/exp/print-2/{id}', 'MiscController@streamSecondDoc')->name('stream-second-doc'); // Surat Perjalanan
+Route::get('/exp/print-3/{id}', 'MiscController@streamThirdDoc')->name('stream-third-doc'); // Form SPPD
 Route::post('/exp/excel-1', 'MiscController@excelFristReport')->name('excel-first-report');
