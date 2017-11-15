@@ -32,11 +32,19 @@
                                             @foreach($highlights_data['ac'] as $car)
                                                 <tr>
                                                     <td>{{ $car->car_plat_number }}</td>
-                                                    <td>{{ $car->theCar->responsibleBy->withDriver->driver_name }}</td>
                                                     <td>
-                                                        <span class="badge badge-pill badge-{{ $highlights_data['ds'][$car->theCar->responsibleBy->withDriver->status]['class'] }}">
-                                                            &nbsp;
-                                                        </span>
+                                                        @if(!is_null($car->theCar->responsibleBy->withDriver))
+                                                            {{ $car->theCar->responsibleBy->withDriver->driver_name }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if(!is_null($car->theCar->responsibleBy->withDriver))
+                                                            <span class="badge badge-pill badge-{{ $highlights_data['ds'][$car->theCar->responsibleBy->withDriver->status]['class'] }}">
+                                                                &nbsp;
+                                                            </span>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

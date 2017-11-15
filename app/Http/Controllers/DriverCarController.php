@@ -24,13 +24,17 @@ class DriverCarController extends Controller
 
     public function apiCreate()
     {
-      $data['drivers']  = Driver::select('id', 'driver_name', 'company')
-        ->doesntHave('responsibleTo')
-        ->get();
-      $data['cars']     = Car::select('plat_number', 'car_name')
+      $drivers = Driver::doesntHave('responsibleTo')->get();
+      foreach ($drivers as $key => $value) {
+        $data['drivers'][$key]['id'] = $value->id;
+        $data['drivers'][$key]['driver_name'] = $value->driver_name;
+        $data['drivers'][$key]['company'] = $value->workOn->company_name;
+      }
+
+      $data['cars'] = Car::select('plat_number', 'car_name')
         ->doesntHave('responsibleBy')
         ->get();
-      $data['form']     = array();
+      $data['form'] = array();
 
       return response()
         ->json([
@@ -47,9 +51,13 @@ class DriverCarController extends Controller
     public function apiEdit($car_plat_number)
     {
       $dc = DriverCar::where('car_plat_number', $car_plat_number)->get();
-      $data['drivers'] = Driver::select('id', 'driver_name', 'company')
-        ->doesntHave('driveOn')
+      $drivers = Driver::doesntHave('driveOn')
         ->get();
+      foreach ($drivers as $key => $value) {
+        $data['drivers'][$key]['id'] = $value->id;
+        $data['drivers'][$key]['driver_name'] = $value->driver_name;
+        $data['drivers'][$key]['company'] = $value->workOn->company_name;
+      }
       $data['cars']    = Car::select('plat_number', 'car_name')
         ->get();
       $data['form']    = $dc[0];

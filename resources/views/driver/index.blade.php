@@ -51,7 +51,7 @@
                         <i class="el-icon-more" aria-hidden="true"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        @if (is_null($driv->driveOn))
+                        @if ($driv->status != 1)
                           <a class="dropdown-item" href="{{ route('driver.edit', $driv->id) }}">Edit</a>
                           <a class="dropdown-item text-danger delete-button"
                             data-id="/driver/{{ $driv->id }}"

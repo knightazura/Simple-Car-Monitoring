@@ -33,11 +33,24 @@
 
                 <!-- Driver -->
                 <el-form-item label="Driver" prop="driver_id">
-                    <el-input type="text" class="w-75" v-model="dnm" readonly placeholder="Pilih kendaraan terlebih dahulu"></el-input>
+                    <el-input v-if="!second_did"
+                        type="text" class="w-75" v-model="dnm" readonly placeholder="Pilih kendaraan terlebih dahulu"></el-input>
+                    <!-- Second Main Driver choice, when the car doesn't have Driver -->
+                    <el-select v-else @change="secondDriverChoice"
+                        class="w-75" v-model="dnm" filterable clearable placeholder="Pilih">
+                        <el-option
+                            v-for="bd in bup_drivers"
+                            :key="bd.id"
+                            :label="bd.driver_name"
+                            :value="bd.id"
+                            :disabled="bd.disabled">
+                        </el-option>
+                    </el-select>
                     <el-tooltip placement="top">
                         <div slot="content">Jika sopir diganti, mohon tuliskan alasannya pada kolom "Keterangan tambahan" dibawah</div>
                         <i class="el-icon-warning"></i>
                     </el-tooltip>
+
                     <el-input type="hidden" class="w-10" v-model="formRule.driver_id"></el-input>
                     <el-alert
                         class="w-100 mt-2"
@@ -51,7 +64,7 @@
                 </el-form-item>
 
                 <!-- Backup Driver -->
-                <el-form-item label="Driver pengganti" prop="backup_driver_id">
+                <el-form-item v-if="!second_did" label="Driver pengganti" prop="backup_driver_id">
                     <el-select class="w-75" v-model="formRule.backup_driver_id" filterable clearable placeholder="Pilih">
                         <el-option
                             v-for="bd in bup_drivers"
@@ -141,6 +154,7 @@
                     driver_id: '',
                     fuel_status: 'Cukup'
                 },
+                second_did: false,
                 dnm: '',
                 cda: false,
                 dsm: '',
@@ -177,6 +191,7 @@
                     get(`/api/usage/${this.entity_id}`)
                         .then((response) => {
                             this.formRule = response.data.model
+                            this.dnm = response.data.model.driver_id
                         })
                         .catch((error) => { console.log(error) })
                 }
@@ -203,6 +218,7 @@
             onSubmit (formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        console.log(this.formRule)
                         post(this.storeURL, this.formRule)
                             .then((response) => {
                                 if (response.data.valid) {
@@ -233,6 +249,7 @@
             carSelect () {
                 get(`/api/b/${this.formRule.car_plat_number}`)
                     .then((response) => {
+                        this.second_did = false
                         this.checkDriverAvail(response.data.data.id)
                         this.formRule.driver_id = response.data.data.id
                         this.dnm = response.data.data.driver_name
@@ -240,7 +257,19 @@
                             driver.disabled = (driver.id == response.data.data.id) ? true : false
                         })
                     })
-                    .catch((error) => console.log(error))
+                    .catch((error) => {
+                        this.second_did = true
+                        this.dnm = ''
+                        this.bup_drivers.forEach(function (driver) {
+                            driver.disabled = false
+                        })
+                        this.formRule.driver_id = ''
+                        this.formRule.backup_driver_id = ''
+                        this.cda = false
+                    })
+            },
+            secondDriverChoice () {
+                this.formRule.driver_id = this.dnm
             },
             checkDriverAvail(did) {
                 get(`/api/check-driver-availability/${did}`)

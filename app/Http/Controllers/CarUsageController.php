@@ -96,10 +96,8 @@ class CarUsageController extends Controller
             $current_usage = CarUsage::destroy($request->id);
 
             // Set all relationships status to Standby
-            if ($driver_id == 1)
-                $this->setStatus("\App\Models\Driver", $request->driver_id, 0);
-            if (!is_null($request->backup_driver_id))
-                $this->setStatus("\App\Models\Driver", $request->backup_driver_id, 0);
+            $driver_id = (!is_null($request->backup_driver_id)) ? $request->backup_driver_id : $request->driver_id;
+            $this->setStatus("\App\Models\Driver", $driver_id, 0);
 
             $this->setStatus("\App\Models\CarStatus", $request->car_plat_number, 0);
 
@@ -171,14 +169,18 @@ class CarUsageController extends Controller
         }
 
         // Behavior between main driver & backup driver
+        // Backup driver is exist from the first time
         if (!is_null($usage->backup_driver_id)) {
-            // Backup driver is exist from the first time
             if (is_null($request->backup_driver_id) || empty($request->backup_driver_id)) {
-                /**
-                 *  the backup driver removed
-                 *  then the original driver should be work
-                 */
-                if ($driver->status == 0) $this->setStatus("\App\Models\Driver", $usage->driver_id, 1);
+                if ($usage->driver_id == $request->driver_id) {
+                    /**
+                     *  the backup driver removed, the original one not changed
+                     *  then the original driver should be work
+                     */
+                    if ($driver->status == 0) $this->setStatus("\App\Models\Driver", $usage->driver_id, 1);
+                } else if ($usage->driver_id != $request->driver_id) {
+                    if ($driver->status == 0) $this->setStatus("\App\Models\Driver", $request->driver_id, 1);
+                }
                 $this->setStatus("\App\Models\Driver", $usage->backup_driver_id, 0);
             }
             else if ($usage->backup_driver_id != $request->backup_driver_id) {
@@ -199,10 +201,16 @@ class CarUsageController extends Controller
                     $this->setStatus("\App\Models\Driver", $request->driver_id, 0);
                 }
             }
+            else {
+                // There's no backup driver change, that means the car was changed and automatically the drivers too
+                // Rolling thunder!
+                $this->setStatus("\App\Models\Driver", $request->driver_id, 1);
+            }
         }
 
         if ($usage->car_plat_number != $request->car_plat_number) {
             $this->setStatus("\App\Models\CarStatus", $usage->car_plat_number, 0);
+            $this->setStatus("\App\Models\CarStatus", $request->car_plat_number, 1);    
         }
 
         $usage->fill($request->except([
@@ -224,7 +232,7 @@ class CarUsageController extends Controller
 
         // Update        
         if ($usage->save()) {
-            Log::info("Record penggunaan kendaraan #{$id} diubah");
+            // Log::info("Record penggunaan kendaraan #{$id} diubah");
             return response()
                 ->json([
                     'valid' => true,
@@ -255,7 +263,7 @@ class CarUsageController extends Controller
         // Destroy
         if ($usage->delete()) {
             // Setback Driver status
-            CarUsageMisc::setStatus($usage->backup_driver_id, "Driver", 0);
+            CarUsageMisc::setStatus($driver_id, "Driver", 0);
 
             // Setback Car status
             CarUsageMisc::setStatus($usage->car_plat_number, "CarStatus", 0);

@@ -38,6 +38,17 @@ Route::get('chart/current-car-status', 'CarController@current_status');
 
 Route::get('driver-car/create-available', 'DriverCarController@apiCreate');
 Route::get('driver-car/{cpn}/edit-available', 'DriverCarController@apiEdit');
+Route::get('b/{cpn}', function ($cpn) {
+  $did = \App\Models\DriverCar::findOrFail($cpn);
+  if (is_null($did->driver_id)) {
+    $cu = \App\Models\CarUsage::where('car_plat_number', $cpn)
+      ->get();
+    $driver = \App\Models\Driver::findOrFail($cu[0]->driver_id);
+  } else {
+    $driver = \App\Models\Driver::findOrFail($did->driver_id);
+  }
+  return response()->json(['data' => $driver]);
+});
 
 Route::get('driver-company/all', 'DriverCompanyController@apiShowAll');
 Route::get('driver-company/edit/{id}', 'DriverCompanyController@apiEdit');
@@ -58,12 +69,6 @@ Route::get('a', function () {
     }])
     ->get();
   return response()->json(['data' => $data]);
-});
-
-Route::get('b/{cpn}', function ($cpn) {
-  $did = \App\Models\DriverCar::findOrFail($cpn);
-  $driver = \App\Models\Driver::findOrFail($did->driver_id);
-  return response()->json(['data' => $driver]);
 });
 
 Route::post('c', function(Request $request) {

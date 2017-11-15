@@ -7,9 +7,10 @@
     <div class="col-sm-12 col-md-10">
       @if ($car_usages->isNotEmpty())
         <div class="card border-info my-4">
-          <h4 class="card-header text-white bg-info">
-            Daftar Penggunaan Kendaraan 
-          </h4>
+          <div class="card-header text-white bg-info">
+            <span style="font-size: 14pt"><b>Daftar Penggunaan Kendaraan</b></span>
+            <a href="{{ route('car-usage.create') }}" class="btn btn-sm btn-dark float-right">Request Baru</a>
+          </div>
           <div class="card-body">
             <p class="card-text">
               Berikut seluruh data untuk penggunaan kendaraan yang masih aktif saat ini.
@@ -19,7 +20,7 @@
             <thead>
               <th class="text-center">#</th>
               <th>Pegawai</th>
-              <th>Sopir</th>
+              <th>Driver</th>
               <th>Kendaraan</th>
               <th>Tempat Tujuan</th>
               <th>Tanggal mulai penggunaan</th>
@@ -34,11 +35,10 @@
                 </td>
                 <td class="align-middle">{{ $usage->requestedBy->employee_name }}</td>
                 <td class="align-middle">
-                  {{ $usage->drivenBy->driver_name }}
                   @if (!is_null($usage->backupDrivenBy))
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Sopir Pengganti: {{ $usage->backupDrivenBy->driver_name }}">
-                        *
-                    </a>
+                    {{ $usage->backupDrivenBy->driver_name }}*
+                  @else
+                    {{ $usage->drivenBy->driver_name }}
                   @endif
                 </td>
                 <td class="align-middle">{{ $usage->car_plat_number }} ({{ $usage->carStatus->theCar->car_name }})</td>
@@ -81,7 +81,9 @@
           </a>
         </div>
         <div class="col-sm-12 col-md-6">
-          <a href="{{ route('car-usage.create') }}" class="btn btn-success float-right">Request Baru</a>
+          <div class="alert alert-warning">
+            <b>*</b> Driver pengganti
+          </div>
         </div>
       </div>
       
