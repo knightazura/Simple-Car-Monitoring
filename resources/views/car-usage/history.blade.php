@@ -55,7 +55,22 @@
             @foreach ($car_usages as $usage)
               <tr>
                 <td class="text-center align-middle">
-                  <a href="{{ route('car-usage-history-show', $usage->usage_id) }}">{{ $no++ }}</a>
+                  <div class="dropdown">
+                    <button type="button" class="btn btn-sm btn-primary" id="dropdownMenuButton"
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ $no++ }}
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="{{ route('car-usage-history-show', $usage->usage_id) }}">Lihat</a>
+                      @if (Auth::user()->inRole('administrator'))
+                        <a class="dropdown-item text-danger delete-button"
+                          data-id="{{ route('history-delete', $usage->usage_id) }}"
+                          data-token="{{ csrf_token() }}">
+                            Hapus
+                        </a>
+                      @endif
+                    </div>
+                  </div>
                 </td>
                 <td class="align-middle">{{ $usage->employee_name }}</td>
                 <td class="align-middle">{{ $usage->driver }}</td>

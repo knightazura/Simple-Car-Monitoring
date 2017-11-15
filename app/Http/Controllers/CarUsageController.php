@@ -206,4 +206,21 @@ class CarUsageController extends Controller
                 ]);
         }
     }
+
+    public function historyDestroy($id)
+    {
+        // Init
+        $history = HistoryCarUsage::where('usage_id', $id)->delete();
+        $data = array(
+            'message' => "Data pemakaian kendaraan berhasil dihapus!",
+            'redirect_url' => "/car-usage/history/all"
+        );
+
+        if ($history) {
+            return response()
+                ->json([
+                    'data' => $data
+                ]);
+        }
+    }
 }

@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
   Route::get('car-usage/history/all', 'CarUsageController@historyIndex')->name('car-usage-history-index');
   Route::get('car-usage/history/{usage_id}', 'CarUsageController@historyShow')->name('car-usage-history-show');
   Route::post('/car-usage/history/filter', 'MiscController@historyFilter')->name('history-filter');
+  Route::delete('/car-usage/history/delete/{id}', 'CarUsageController@historyDestroy')->name('history-delete');
 });
 Route::get('/home', 'HomeController@index')->name('home');
 

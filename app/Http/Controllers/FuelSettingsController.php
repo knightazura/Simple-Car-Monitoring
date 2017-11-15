@@ -79,7 +79,8 @@ class FuelSettingsController extends Controller
 
       return response()
         ->json([
-          'message' => "Jatah Bahan Bakar berhasil diubah"
+          'message' => "Jatah Bahan Bakar berhasil diubah",
+          'redirect_url' => "/fuel/index/{$request->year}"
         ]);
     }
 }
