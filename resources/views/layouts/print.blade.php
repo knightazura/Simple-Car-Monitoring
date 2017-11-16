@@ -51,7 +51,7 @@
           <td colspan="12" class="border-0">Banyaknya Penumpang yang ikut: {{ $data->total_passengers }} orang</td>
         </tr>
         <tr>
-          <td colspan="12" class="border-0">Tujuan / keperluan: {{ $data->necessity }}</td>
+          <td colspan="12" class="border-0">Tujuan / keperluan: {{ $data->destination }}. {{ $data->necessity }}</td>
         </tr>
         <tr>
           <td colspan="10" class="w-50 border-0">Tanggal yang diinginkan: {{ date('d-m-Y', strtotime($data->desire_time)) }}</td>
@@ -129,7 +129,7 @@
           <td colspan="12" class="border-0">Banyaknya Penumpang yang ikut: {{ $data->total_passengers }} orang</td>
         </tr>
         <tr>
-          <td colspan="12" class="border-0">Tujuan / keperluan: {{ $data->necessity }}</td>
+          <td colspan="12" class="border-0">Tujuan / keperluan: {{ $data->destination }}. {{ $data->necessity }}</td>
         </tr>
         <tr>
           <td colspan="10" class="w-50 border-0">Tanggal yang diinginkan: {{ date('d-m-Y', strtotime($data->desire_time)) }}</td>

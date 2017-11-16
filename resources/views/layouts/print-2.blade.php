@@ -7,24 +7,28 @@
   <div class="row justify-content-md-center pb-2" style="border-bottom: 1px dashed #999; font-size: 10pt">
     <div class="col-md-12">
       <table>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="4" class="w-40">
             <b><u>PLN UIP SULBAGSEL</u></b>
           </td>
           <td colspan="8">&nbsp;</td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="12" class="text-center">
             <b>SURAT PENUGASAN PEMAKAIAN KENDARAAN SEWA</b> <br>
             <small>Nomor: ....... / MUM.00.07 / UIPSULBAGSEL / {{date('Y')}} </small>
           </td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="12">
             <small>Dengan ini menugaskan PT. Induk Sulmapa Kekar untuk pemakaian kendaraan sewa dalam/luar kota, sesuai dengan
             <u>Form Permohonan Pemakaian Kendaraan Dinas</u>.</small>
           </td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="2" class="w-20"><small>Tempat Tujuan</small></td>
           <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->destination }}</small></td>
@@ -39,28 +43,33 @@
         </tr>
         <tr>
           <td colspan="2" class="w-20"><small>Maksud Perjalanan</small></td>
-          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->necessity }}</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->necessity }}. Tujuan {{ $data->destination }}</small></td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="6" class="w-50 text-center">
             <small>Menyetujui,<br>
             <b>DIREKTUR</b><br>
             <b>{{ $data->drivenBy->workOn->company_name }}</b>
-            <br><br><br>
+            <br><br><br><br>
             <b>{{ $data->drivenBy->workOn->company_director }}</b></small>
           </td>
           <td colspan="6" class="w-50 align-top text-center">
             <small>Makassar, {{ date('d-m-Y') }}<br>
             <b>DM SDM DAN UMUM</b></small>
+            <br><br><br><br><br>
+            ( . . . . . . . . . . . . . . . . )
           </td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="12">
             <small>KET:<br>
             Lembar Asli untuk tagihan ke PLN</small>
           </td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
       </table>
     </div>
   </div>
@@ -69,18 +78,21 @@
   <div class="row justify-content-md-center mt-2" style="font-size: 10pt">
     <div class="col-md-12">
       <table>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="4" class="w-40">
             <b><u>{{ $data->drivenBy->workOn->company_name }}</u></b>
           </td>
           <td colspan="8">&nbsp;</td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="12" class="text-center">
             <b>SURAT PENUGASAN PEMAKAIAN KENDARAAN SEWA</b> <br>
             <small>Nomor: ...................................... </small>
           </td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="12">
             <small>Dengan ini menugaskan :</small>
@@ -104,22 +116,26 @@
         </tr>
         <tr>
           <td colspan="2" class="w-20"><small>Maksud Perjalanan</small></td>
-          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->necessity }}</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->necessity }}. Tujuan {{ $data->destination }}</small></td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
         <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="6" class="w-50 text-center">
             <small>Menyetujui,<br>
-            <b>DIREKTUR</b><br>
-            <b>{{ $data->drivenBy->workOn->company_name }}</b>
-            <br><br><br>
-            <b>{{ $data->drivenBy->workOn->company_director }}</b></small>
+            <b>PENGEMUDI</b>
+            <br><br><br><br><br>
+            <b>{{ $data->drivenBy->driver_name }}</b></small>
           </td>
           <td colspan="6" class="w-50 align-top text-center">
             <small>Makassar, {{ date('d-m-Y') }}<br>
-            <b>DM SDM DAN UMUM</b></small>
+            <b>{{ $data->drivenBy->workOn->company_name }}</b><br>
+            Direktur
+            <br><br><br><br>
+            <b>{{ $data->drivenBy->workOn->company_director }}</b></small>
           </td>
         </tr>
+        <tr><td colspan="12">&nbsp;</td></tr>
       </table>
     </div>
   </div>

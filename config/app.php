@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'SISTEM MONITORING KENDARAAN SEWA OPERASIONAL'),
+    'name' => env('APP_NAME', 'APLIKASI PENGGUNAAN KENDARAAN DINAS OPERASIONAL'),
 
     /*
     |--------------------------------------------------------------------------

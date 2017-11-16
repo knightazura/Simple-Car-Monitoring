@@ -91,6 +91,8 @@ class MiscController extends Controller
         $sheet->cell('B6', function ($cell) { $cell->setValue('Dengan ini menerangkan:'); });
         
         $driver = ($data->backup_driver != "-") ? "{$data->backup_driver} (sopir pengganti)" : $data->driver;
+        $driver_name = ($data->backup_driver != "-") ? $data->backup_driver : $data->driver;
+
         $column_fields = array(
           7 => array( 'fn' => 'Nama Pengemudi', 'fv' => $driver ),
           array( 'fn' => 'Tempat Tujuan', 'fv' => $data->destination ),
@@ -145,11 +147,18 @@ class MiscController extends Controller
           $cell->setValignment('center');
         });
 
-        
         // Right Footer
         $sheet->mergeCells('I19:K19');
         $sheet->cell('I19', function ($cell) {
           $cell->setValue('PENGEMUDI');
+          $cell->setFontWeight('bold');
+          $cell->setAlignment('center');
+          $cell->setValignment('center');
+        });
+
+        $sheet->mergeCells('I24:K24');
+        $sheet->cell('I24', function ($cell) use ($driver_name) {
+          $cell->setValue($driver_name);
           $cell->setFontWeight('bold');
           $cell->setAlignment('center');
           $cell->setValignment('center');
