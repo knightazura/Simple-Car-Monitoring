@@ -31,7 +31,7 @@
                     <div class="card-header text-center">
                         <img class="mt-2 mb-3" src="{{ asset('images/pln.png') }}" height="64px" alt="Header Logo">
                         <h6><b>PLN UNIT INDUK PEMBANGUNAN SULAWESI BAGIAN SELATAN</b></h6>
-                        <h6><b>SISTEM MONITORING KENDARAAN SEWA OPERASIONAL</b></h6>
+                        <h6><b>{{ config('app.name') }}</b></h6>
                     </div>
 
                     <div class="card-body">

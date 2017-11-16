@@ -43,7 +43,7 @@
         </tr>
         <tr>
           <td colspan="2" class="w-20"><small>Maksud Perjalanan</small></td>
-          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->necessity }}. Tujuan {{ $data->destination }}</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->necessity }}</small></td>
         </tr>
         <tr><td colspan="12">&nbsp;</td></tr>
         <tr><td colspan="12">&nbsp;</td></tr>
@@ -116,7 +116,7 @@
         </tr>
         <tr>
           <td colspan="2" class="w-20"><small>Maksud Perjalanan</small></td>
-          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->necessity }}. Tujuan {{ $data->destination }}</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->necessity }}</small></td>
         </tr>
         <tr><td colspan="12">&nbsp;</td></tr>
         <tr><td colspan="12">&nbsp;</td></tr>
