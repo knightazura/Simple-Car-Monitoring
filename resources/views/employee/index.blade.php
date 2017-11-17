@@ -2,12 +2,16 @@
 
 @extends('layouts.app')
 
+@push('dt-css')
+  <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 <div class="container-fluid">
   <div class="row justify-content-md-center">
     <div class="col-md-8">
       @if ($employees->isNotEmpty())
-        <div class="card">
+        <div class="card pb-3">
           <div class="card-header">
             <span style="font-size: 14pt"><b>Daftar Pegawai</b></span>
             <a href="{{ route('employee.create') }}" class="btn btn-sm btn-primary float-right">Daftar</a>
@@ -15,7 +19,12 @@
           <div class="card-body">
             <p class="card-text">Daftar pegawai yang terdaftar pada aplikasi Monitoring.</p>
           </div>
-          <table class="table table-hover table-responsive">
+          <table class="table table-hover table-responsive"
+            cellspacing="0"
+            width="100%" 
+            id="dt-employee"
+            style="font-size: 11pt"
+          >
             <thead class="thead-inverse">
               <tr>
                 <th class="text-center">#</th>
@@ -57,9 +66,6 @@
               @endforeach
             </tbody>
           </table>
-          <div class="card-footer">
-            @include('layouts.cf-navigation', ['collection' => $employees, 'entity_name' => 'pegawai'])
-          </div>
         </div>
       @else
         <div class="card text-white bg-warning">
@@ -72,6 +78,21 @@
           </div>
         </div>
       @endif
+
+      <div class="card text-white bg-info mt-3">
+        <div class="card-body">
+          <h5>Batch Insert</h5>
+          <p class="card-text">
+            Upload data pegawai dalam jumlah banyak menggunakan file excel. Gunakan template yang telah disediakan.
+          </p>
+          <form action="{{ route('employee.batch') }}" method="POST" enctype="multipart/form-data">
+            {{ csrf_field() }}
+            <input type="file" name="excel"><br>
+            <input type="submit" value="Upload" class="mt-3 btn btn-sm btn-light">
+            <a href="{{ route('download-ebt') }}" class="mt-3 btn btn-sm btn-light">Download Template</a>
+          </form>
+        </div>
+      </div>
       
       <div class="row my-3">
         <div class="col-sm-12 col-md-6">
@@ -92,3 +113,10 @@
   </div>
 </div>
 @endsection
+
+@push('dt')
+  <script src="{{ asset('js/datatables.min.js') }}"></script>
+  <script src="{{ asset('js/moment.min.js') }}"></script>
+  <script src="{{ asset('js/daterangepicker.js') }}"></script>
+  <script src="{{ asset('js/dt-init.js') }}"></script>
+@endpush

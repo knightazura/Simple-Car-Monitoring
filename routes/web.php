@@ -24,6 +24,8 @@ Route::middleware(['auth'])->group(function () {
   // Route::middleware('can:view,post,update,delete')->group(function () {
     // Master data module routes
     Route::resource('employee', 'EmployeeController');
+    Route::post('employee/insert-batch', 'EmployeeController@insertBatch')->name('employee.batch');
+    Route::get('employee/download/batch-upload-template', 'EmployeeController@downloadTemplateBatch')->name('download-ebt');
     Route::resource('driver', 'DriverController');
     Route::resource('car', 'CarController');
     Route::resource('driver-car', 'DriverCarController');

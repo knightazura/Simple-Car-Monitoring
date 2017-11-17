@@ -231,16 +231,14 @@ class MiscController extends Controller
   // Excel files
   public function excelFristReport(Request $request)
   {
-    $sd = date("Y-m-d H:i:s", mktime(0,0,0,$request->start_month,1,date('Y')));
-    $ed = date('Y-m-d H:i:s', strtotime('+'.$request->report_period.' months', strtotime($sd)));
-
     Excel::create('filename', function ($excel) use ($request) {
       // Init options
       $column = $request->filter_by;
       $sd     = date("Y-m-d H:i:s", mktime(0,0,0,$request->start_month,1,date('Y')));
       $ed     = date("Y-m-d H:i:s", strtotime("+{$request->report_period} months", strtotime($sd)));
+      $edw    = date("Y-m-d H:i:s", strtotime("+".($request->report_period - 1)."months", strtotime($sd)));
       // Report period sentence
-      $rps    = ($request->report_period > 1) ? DateIndonesia::show_indo($sd, 'bulan_tahun') . ' - ' . DateIndonesia::show_indo($ed, 'bulan_tahun') : DateIndonesia::show_indo($sd, 'bulan_tahun');
+      $rps    = ($request->report_period > 1) ? DateIndonesia::show_indo($sd, 'bulan_tahun') . ' - ' . DateIndonesia::show_indo($edw, 'bulan_tahun') : DateIndonesia::show_indo($sd, 'bulan_tahun');
       
       // Data
       $header = ['NIP','NAMA PEGAWAI','JABATAN','DIVISI','JENIS KENDARAAN','SOPIR','SOPIR PENGGANTI','JUMLAH PENUMPANG','TUJUAN','KEPERLUAN','STATUS BBM','PENGGUNAAN BBM','KETERANGAN TAMBAHAN','KM AWAL','KM KEMBALI','WAKTU PENGGUNAAN','WAKTU KEMBALI'];

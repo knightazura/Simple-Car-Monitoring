@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Employee;
+use Alert;
+use Excel;
+use DB;
 
 class EmployeeController extends Controller
 {
@@ -14,7 +17,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::orderBy('updated_at', 'desc')->paginate(10);
+        $employees = Employee::orderBy('updated_at', 'desc')->get();
         return view('employee.index', compact('employees'));
     }
 
@@ -83,6 +86,24 @@ class EmployeeController extends Controller
                     'message' => "Data pegawai ({$request->employee_name}) berhasil ditambahkan!",
                     'redirect_url' => '/employee'
                 ]);
+        }
+    }
+
+    public function insertBatch(Request $request)
+    {
+        $a = Excel::load($request->file('excel'))->get();
+        foreach ($a as $key => $value) {
+            $data[$key]['nip'] = (string)$value->nip;
+            $data[$key]['employee_name'] = $value->nama_pegawai;
+            $data[$key]['employee_position'] = $value->jabatan;
+            $data[$key]['division'] = $value->divisi;
+            $data[$key]['created_at'] = date('Y-m-d H:i:s');
+            $data[$key]['updated_at'] = date('Y-m-d H:i:s');
+        }
+
+        if (DB::table('employees')->insert($data)) {
+            alert()->success('Upload data pegawai berhasil!', 'Status');
+            return redirect()->route('employee.index');
         }
     }
 
@@ -171,5 +192,11 @@ class EmployeeController extends Controller
                     'data' => $data
                 ]);
         }
+    }
+
+    public function downloadTemplateBatch()
+    {
+        $path = 'files/batch_employee_template.xlsx';
+        return response()->download(storage_path($path));
     }
 }

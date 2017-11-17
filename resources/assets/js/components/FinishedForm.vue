@@ -26,6 +26,7 @@
                 <el-date-picker v-model="form.end_use"
                   class="w-100"
                   type="datetime"
+                  :disabled="true"
                   placeholder="Silahkan pilih"></el-date-picker>
               </el-form-item>
             </div>
@@ -111,6 +112,7 @@
         get(`/api/usage/${this.entity}`)
           .then((response) => {
             this.form = response.data.model
+            this.form.end_use = new Date()
           })
       },
       printForm () {

@@ -14,4 +14,13 @@ $(document).ready(() => {
       "lengthMenu": "Tampilkan _MENU_ baris"
     }
   })
+
+  $('#dt-employee').dataTable({
+    "language": {
+      "info": "Total pegawai _TOTAL_",
+      "infoFiltered": "Total pegawai dalam pencarian _TOTAL_ - (filter dari _MAX_ data)",
+      "infoEmpty": "Tidak ada data pegawai",
+      "lengthMenu": "Tampilkan _MENU_ baris"
+    }
+  })
 })
