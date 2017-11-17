@@ -205,7 +205,7 @@ class MiscController extends Controller
           $cell->setBorder('none', 'none', 'thin', 'none');
         });
 
-        $sheet->protect('secret');
+        // $sheet->protect('secret');
       });
     })->download('xls');
 
@@ -231,7 +231,11 @@ class MiscController extends Controller
   // Excel files
   public function excelFristReport(Request $request)
   {
-    Excel::create('filename', function ($excel) use ($request) {
+    $sdfn = date("Ymd", mktime(0,0,0,$request->start_month,1,date('Y')));
+    $edfn = date("Ymd", strtotime("+".($request->report_period - 1)."months", strtotime($sdfn)));
+    $filename = "report-rekap-".$sdfn."-".$edfn;
+
+    Excel::create($filename, function ($excel) use ($request) {
       // Init options
       $column = $request->filter_by;
       $sd     = date("Y-m-d H:i:s", mktime(0,0,0,$request->start_month,1,date('Y')));
