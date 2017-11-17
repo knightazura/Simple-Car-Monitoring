@@ -30,7 +30,7 @@
                   <td class="align-middle">{{ $dc->car_plat_number }} - {{ $dc->withCar->car_name }}</td>
                   @if (!is_null($dc->withDriver))
                     <td class="align-middle"><b>{{ $dc->withDriver->driver_name }}</b></td>
-                    <td class="align-middle">{{ $dc->withDriver->company }}</td>
+                    <td class="align-middle">{{ $dc->withDriver->workOn->company_name }}</td>
                   @else
                     <td class="align-middle"><b> - </b></td>
                     <td class="align-middle"> - </td>
@@ -53,6 +53,9 @@
               @endforeach
             </tbody>
           </table>
+          <div class="card-footer">
+            @include('layouts.cf-navigation', ['collection' => $driver_car, 'entity_name' => 'data'])
+          </div>
         </div>
       @else
         <div class="card text-white bg-warning">
