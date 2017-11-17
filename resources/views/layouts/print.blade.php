@@ -74,8 +74,8 @@
         <tr><td colspan="12" class="border-0">&nbsp;</td></tr>
         <tr>
           <!-- <td colspan="1" class="w-10">&nbsp;</td> -->
-          <td colspan="6" class="border-0 w-50 text-center">( .............................................. )</td>
-          <td colspan="6" class="border-0 w-50 text-center">( .............................................. )</td>
+          <td colspan="6" class="border-0 w-50 text-center">..............................................</td>
+          <td colspan="6" class="border-0 w-50 text-center">{{ $data->requestedBy->employee_name }}</td>
         </tr>
       </table>
     </div>
@@ -152,8 +152,8 @@
         <tr><td colspan="12" class="border-0">&nbsp;</td></tr>
         <tr>
           <!-- <td colspan="1" class="w-10">&nbsp;</td> -->
-          <td colspan="6" class="border-0 w-50 text-center">( .............................................. )</td>
-          <td colspan="6" class="border-0 w-50 text-center">( .............................................. )</td>
+          <td colspan="6" class="border-0 w-50 text-center">..............................................</td>
+          <td colspan="6" class="border-0 w-50 text-center">{{ $data->requestedBy->employee_name }}</td>
         </tr>
       </table>
     </div>
