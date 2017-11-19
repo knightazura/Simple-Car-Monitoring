@@ -51,7 +51,9 @@
                         <i class="el-icon-more" aria-hidden="true"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                          @if (($dc->withCar->hasStatus->status == 1) || ($dc->withDriver->status > 0))
+                          @if ($dc->withCar->hasStatus->status == 1)
+                            <a class="dropdown-item disabled" href="#">Edit</a>
+                          @elseif (!is_null($dc->withDriver) && $dc->withDriver->status > 0)
                             <a class="dropdown-item disabled" href="#">Edit</a>
                           @else
                             <a class="dropdown-item" href="{{ route('driver-car.edit', $dc->car_plat_number) }}">Edit</a>
