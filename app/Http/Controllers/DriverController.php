@@ -11,7 +11,7 @@ class DriverController extends Controller
     public function index()
     {
         $driver_status  = $this->driverStatus();
-        $drivers        = Driver::orderBy('updated_at', 'desc')->paginate(10);
+        $drivers        = Driver::orderBy('updated_at', 'desc')->get();
         return view('driver.index', compact('drivers', 'driver_status'));
     }
 

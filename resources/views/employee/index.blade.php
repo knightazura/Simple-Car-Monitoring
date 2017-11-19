@@ -11,14 +11,12 @@
   <div class="row justify-content-md-center">
     <div class="col-md-8">
       @if ($employees->isNotEmpty())
-        <div class="card pb-3">
+        <div class="card">
           <div class="card-header">
             <span style="font-size: 14pt"><b>Daftar Pegawai</b></span>
             <a href="{{ route('employee.create') }}" class="btn btn-sm btn-primary float-right">Daftar</a>
           </div>
-          <div class="card-body">
-            <p class="card-text">Daftar pegawai yang terdaftar pada aplikasi Monitoring.</p>
-          </div>
+          <div class="card-body"></div>
           <table class="table table-hover table-responsive"
             cellspacing="0"
             width="100%" 

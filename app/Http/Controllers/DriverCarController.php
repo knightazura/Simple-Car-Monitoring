@@ -11,7 +11,7 @@ class DriverCarController extends Controller
 {
     public function index()
     {
-      $driver_car = DriverCar::orderBy('updated_at', 'desc')->paginate(10);
+      $driver_car = DriverCar::orderBy('updated_at', 'desc')->get();
       return view('driver-car.index', compact('driver_car'));
     }
 

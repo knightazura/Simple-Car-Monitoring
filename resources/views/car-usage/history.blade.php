@@ -11,7 +11,7 @@
   <div class="row justify-content-md-center">
     <div class="col-sm-12">
       @if ($car_usages->isNotEmpty())
-        <div class="card border-info my-4 pb-3">
+        <div class="card border-info my-4">
           <div class="card-header text-white bg-info">
             <span style="font-size: 14pt"><b>Rekap Penggunaan Kendaraan </b></span>
             <a href="#filter-search" data-toggle="collapse" aria-expanded="false" aria-controls="filter-search" class="btn btn-sm btn-dark float-right">Filter</a>

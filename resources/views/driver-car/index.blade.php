@@ -1,5 +1,11 @@
 @extends('layouts.app')
+
 @php $no = 1; @endphp
+
+@push('dt-css')
+  <link href="{{ asset('css/datatables.min.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 <div class="container-fluid">
   <div class="row justify-content-md-center">
@@ -11,14 +17,18 @@
             <a href="{{ route('driver-car.create') }}" class="btn btn-sm btn-primary float-right">Atur</a>
           </div>
           <div class="card-body">
-            <p class="card-text">Daftar sopir & mobil yang terdaftar pada aplikasi Monitoring.</p>
+            <p class="card-text">Daftar sopir & mobil yang terdaftar.</p>
           </div>
-          <table class="table table-hover table-responsive">
+          <table class="table table-hover table-responsive"
+            cellspacing="0"
+            width="100%" 
+            id="dt-driver-car"
+            style="font-size: 11pt">
             <thead class="thead-inverse">
               <tr>
                 <th class="text-center">#</th>
-                <th>Nama Sopir</th>
                 <th>Mobil</th>
+                <th>Nama Sopir</th>
                 <th>Perusahaan</th>
                 <th>&nbsp;</th>
               </tr>
@@ -53,9 +63,6 @@
               @endforeach
             </tbody>
           </table>
-          <div class="card-footer">
-            @include('layouts.cf-navigation', ['collection' => $driver_car, 'entity_name' => 'data'])
-          </div>
         </div>
       @else
         <div class="card text-white bg-warning">
@@ -92,3 +99,10 @@
   </div>
 </div>
 @endsection
+
+@push('dt')
+  <script src="{{ asset('js/datatables.min.js') }}"></script>
+  <script src="{{ asset('js/moment.min.js') }}"></script>
+  <script src="{{ asset('js/daterangepicker.js') }}"></script>
+  <script src="{{ asset('js/dt-init.js') }}"></script>
+@endpush

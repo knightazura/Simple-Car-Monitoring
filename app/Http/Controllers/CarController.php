@@ -24,7 +24,7 @@ class CarController extends Controller
         $car_status = $this->car_status;
         $cars = Car::with('hasStatus')
             ->orderBy('updated_at', 'desc')
-            ->paginate(10);
+            ->get();
         return view('car.index', compact('cars', 'car_status'));
     }
 
