@@ -18,7 +18,7 @@
         <tr>
           <td colspan="12" class="text-center">
             <b>SURAT PERMOHONAN PENGGUNAAN KENDARAAN DINAS OPERASIONAL</b> <br>
-            <small>Nomor: {{ $data->id }} / MUM.00.07 / UIPSULBAGSEL / {{date('Y')}} </small>
+            <small>Nomor: {{ $data->id }} / MUM.00.07 / BIDKSDM / {{date('Y')}} </small>
           </td>
         </tr>
         <tr><td colspan="12">&nbsp;</td></tr>
@@ -41,7 +41,7 @@
         </tr>
         <tr>
           <td colspan="2" class="w-20"><small>Jumlah Penumpang</small></td>
-          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->total_passengers }}</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->total_passengers }} orang</small></td>
         </tr>
         <tr>
           <td colspan="2" class="w-20"><small>Tempat Tujuan</small></td>
@@ -59,7 +59,7 @@
         <tr>
           <td colspan="6" class="w-50 text-center">
             <small>Mengetahui / Menyetujui<br>
-            <b>DM SDM ADM DAN UMUM</b>
+            <b>DM SDM DAN UMUM</b>
             <br><br><br><br>
             <b>SYAMSU ALAM</b></small>
           </td>
@@ -118,7 +118,7 @@
         </tr>
         <tr>
           <td colspan="2" class="w-20"><small>Jumlah Penumpang</small></td>
-          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->total_passengers }}</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->total_passengers }} orang</small></td>
         </tr>
         <tr>
           <td colspan="2" class="w-20"><small>Tempat Tujuan</small></td>
@@ -136,9 +136,8 @@
         <tr>
           <td colspan="6" class="w-50 align-top text-center">
             <small>Menyetujui,<br>
-            <b>DIREKTUR<br>
-            {{ $data->drivenBy->workOn->company_name }}</b>
-            <br><br><br><br>
+            <b>{{ $data->drivenBy->workOn->company_name }}</b>
+            <br><br><br><br><br>
             <b>{{ $data->drivenBy->workOn->company_director }}</b></small>
           </td>
           <td colspan="6" class="w-50 align-top text-center">
