@@ -35,13 +35,9 @@
 
           <!-- Output buttons -->
           <div class="float-right">
-            <button class="btn btn-sm btn-success" type="button" id="printOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fa fa-print" aria-hidden="true"></i> Print
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="{{ route('stream-first-doc', $usage->id) }}">Form C</a>
-              <a class="dropdown-item" href="{{ route('stream-second-doc', $usage->id) }}">Surat Perjalanan</a>
-            </div>
+            <a class="btn btn-sm btn-success" href="{{ route('stream-second-doc', $usage->id) }}">
+              <i class="fa fa-print" aria-hidden="true"></i> Surat Jalan
+            </a>
           </div>
         </div>
       </div>
