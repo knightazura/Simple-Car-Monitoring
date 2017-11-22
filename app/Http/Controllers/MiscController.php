@@ -245,8 +245,9 @@ class MiscController extends Controller
       $rps    = ($request->report_period > 1) ? DateIndonesia::show_indo($sd, 'bulan_tahun') . ' - ' . DateIndonesia::show_indo($edw, 'bulan_tahun') : DateIndonesia::show_indo($sd, 'bulan_tahun');
       
       // Data
-      $header = ['NIP','NAMA PEGAWAI','JABATAN','DIVISI','JENIS KENDARAAN','SOPIR','SOPIR PENGGANTI','JUMLAH PENUMPANG','TUJUAN','KEPERLUAN','STATUS BBM','PENGGUNAAN BBM','KETERANGAN TAMBAHAN','KM AWAL','KM KEMBALI','WAKTU PENGGUNAAN','WAKTU KEMBALI'];
-      $fields = ['employee_nip',
+      $header = ['NOMOR SURAT', 'NIP','NAMA PEGAWAI','JABATAN','DIVISI','JENIS KENDARAAN','SOPIR','SOPIR PENGGANTI','JUMLAH PENUMPANG','TUJUAN','KEPERLUAN','STATUS BBM','PENGGUNAAN BBM','KETERANGAN TAMBAHAN','KM AWAL','KM KEMBALI','WAKTU PENGGUNAAN','WAKTU KEMBALI'];
+      $fields = ['usage_id',
+        'employee_nip',
         'employee_name',
         'employee_position',
         'employee_division',
@@ -269,13 +270,13 @@ class MiscController extends Controller
         $model = HistoryCarUsage::select($fields)
           ->whereBetween('start_use', [$sd, $ed])
           ->orWhereBetween('end_use', [$sd, $ed])
-          ->orderBy('start_use', 'asc')
+          ->orderBy('usage_id', 'asc')
           ->get();
       }
       else {
         $model = HistoryCarUsage::select($fields)
           ->whereBetween($column, [$sd, $ed])
-          ->orderBy('start_use', 'asc')
+          ->orderBy('usage_id', 'asc')
           ->get();
       }
 
