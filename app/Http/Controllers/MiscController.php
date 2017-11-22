@@ -282,6 +282,7 @@ class MiscController extends Controller
 
       // Create Sheet
       $excel->sheet('Sheet 1', function ($sheet) use ($model, $header, $rps) {
+        $sheet->setWidth('A', 15);
 
         /**
          *  General settings & header report init
