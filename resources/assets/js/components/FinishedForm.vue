@@ -40,7 +40,7 @@
           <div class="row">
             <div class="col">
               <el-form-item label="Lamanya dipergunakan">
-                <el-input v-model="form.usage_time" placeholder="Satuan hari"></el-input>
+                <el-input v-model="usageTime" placeholder="Satuan hari"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -78,15 +78,15 @@
         }
       }
     },
-    /* computed: {
+    computed: {
       usageTime () {
         var ttime = (this.form.start_use && this.form.end_use) ? this.timeDifference(this.form.start_use, this.form.end_use) : null
 
         return (ttime) ? `${ttime.days} hari, ${ttime.hours} jam` : null
       }
-    }, */
+    },
     methods: {
-      /* timeDifference (start_time, end_time) {
+      timeDifference (start_time, end_time) {
         var time1 = start_time.getTime()
         var time2 = end_time.getTime()
 
@@ -106,7 +106,7 @@
           hours: hoursDifference,
           minutes: minutesDifference
         }
-      }, */
+      },
       original () {
         get(`/api/usage/${this.entity}`)
           .then((response) => {
@@ -120,7 +120,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             // Set computed usageTime to form
-            // this.form.usage_time = this.usageTime
+            this.form.usage_time = this.usageTime
 
             post(`/api/car-usage/finished`, this.form)
               .then((response) => {
