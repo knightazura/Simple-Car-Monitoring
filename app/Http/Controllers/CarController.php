@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Car;
 use App\Models\CarStatus;
+use App\Models\DriverCar;
 
 class CarController extends Controller
 {
@@ -165,6 +166,12 @@ class CarController extends Controller
             'car_plat_number' => $request->plat_number,
             'status' => $request->car_status
         ]);
+
+        $driver_car = DriverCar::findOrFail($id);
+        $driver_car->update([
+            'car_plat_number' => $request->plat_number
+        ]);
+
         if ($car->save()) {
             return response()
                 ->json([
