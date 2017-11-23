@@ -55,6 +55,10 @@
           <td colspan="2" class="w-20"><small>Tanggal yang diinginkan</small></td>
           <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ date('d-m-Y H:i:s', strtotime($data->desire_time)) }}</small></td>
         </tr>
+        <tr>
+          <td colspan="2" class="w-20"><small>Pengambilan BBM</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->fuel_usage }} L</small></td>
+        </tr>
         <tr><td colspan="12">&nbsp;</td></tr>
         <tr>
           <td colspan="6" class="w-50 text-center">
@@ -137,12 +141,12 @@
           <td colspan="6" class="w-50 align-top text-center">
             <small>Menyetujui,<br>
             <b>{{ $data->drivenBy->workOn->company_name }}</b>
-            <br><br><br><br><br>
+            <br><br><br><br>
             <b>{{ $data->drivenBy->workOn->company_director }}</b></small>
           </td>
           <td colspan="6" class="w-50 align-top text-center">
             <small>Makassar, {{ date('d-m-Y') }}<br>
-            <b>DM SDM DAN UMUM<br>
+            <b>DM SDM DAN UMUM
             <br><br><br><br>
             SYAMSU ALAM</b></small>
           </td>

@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 
 class ReportController extends Controller
 {
     public function index()
     {
+      $years = \App\Models\HistoryCarUsage::select(DB::raw('year(start_use) as year'))
+        ->distinct()
+        ->get();
+      if ($years->isEmpty()) {
+        $years = date('Y');
+      }
+
       $months = [
           1 => 'Januari',
           2 => 'Februari', 
@@ -22,6 +30,6 @@ class ReportController extends Controller
           11 => 'November', 
           12 => 'Desember'
         ];
-      return view('reports.index', compact('months'));
+      return view('reports.index', compact('years', 'months'));
     }
 }

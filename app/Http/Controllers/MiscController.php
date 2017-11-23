@@ -238,7 +238,7 @@ class MiscController extends Controller
     Excel::create($filename, function ($excel) use ($request) {
       // Init options
       $column = $request->filter_by;
-      $sd     = date("Y-m-d H:i:s", mktime(0,0,0,$request->start_month,1,date('Y')));
+      $sd     = date("Y-m-d H:i:s", mktime(0,0,0,$request->start_month,1,$request->year));
       $ed     = date("Y-m-d H:i:s", strtotime("+{$request->report_period} months", strtotime($sd)));
       $edw    = date("Y-m-d H:i:s", strtotime("+".($request->report_period - 1)."months", strtotime($sd)));
       // Report period sentence
