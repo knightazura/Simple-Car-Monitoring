@@ -52,12 +52,12 @@
             <div class="form-group">
               <label for="year">Tahun</label>
               <select class="form-control" name="year" id="year">
-                @if(count($years) > 1)
+                @if($years->isNotEmpty())
                   @foreach($years as $key => $label)
                     <option value="{{ $label->year }}">{{ $label->year }}</option>
                   @endforeach
                 @else
-                  <option value="{{ $years }}">{{ $years }}</option>
+                  <option value="{{ date('Y') }}">{{ date('Y') }}</option>
                 @endif
               </select>
             </div>

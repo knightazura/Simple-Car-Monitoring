@@ -12,9 +12,6 @@ class ReportController extends Controller
       $years = \App\Models\HistoryCarUsage::select(DB::raw('year(start_use) as year'))
         ->distinct()
         ->get();
-      if ($years->isEmpty()) {
-        $years = date('Y');
-      }
 
       $months = [
           1 => 'Januari',
