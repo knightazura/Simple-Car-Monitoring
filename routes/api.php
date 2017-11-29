@@ -54,6 +54,7 @@ Route::get('driver-company/all', 'DriverCompanyController@apiShowAll');
 Route::get('driver-company/edit/{id}', 'DriverCompanyController@apiEdit');
 
 Route::get('fuel/edit/{entity_id}', 'FuelSettingsController@apiEdit');
+Route::get('fuel/current-usage', 'FuelSettingsController@apiCurrentUsageEdit');
 
 Route::get('usage/{entity_id}', 'CarUsageController@apiShow');
 Route::post('car-usage/finished', 'CarUsageController@historyStore');

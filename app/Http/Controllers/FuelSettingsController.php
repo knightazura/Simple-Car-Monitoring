@@ -24,10 +24,28 @@ class FuelSettingsController extends Controller
       $selected_year = $entity->year;
       $psv_year = FuelSetting::select('year')->distinct()->get();
       $fuels = FuelSetting::where('year', $selected_year)->get();
+
       $data['meta'] = 'Edit';
       $data['entity_id'] = $id;
 
       return view('fuel-settings.index', compact('data', 'fuels', 'psv_year', 'selected_year'));
+    }
+
+    public function apiCurrentUsageEdit()
+    {
+      $csd = date('Y-m-d H:i:s', mktime(0,0,0,date('m'),1,date('Y')));
+      $ced = date('Y-m-d H:i:s', strtotime('+1 months', strtotime($csd)));
+
+      $fuel_cusage = \App\Models\CarUsage::whereBetween('created_at', [$csd, $ced])
+        ->sum('fuel_usage');
+      $fuel_husage = \App\Models\HistoryCarUsage::whereBetween('start_use', [$csd, $ced])
+          ->sum('fuel_usage');
+      $fuel_usage = $fuel_cusage + $fuel_husage;
+
+      return response()
+        ->json([
+          'model' => $fuel_usage
+        ]);
     }
 
     public function apiEdit($id)

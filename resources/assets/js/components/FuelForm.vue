@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col">
             <el-form-item label="Bulan" prop="month">
-              <el-select class="w-100" v-model="form.month" placeholder="Pilih">
+              <el-select class="w-100" v-model="form.month" :disabled="form_mode" placeholder="Pilih">
                 <el-option
                   v-for="month in months"
                   :key="month.value"
@@ -16,7 +16,7 @@
           </div>
           <div class="col">
             <el-form-item label="Tahun" prop="year">
-              <el-input-number class="w-100" v-model="form.year" :min="current_year"></el-input-number>
+              <el-input-number class="w-100" v-model="form.year" :min="current_year" :disabled="form_mode"></el-input-number>
             </el-form-item>
           </div>
         </div>
@@ -24,6 +24,25 @@
           <div class="col">
             <el-form-item label="Jumlah bahan bakar" prop="fuel_ratio">
               <el-input-number class="w-100" v-model="form.fuel_ratio" :min="0" :step="100"></el-input-number>
+            </el-form-item>
+          </div>
+        </div>
+        <!-- Simulator Calc -->
+        <hr>
+        <div class="row" v-if="form_mode">
+          <div class="col">
+            <el-form-item label="Total pemakaian bulan ini">
+              <el-input class="w-100" v-model="current_fuel_usage" :readonly="true"></el-input>
+            </el-form-item>
+          </div>
+          <div class="col">
+            <el-form-item label="Jumlah tambahan">
+              <el-input-number class="w-100" v-model="additional_fuel" :min="0" :step="10"></el-input-number>
+            </el-form-item>
+          </div>
+          <div class="col">
+            <el-form-item label="Hasil sisa BBM">
+              <el-input class="w-100" v-model="fuel_result" :readonly="true"></el-input>
             </el-form-item>
           </div>
         </div>
@@ -42,6 +61,8 @@
     created () {
       if (this.meta == 'Edit') {
         this.storeURL = `/fuel/${this.entity_id}?_method=PUT`
+
+        // Get Entity
         get(`/api/fuel/edit/${this.entity_id}`)
           .then((response) => {
             this.form = response.data.model
@@ -52,9 +73,24 @@
               text: error
             })
           })
+
+        // Get current usage
+        get(`/api/fuel/current-usage`)
+          .then((response) => {
+            this.current_fuel_usage = response.data.model
+          })
+          .catch((error) => console.log(error))
       }
       else if (this.meta == 'Index') {
         this.form.month = new Date().getMonth() + 1
+      }
+    },
+    computed: {
+      form_mode () {
+        return (this.meta == 'Edit') ? true : false
+      },
+      fuel_result () {
+        return (this.form.fuel_ratio - this.current_fuel_usage) + this.additional_fuel
       }
     },
     data () {
@@ -65,6 +101,8 @@
         form: {
           month: 1
         },
+        current_fuel_usage: 0,
+        additional_fuel: 0,
         rules: {
           month: [{ required: true, message: 'Field bulan tidak boleh kosong' }],
           year: [{ required: true, message: 'Field tahun tidak boleh kosong' }],
@@ -90,6 +128,7 @@
       onSubmit (form) {
         this.$refs[form].validate((valid) => {
           if (valid) {
+            this.form.fuel_ratio = this.form.fuel_ratio + this.additional_fuel
             post(this.storeURL, this.form)
               .then((response) => {
                 swal({
