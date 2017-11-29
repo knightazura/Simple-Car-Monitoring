@@ -20,7 +20,7 @@
                 </div>
                 <!-- 1 : Modal -->
                 <div class="modal fade" id="firstModal" tabindex="-1" role="dialog" aria-labelledby="firstModal" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -32,6 +32,7 @@
                                             @foreach($highlights_data['ac'] as $car)
                                                 <tr>
                                                     <td>{{ $car->car_plat_number }}</td>
+                                                    <td>{{ $car->theCar->car_name }}</td>
                                                     <td>
                                                         @if(!is_null($car->theCar->responsibleBy->withDriver))
                                                             {{ $car->theCar->responsibleBy->withDriver->driver_name }}
@@ -85,6 +86,7 @@
                                     <table class="table">
                                         <thead>
                                             <th>KENDARAAN</th>
+                                            <th>DRIVER</th>
                                             <th>PEMOHON</th>
                                             <th>KEPERLUAN</th>
                                             <th>TUJUAN</th>
@@ -94,6 +96,7 @@
                                         @foreach($highlights_data['uc'] as $car)
                                             <tr>
                                                 <td>{{ $car->car_plat_number }}</td>
+                                                <td>{{ $car->usage->drivenBy->driver_name }}</td>
                                                 <td>{{ $car->usage->requestedBy->employee_name }}</td>
                                                 <td>{{ $car->usage->necessity }}</td>
                                                 <td>{{ $car->usage->destination }}</td>
