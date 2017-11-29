@@ -37,7 +37,7 @@ class HomeController extends Controller
         $fuel_month = FuelSetting::where('month', date('m'))
             ->where('year', date('Y'))
             ->get();
-        $fuel_cusage = CarUsage::whereBetween('start_use', [$csd, $ced])->sum('fuel_usage');
+        $fuel_cusage = CarUsage::whereBetween('created_at', [$csd, $ced])->sum('fuel_usage');
         $fuel_husage = HistoryCarUsage::whereBetween('start_use', [$csd, $ced])->sum('fuel_usage');
 
         $fuel_status = ($fuel_month->isNotEmpty()) ? $fuel_month[0]->fuel_ratio - ($fuel_cusage + $fuel_husage) : 0;
