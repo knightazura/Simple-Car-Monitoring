@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Misc things like database backup & restore
     Route::get('/misc', 'MiscController@index')->name('misc.index');
-    Route::post('/misc/artisan/snapshot-backup/{command}', 'MiscController@snapshotsBackup')->name('misc.snapshot-backup');
+    Route::post('/misc/artisan/snapshot-backup', 'MiscController@snapshotsBackup')->name('misc.snapshot-backup');
     Route::post('/misc/artisan/snapshot-restore', 'MiscController@snapshotRestore')->name('misc.snapshot-restore');
 
     // Report routes

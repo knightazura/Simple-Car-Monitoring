@@ -19,7 +19,7 @@ class MiscController extends Controller
     return view('misc.index');
   }
 
-  public function snapshotsBackup(Request $request, $command)
+  public function snapshotsBackup(Request $request)
   {
     $temp_name = "app-randis-" . date('mdY-His');
     $params = ['name' => $temp_name];
