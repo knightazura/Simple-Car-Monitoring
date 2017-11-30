@@ -37,6 +37,8 @@ class MiscController extends Controller
 
   public function snapshotRestore(Request $request)
   {
+    $this->validate($request, ['snapshot' => 'required']);
+
     $file = $request->file('snapshot');
     $file_name = $file->getClientOriginalName();
     $file_name = str_replace(".sql", "", $file_name);
