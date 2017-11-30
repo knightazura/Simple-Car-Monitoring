@@ -36,6 +36,11 @@ Route::middleware(['auth'])->group(function () {
     // Manage Users
     Route::resource('manage-users', 'ManageUsersController');
 
+    // Misc things like database backup & restore
+    Route::get('/misc', 'MiscController@index')->name('misc.index');
+    Route::post('/misc/artisan/snapshot-backup/{command}', 'MiscController@snapshotsBackup')->name('misc.snapshot-backup');
+    Route::post('/misc/artisan/snapshot-restore', 'MiscController@snapshotRestore')->name('misc.snapshot-restore');
+
     // Report routes
     Route::get('/report', 'ReportController@index')->name('report-home');
   // });
@@ -50,6 +55,14 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 // Experiment
+Route::get('/backup-trial', function () {
+  try {
+    \Artisan::call('snapshot:create');
+    dd("Hurray");
+  } catch (Exception $e) {
+    dd($e->getMessage());
+  }
+});
 Route::get('/exp', 'CarController@index')->name('car_exp');
 Route::get('/exp/ajax/{id}', function ($id) {
   return response()->json(['data' => $id]);

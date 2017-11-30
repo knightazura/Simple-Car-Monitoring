@@ -5,12 +5,52 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\HistoryCarUsage;
 use App\Support\DateIndonesia;
+use Storage;
+use Artisan;
 use Excel;
 use PDF;
 
 class MiscController extends Controller
 {
   use DateIndonesia;
+
+  public function index()
+  {
+    return view('misc.index');
+  }
+
+  public function snapshotsBackup(Request $request, $command)
+  {
+    $temp_name = "app-randis-" . date('mdY-His');
+    $params = ['name' => $temp_name];
+
+    try {
+      Artisan::call('snapshot:create', $params);
+      $path_file = database_path("snapshots/{$temp_name}.sql");
+      
+      return response()
+        ->download($path_file);
+    } catch (Exception $e) {
+      return back()->with('error', $e->getMessage());
+    }
+  }
+
+  public function snapshotRestore(Request $request)
+  {
+    $file = $request->file('snapshot');
+    $file_name = $file->getClientOriginalName();
+    $file_name = str_replace(".sql", "", $file_name);
+    
+    $file->move(database_path('snapshots'), $file->getClientOriginalName());
+
+    $params = ['name' => $file_name];
+    try {
+      Artisan::call('snapshot:load', $params);
+      return back()->with('status', 'Data berhasil dipulihkan kembali');
+    } catch (Exception $e) {
+      return back()->with('status', $e->getMessage());
+    }
+  }
 
   public function streamFirstDoc($id)
   {

@@ -170,6 +170,8 @@ return [
         UxWeb\SweetAlert\SweetAlertServiceProvider::class,
         Barryvdh\Snappy\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Bestmomo\NiceArtisan\NiceArtisanServiceProvider::class,
+        Spatie\DbSnapshots\DbSnapshotsServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -232,6 +234,7 @@ return [
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'nice_artisan' => \App\Http\Middleware\NiceArtisan::class,
 
     ],
 

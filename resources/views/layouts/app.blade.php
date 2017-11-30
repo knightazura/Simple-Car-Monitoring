@@ -68,6 +68,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                                 @if (Auth::user()->inRole('administrator'))
+                                    <a href="{{ route('misc.index') }}" class="dropdown-item">Manajemen Database</a>
                                     <a href="{{ route('manage-users.index') }}" class="dropdown-item">Manajemen User</a>
                                 @endif
                                 <a class="dropdown-item" href="{{ route('logout') }}"
