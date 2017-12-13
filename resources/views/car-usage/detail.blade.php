@@ -65,7 +65,7 @@
 </p>
 
 <!-- Perkiraan waktu pemakaian -->
-<h6 class="card-title" style="margin-bottom: 0">{{ $usage->estimates_time }} hari</h6>
+<h6 class="card-title" style="margin-bottom: 0">{{ $usage->estimates_time }}</h6>
 <p class="card-text text-secondary">
   <small>Perkiraan waktu pemakaian kendaraan</small>
 </p>

@@ -123,7 +123,10 @@
 
                 <!-- Estimated time -->
                 <el-form-item label="Estimasi waktu penggunaan">
-                    <el-input-number v-model="formRule.estimates_time" :min="1"></el-input-number> hari
+                    <div class="row">
+                        <div class="col-sm-5"><el-input-number v-model="et_hours" :min="0" :max="23"></el-input-number>&nbsp;&nbsp;jam</div>
+                        <div class="col-sm-5"><el-input-number v-model="et_days" :min="0"></el-input-number>&nbsp;&nbsp;hari</div>
+                    </div>
                 </el-form-item>
 
                 <!-- Additional Description -->
@@ -162,6 +165,8 @@
                 idle_drivers: [],
                 bup_drivers: [],
                 available_cars: [],
+                et_days: 0,
+                et_hours: 1,
                 rules: {
                     nip: [{ required: true, message: 'NIP / Pegawai tidak boleh kosong!' }],
                     driver_id: [{ required: true, message: 'Driver tidak boleh kosong! Silahkan pilih kendaraan terlebih dahulu' }],
@@ -192,6 +197,8 @@
                         .then((response) => {
                             this.formRule = response.data.model
                             this.dnm = response.data.model.driver_id
+                            this.et_days = response.data.model.et_days
+                            this.et_hours = response.data.model.et_hours
                         })
                         .catch((error) => { console.log(error) })
                 }
@@ -218,6 +225,7 @@
             onSubmit (formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        this.formRule.estimates_time = ((this.et_days * 24) + this.et_hours)
                         console.log(this.formRule)
                         post(this.storeURL, this.formRule)
                             .then((response) => {

@@ -44,7 +44,7 @@
                 <td class="align-middle">{{ $usage->car_plat_number }} ({{ $usage->carStatus->theCar->car_name }})</td>
                 <td class="align-middle">{{ $usage->destination }}</td>
                 <td class="align-middle">{{ $usage->desire_time }}</td>
-                <td class="text-center align-middle">{{ $usage->estimates_time }} hari</td>
+                <td class="text-center align-middle">{{ $usage->estimates_time }}</td>
                 <td class="align-middle text-right">
                   <a href="{{ route('car-usage.show', $usage->id) }}"
                     class="btn btn-sm btn-primary"

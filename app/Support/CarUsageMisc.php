@@ -11,4 +11,17 @@ trait CarUsageMisc
     $entity->status = $status;
     $entity->save();
   }
+
+  public static function estimatesTime($et)
+  {
+    if ($et >= 24) {
+      $et_d = intdiv($et, 24);
+      $et_h = $et % 24;
+      $et = ($et_h > 0) ? $et_d." hari ".$et_h." jam" : $et_d." hari ";
+    } else if ($et < 24) {
+      $et = $et . " jam";
+    }
+
+    return $et;
+  }
 }

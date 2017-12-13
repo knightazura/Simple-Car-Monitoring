@@ -60,7 +60,7 @@
         </tr>
         <tr>
           <td colspan="2" class="w-25"><small>Estimasi waktu penggunaan</small></td>
-          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->estimates_time }} hari</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->estimates_time }} </small></td>
         </tr>
         <tr>
           <td colspan="2" class="w-25"><small>Keterangan</small></td>
@@ -151,7 +151,7 @@
         </tr>
         <tr>
           <td colspan="2" class="w-25"><small>Estimasi waktu penggunaan</small></td>
-          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->estimates_time }} hari</small></td>
+          <td colspan="10" style="border-bottom: 1px solid #999" class="text-left"><small>: {{ $data->estimates_time }} </small></td>
         </tr>
         <tr><td colspan="12">&nbsp;</td></tr>
         <tr>

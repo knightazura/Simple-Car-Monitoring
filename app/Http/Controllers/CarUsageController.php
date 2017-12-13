@@ -16,6 +16,10 @@ class CarUsageController extends Controller
     public function index()
     {
         $car_usages = CarUsage::orderBy('updated_at', 'desc')->paginate(20);
+        foreach($car_usages as $cu)
+        {
+            $cu->estimates_time = CarUsageMisc::estimatesTime($cu->estimates_time);
+        }
         return view('car-usage.index', compact('car_usages'));
     }
 
@@ -112,6 +116,7 @@ class CarUsageController extends Controller
     public function show($id)
     {
         $usage = CarUsage::findOrFail($id);
+        $usage->estimates_time = CarUsageMisc::estimatesTime($usage->estimates_time);
         return view('car-usage.show', compact('usage'));
     }
 
@@ -134,6 +139,8 @@ class CarUsageController extends Controller
         $usage->backup_driver_company   = (!is_null($usage->backup_driver_id)) ? $usage->backupDrivenBy->workOn->company_name : "-";
         $usage->backup_company_director = (!is_null($usage->backup_driver_id)) ? $usage->backupDrivenBy->workOn->company_director : "-";
 
+        $usage->et_hours    = ($usage->estimates_time < 24) ? $usage->estimates_time : $usage->estimates_time % 24;
+        $usage->et_days     = ($usage->estimates_time >= 24) ? intdiv($usage->estimates_time, 24) : 0;
         return response()
             ->json([
                 'model' => $usage->makeHidden(['requestedBy', 'drivenBy', 'backupDrivenBy', 'carStatus'])->toArray()
@@ -144,6 +151,7 @@ class CarUsageController extends Controller
     {
         $usage = HistoryCarUsage::where('usage_id', $id)->get();
         $usage = $usage[0];
+        $usage->estimates_time = CarUsageMisc::estimatesTime($usage->estimates_time);
         return view('car-usage.history-show', compact('usage'));
     }
 
@@ -225,6 +233,8 @@ class CarUsageController extends Controller
             "company_director",
             "backup_company_director",
             "car",
+            "et_hours",
+            "et_days",
             "created_at",
             "updated_at",
             "_method"

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\HistoryCarUsage;
 use App\Support\DateIndonesia;
+use App\Support\CarUsageMisc;
 use Storage;
 use Artisan;
 use Excel;
@@ -12,7 +13,7 @@ use PDF;
 
 class MiscController extends Controller
 {
-  use DateIndonesia;
+  use DateIndonesia, CarUsageMisc;
 
   public function index()
   {
@@ -57,6 +58,7 @@ class MiscController extends Controller
   public function streamFirstDoc($id)
   {
     $data = \App\Models\CarUsage::findOrFail($id);
+    $data->estimates_time = CarUsageMisc::estimatesTime($data->estimates_time);
     view()->share('data', $data);
     $genTime = date('FdYHis');
 
@@ -70,6 +72,7 @@ class MiscController extends Controller
   public function streamSecondDoc($id)
   {
     $data = \App\Models\CarUsage::findOrFail($id);
+    $data->estimates_time = CarUsageMisc::estimatesTime($data->estimates_time);    
     // return view('layouts.print-2', compact('data'));
 
     /*
