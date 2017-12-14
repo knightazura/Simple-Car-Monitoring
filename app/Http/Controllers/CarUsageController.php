@@ -88,7 +88,7 @@ class CarUsageController extends Controller
     // Recap into history
     public function historyStore(Request $request)
     {
-        $history = new HistoryCarUsage($request->except(['id', 'nip', 'driver_id', 'backup_driver_id', 'car_plat_number', 'created_at', 'updated_at']));
+        $history = new HistoryCarUsage($request->except(['id', 'nip', 'driver_id', 'backup_driver_id', 'car_plat_number', 'et_hours', 'et_days', 'created_at', 'updated_at']));
         $driver = \App\Models\Driver::findOrFail($request->driver_id);
 
         $history->usage_id = $request->id;
