@@ -166,7 +166,7 @@
                 bup_drivers: [],
                 available_cars: [],
                 et_days: 0,
-                et_hours: 1,
+                et_hours: 0,
                 rules: {
                     nip: [{ required: true, message: 'NIP / Pegawai tidak boleh kosong!' }],
                     driver_id: [{ required: true, message: 'Driver tidak boleh kosong! Silahkan pilih kendaraan terlebih dahulu' }],
