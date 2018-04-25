@@ -9,7 +9,12 @@ trait CarUsageMisc
     $model = "App\\Models\\{$model}";
     $entity = $model::findOrFail($id);
     $entity->status = $status;
-    $entity->save();
+    if ($entity->save()) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   public static function estimatesTime($et)

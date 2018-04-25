@@ -70,18 +70,20 @@ class CarUsageController extends Controller
 
         // Set Driver status (whether it Backup or Original)
         $driver_id = (!is_null($request->backup_driver_id)) ? $request->backup_driver_id : $request->driver_id;
-        CarUsageMisc::setStatus($driver_id, "Driver", 1);
+        $ds = CarUsageMisc::setStatus($driver_id, "Driver", 1);
 
         // Set Car status (the original one)
-        CarUsageMisc::setStatus($request->car_plat_number, "CarStatus", 1);
+        $cs = CarUsageMisc::setStatus($request->car_plat_number, "CarStatus", 1);
 
-        if ($usage) {
-            return response()
-                ->json([
-                    'valid' => true,
-                    'message' => 'Berhasil membuat permohonan',
-                    'redirect_url' => "/car-usage/{$usage->id}"
-                ]);
+        if ($ds && $cs) {
+            if ($usage) {
+                return response()
+                    ->json([
+                        'valid' => true,
+                        'message' => 'Berhasil membuat permohonan',
+                        'redirect_url' => "/car-usage/{$usage->id}"
+                    ]);
+            }
         }
     }
 
@@ -273,15 +275,17 @@ class CarUsageController extends Controller
         // Destroy
         if ($usage->delete()) {
             // Setback Driver status
-            CarUsageMisc::setStatus($driver_id, "Driver", 0);
+            $ds = CarUsageMisc::setStatus($driver_id, "Driver", 0);
 
             // Setback Car status
-            CarUsageMisc::setStatus($usage->car_plat_number, "CarStatus", 0);
+            $cs = CarUsageMisc::setStatus($usage->car_plat_number, "CarStatus", 0);
 
-            return response()
-                ->json([
-                    'data' => $data
-                ]);
+            if ($ds && $cs) {
+                return response()
+                    ->json([
+                        'data' => $data
+                    ]);
+            }
         }
     }
 
