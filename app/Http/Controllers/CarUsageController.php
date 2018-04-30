@@ -272,15 +272,14 @@ class CarUsageController extends Controller
 
         $driver_id = (!is_null($usage->backup_driver_id)) ? $usage->backup_driver_id : $usage->driver_id;
 
+        // Setback Driver & Car status
+        $ds = CarUsageMisc::setStatus($driver_id, "Driver", 0);
+        $cs = CarUsageMisc::setStatus($usage->car_plat_number, "CarStatus", 0);
+
         // Destroy
-        if ($usage->delete()) {
-            // Setback Driver status
-            $ds = CarUsageMisc::setStatus($driver_id, "Driver", 0);
+        if ($ds && $cs) {
 
-            // Setback Car status
-            $cs = CarUsageMisc::setStatus($usage->car_plat_number, "CarStatus", 0);
-
-            if ($ds && $cs) {
+            if ($usage->delete()) {
                 return response()
                     ->json([
                         'data' => $data
